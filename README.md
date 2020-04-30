@@ -21,6 +21,10 @@ composer require alekseon/custom-forms-builder
 bin/magento setup:upgrade  
 ```  
   
+## Dependencies
+
+This extension gives you possibility to create forms in admin panel. If you want to place them on frontend by CMS content, please check this extension: [Alekseon_WidgetForms](https://github.com/Alekseon/magento2-widget-forms)
+
   
 ## Support  
   
@@ -63,7 +67,7 @@ You can view and manage the form applications by regular Magento grid
   
 ### Add Forms to CMS Pages 
   
-Please refer to !!!this!!! package if you want to be able to add these forms to CMS pages for your customers. 
+Please refer to [Alekseon_WidgetForms](https://github.com/Alekseon/magento2-widget-forms) if you want to be able to add these forms to CMS pages for your customers. 
   
 ### Email notifications  
   
