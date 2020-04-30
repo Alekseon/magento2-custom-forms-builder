@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Alekseon_CustomFormsBuilder::custom_forms" title="Custom Forms" translate="title" module="Alekseon_CustomFormsBuilder" sortOrder="100" parent="Magento_Backend::content_elements" action="alekseon_customFormsBuilder/form/index" resource="Alekseon_CustomFormsBuilder::custom_forms"/>
+    </menu>
+</config>

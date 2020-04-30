@@ -1,0 +1,20 @@
+<?php
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
+?>
+<?= $block->getChildHtml('form_fields_tab_form') ?>
+<?= $block->getChildHtml('add_new_field_button') ?>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Alekseon_CustomFormsBuilder/js/form/edit/formFields": {
+            "newFieldButtonId": "add_field_button",
+            "newFieldTemplateId": "form_field_new_field-wrapper",
+            "formContianerId": "form_tabs_fields_tab_content",
+            "formRemovedFieldsInputId": "form_removed_fields"
+        }
+    }
+}
+</script>

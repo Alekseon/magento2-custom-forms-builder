@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="formkey"/>
+    <body>
+        <referenceContainer name="left">
+            <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormField\Edit\Tabs" name="attribute_edit_tabs">
+                <container label="General" name="general">
+                    <block class="Alekseon\AlekseonEav\Block\Adminhtml\Attribute\Edit\Tab\General" name="attribute_general_form"/>
+                    <block class="Alekseon\AlekseonEav\Block\Adminhtml\Attribute\Edit\Tab\Options" name="attribute_options"/>
+                </container>
+                <container label="Frontend Labels" name="frontend_labels">
+                    <block class="Alekseon\AlekseonEav\Block\Adminhtml\Attribute\Edit\Tab\FrontendLabels" name="attribute_frontend_labels_form"/>
+                </container>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <container label="Edit Attribute" name="edit_attribute">
+                <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormField\Edit" name="attribute_edit_form" />
+                <block class="Magento\Framework\View\Element\Template" name="attribute_js" template="Alekseon_AlekseonEav::attribute/edit/js.phtml" />
+            </container>
+        </referenceContainer>
+    </body>
+</page>

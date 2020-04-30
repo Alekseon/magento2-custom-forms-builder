@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="formkey"/>
+    <head>
+        <css src="css/styles-old.css"/>
+    </head>
+    <body>
+        <referenceContainer name="page.main.actions">
+            <block class="Magento\Backend\Block\Store\Switcher" name="store_switcher" as="store_switcher" template="Magento_Backend::store/switcher.phtml">
+                <action method="setUseConfirm">
+                    <argument name="params" xsi:type="string">1</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tabs" name="form_edit_tabs">
+                <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\General" name="form_general_tab"/>
+                <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields" name="form_fields_tab" template="Alekseon_CustomFormsBuilder::form/edit/tab/fields.phtml">
+                    <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields\Form" name="form_fields_tab_form" />
+                </block>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">general_tab</argument>
+                    <argument name="block" xsi:type="string">form_general_tab</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">fields_tab</argument>
+                    <argument name="block" xsi:type="string">form_fields_tab</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <container name="form.wrapper" htmlTag="div" htmlClass="admin__scope-old">
+                <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit" name="entity_edit"/>
+            </container>
+        </referenceContainer>
+    </body>
+</page>
