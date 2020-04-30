@@ -1,7 +1,7 @@
 
 <h1 align="center">  
 <br/>
-  <img src="https://drive.google.com/uc?export=download&id=1vvhl4GKAREOKsJdjdJA8A7MjoB0dNa51" alt="Custom Forms Builder" width="400">  
+  <img src="https://i.imgur.com/b2oclHA.png" alt="Custom Forms Builder" width="400">  
   <br>  
   Alekseon_CustomFormsBuilder  
   <br>  
@@ -44,7 +44,7 @@ You can choose from field types:
 * Date
 * Image
   
-<img src="https://drive.google.com/uc?export=download&id=13VhmlOI-jCsp9A01O4Y6cmcjpJ4CqxG0"/>  
+<img src="https://i.imgur.com/PnzzGaj.png"/>  
   
 ### Manage fields as regular attributes 
   
@@ -52,14 +52,14 @@ Thanks to the EAV structure, you can manage every field of your form similarly t
 
 
   
-<img src="https://drive.google.com/uc?export=download&id=1wFAXUlKgVzfEGyL0TARQPI5n9kpMM9YG"/>  
+<img src="https://i.imgur.com/Wlsrx0B.png"/>  
   
   
 ### Add and access your form objects easily
   
 You can view and manage the form applications by regular Magento grid
   
-<img src="https://drive.google.com/uc?export=download&id=1oRCAvwttjhUBPF7bCV7hUmDO0KjKqTNh"/>  
+<img src="https://i.imgur.com/5GEypQf.png"/>  
   
 ### Add Forms to CMS Pages 
   
@@ -67,7 +67,7 @@ Please refer to !!!this!!! package if you want to be able to add these forms to 
   
 ### Email notifications  
   
-To do
+@Todo
  
   
 ## Issue Tracking / Upcoming Features  
@@ -84,7 +84,7 @@ If you want to contribute please follow the below instructions:
   
 1. Create an issue and describe your idea  
 2. [Fork this repository](https://github.com/Alekseon/magento2-custom-forms-builder/fork)  
-3. Create your feature branch (`git checkout -b my-new-feature`) 
+3. Create your feature branch (`git checkout -b my-new-feature`)  
 4. Commit your changes  
 5. Publish the branch (`git push origin my-new-feature`)  
 6. Submit a new Pull Request for review  
