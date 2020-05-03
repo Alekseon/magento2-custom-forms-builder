@@ -15,11 +15,6 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
     protected $form;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\Alekseon\CustomFormBuilder\Model\FormFactory
-     */
-    protected $formFactory;
-
-    /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\Alekseon\CustomFormBuilder\Model\ResourceModel\Form
      */
     protected $formResource;
@@ -35,16 +30,21 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
 
-        $this->formFactory = $this->getMockBuilder(\Alekseon\CustomFormsBuilder\Model\FormFactory::class)
+        $formFactory = $this->getMockBuilder(\Alekseon\CustomFormsBuilder\Model\FormFactory::class)
             ->disableOriginalConstructor()
+            ->setMethods(['create'])
             ->getMock();
         $this->formResource = $this->getMockBuilder(\Alekseon\CustomFormsBuilder\Model\ResourceModel\Form::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->form = $this->getMockBuilder(\Alekseon\CustomFormsBuilder\Model\Form::class)->disableOriginalConstructor()->getMock();
 
+        $formFactory->expects($this->any())
+            ->method('create')
+            ->willReturn($this->form);
+
         $this->formRepository = new FormRepository(
-            $this->formFactory
+            $formFactory
         );
     }
 
@@ -64,6 +64,9 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
             ->method('load')
             ->with($this->form, $formId)
             ->willReturn($this->form);
+        $this->form->expects($this->once())
+            ->method('getResource')
+            ->willReturn($this->formResource);
         $this->formRepository->getById($formId);
     }
 

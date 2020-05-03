@@ -6,7 +6,7 @@
          beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="./framework/bootstrap.php"
 >
-    <testsuite name="Magento Unit Tests">
+    <testsuite name="CustomFormsBuilder Unit Tests">
         <directory suffix="Test.php">../../../vendor/alekseon/custom-forms-builder/Test/Unit</directory>
     </testsuite>
     <php>
