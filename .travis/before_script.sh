@@ -27,6 +27,9 @@ composer config minimum-stability dev
 composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
 composer require $COMPOSER_PACKAGE_NAME:dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT
 
+
+cp vendor/$COMPOSER_PACKAGE_NAME/Test/Integration/phpunit.xml.dist dev/tests/integration/phpunit.xml
+cp vendor/$COMPOSER_PACKAGE_NAME/Test/Unit/phpunit.xml.dist dev/tests/unit/phpunit.xml
 case $TEST_SUITE in
     integration|coverage)
         cd dev/tests/integration
