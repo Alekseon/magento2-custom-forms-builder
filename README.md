@@ -21,7 +21,7 @@
          alt="Total Downloads">
   </a>
   <a href="https://travis-ci.org/Alekseon/magento2-custom-forms-builder">
-    <img src="https://travis-ci.org/Alekseon/magento2-custom-forms-builder.svg?branch=1.x"
+    <img src="https://travis-ci.org/Alekseon/magento2-custom-forms-builder.svg?branch=master"
          alt="Travis CI build status">
   </a>
 </p>
