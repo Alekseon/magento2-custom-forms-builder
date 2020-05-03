@@ -11,6 +11,20 @@
   
 <p align="center"><i>Let you create custom forms in Admin panel</i></p>  
   
+<p align="center">
+  <a href="https://packagist.org/packages/alekseon/custom-forms-builder">
+    <img src="https://poser.pugx.org/alekseon/custom-forms-builder/v/stable"
+         alt="Latest Stable Version">
+  </a>
+  <a href="https://packagist.org/packages/alekseon/custom-forms-builder/stats">
+    <img src="https://poser.pugx.org/alekseon/custom-forms-builder/downloads"
+         alt="Total Downloads">
+  </a>
+  <a href="https://travis-ci.org/Alekseon/magento2-custom-forms-builder">
+    <img src="https://travis-ci.org/Alekseon/magento2-custom-forms-builder.svg?branch=1.x"
+         alt="Travis CI build status">
+  </a>
+</p>
   
 ## Installation  
   
