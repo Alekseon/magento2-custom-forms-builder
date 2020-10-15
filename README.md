@@ -44,7 +44,7 @@ This extension gives you possibility to create forms in admin panel. If you want
   
 CJM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3 | Magento 2.4  
 --- | :---: | :---: | :---: | :---: | :---:  
-1.x | :x: | :x: | :white_check_mark: | :white_check_mark: | :question:  
+1.x | :x: | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark:  
   
   
 ## Features  
