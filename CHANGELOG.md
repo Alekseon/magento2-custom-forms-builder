@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Added
 - option sources for select attributes
+- form record created at column
+- record attribute variables for events
 
 ## [102.0.0] - 2020-10-15
 ### Added

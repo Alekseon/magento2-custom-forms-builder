@@ -40,6 +40,8 @@ class Grid extends EavGrid
         $this->_collectionFactory = $collectionFactory;
         $this->coreRegistry = $coreRegistry;
         parent::__construct($context, $backendHelper, $data);
+        $this->setDefaultSort('created_at');
+        $this->setDefaultDir('desc');
     }
 
     /**
@@ -62,6 +64,19 @@ class Grid extends EavGrid
     protected function _prepareColumns()
     {
         parent::_prepareColumns();
+
+        $this->addColumn(
+            'created_at',
+            [
+                'header' => __('Created At'),
+                'index' => 'created_at',
+                'gmtoffset' => true,
+                'type' => 'datetime',
+                'header_css_class' => 'col-updated col-date',
+                'column_css_class' => 'col-updated col-date'
+            ]
+        );
+
         $this->addAttributeColumns();
         return $this;
     }

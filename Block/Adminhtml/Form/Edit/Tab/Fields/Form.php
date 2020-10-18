@@ -32,6 +32,10 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected $fieldOptionSources;
     /**
+     * @var \Magento\Framework\EntityManager\EventManager
+     */
+    protected $eventManager;
+    /**
      * @var array
      */
     protected $formValues = [];
@@ -51,11 +55,13 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         \Alekseon\AlekseonEav\Model\Adminhtml\System\Config\Source\InputType $inputTypeSource,
         \Magento\Config\Model\Config\Source\Yesno $yesNoSource,
         \Alekseon\CustomFormsBuilder\Model\FieldOptionSources $fieldOptionSources,
+        \Magento\Framework\EntityManager\EventManager $eventManager,
         array $data = []
     ) {
         $this->inputTypeSource = $inputTypeSource;
         $this->yesNoSource = $yesNoSource;
         $this->fieldOptionSources = $fieldOptionSources;
+        $this->eventManager = $eventManager;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -123,13 +129,13 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                     'text' => $warningsHtml
                 ]
             );
-        }
+       }
 
-        $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
+       $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
             [
                 'name' => 'form_fields[' . $formFieldId . '][id]'
             ]
-        );
+       );
 
         $fieldset->addField('form_field_' . $formFieldId . '_frontend_label', 'text',
             [
@@ -175,6 +181,16 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "sort_order");
 
+        $this->eventManager->dispatch(
+            'alekseon_custom_form_after_add_field_fieldset',
+            [
+                'form_field_id' => $formFieldId,
+                'form' => $form,
+                'fieldset' => $fieldset,
+                'field_settings' => $settings,
+            ]
+        );
+
         $actionLinks = [];
         if (!$isNewField) {
             $actionLinks[] = '<a href="'
@@ -190,6 +206,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 'text' => implode(' | ', $actionLinks)
             ]
         );
+
     }
 
     /**
