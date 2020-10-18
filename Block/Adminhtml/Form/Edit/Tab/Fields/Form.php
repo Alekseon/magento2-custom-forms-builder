@@ -5,6 +5,7 @@
  */
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields;
 
+use Alekseon\AlekseonEav\Model\Attribute\InputType\Boolean;
 use Alekseon\AlekseonEav\Model\Attribute\InputTypeRepository;
 use Magento\Framework\Data\Collection\AbstractDb;
 
@@ -27,6 +28,10 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected $yesNoSource;
     /**
+     * @var \Alekseon\CustomFormsBuilder\Model\FieldOptionSources
+     */
+    protected $fieldOptionSources;
+    /**
      * @var array
      */
     protected $formValues = [];
@@ -45,10 +50,12 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         \Magento\Framework\Data\FormFactory $formFactory,
         \Alekseon\AlekseonEav\Model\Adminhtml\System\Config\Source\InputType $inputTypeSource,
         \Magento\Config\Model\Config\Source\Yesno $yesNoSource,
+        \Alekseon\CustomFormsBuilder\Model\FieldOptionSources $fieldOptionSources,
         array $data = []
     ) {
         $this->inputTypeSource = $inputTypeSource;
         $this->yesNoSource = $yesNoSource;
+        $this->fieldOptionSources = $fieldOptionSources;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -150,6 +157,17 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "is_required");
 
+        if (isset($settings['attribute']) && $this->canSelectOptionSource($settings['attribute'])) {
+            $fieldset->addField('form_field_' . $formFieldId . '_option_source_code', 'select',
+                [
+                    'label' => __('Options Source'),
+                    'name' => 'form_fields[' . $formFieldId . '][option_source_code]',
+                    'values' => $this->fieldOptionSources->toOptionArray(),
+                    'note' => __('WARNING: Since Form has records, this option should NOT be changed, as it can iterrupt saved data.'),
+                ]
+            )->addCustomAttribute("data-fieldcode", "option_source_code");
+        }
+
         $fieldset->addField('form_field_' . $formFieldId . '_sort_order', 'text',
             [
                 'label' => __('Sort Order'),
@@ -204,10 +222,28 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         }
 
         $formFieldSettings = [
-            'title' => '[' . $frontendInputLabel . '] ' . $attribute->getFrontendLabel() ,
+            'title' => '[' . $frontendInputLabel . '] ' . $attribute->getFrontendLabel(),
+            'attribute' => $attribute,
         ];
 
         return $formFieldSettings;
+    }
+
+    /**
+     * @param $attribute
+     */
+    protected function canSelectOptionSource($attribute)
+    {
+        if (!$attribute->usesSource()) {
+            return false;
+        }
+
+        $inputTypeModel = $attribute->getInputTypeModel();
+        if ($inputTypeModel instanceof Boolean) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -220,6 +256,11 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         foreach ($recordAttributeCollection as $attribute) {
             $formFieldSettings = $this->getFieldSettings($attribute);
             $this->addFieldFieldset($form,  $attribute->getId(), $formFieldSettings);
+
+            $optionSourceCode = $this->fieldOptionSources->getCodeBySourceModel($attribute->getData('source_model'));
+            if ($optionSourceCode) {
+                $attribute->setOptionSourceCode($optionSourceCode);
+            }
 
             $attributeData = $attribute->getData();
             foreach ($attributeData as $dataId => $dataValue) {
