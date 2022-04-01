@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <alekseon_custom_forms>
+            <new_entity_notification_email>
+                <identity>sales</identity>
+                <template>alekseon_custom_forms_new_entity_notification_email_template</template>
+            </new_entity_notification_email>
+        </alekseon_custom_forms>
+    </default>
+</config>
