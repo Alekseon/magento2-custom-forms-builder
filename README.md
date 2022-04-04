@@ -20,8 +20,8 @@
     <img src="https://poser.pugx.org/alekseon/custom-forms-builder/downloads"
          alt="Total Downloads">
   </a>
-  <a href="https://travis-ci.org/Alekseon/magento2-custom-forms-builder">
-    <img src="https://travis-ci.org/Alekseon/magento2-custom-forms-builder.svg?branch=master"
+  <a href="https://app.travis-ci.com/github/Alekseon/magento2-custom-forms-builder">
+    <img src="https://app.travis-ci.com/Alekseon/magento2-custom-forms-builder.svg?branch=master"
          alt="Travis CI build status">
   </a>
 </p>
