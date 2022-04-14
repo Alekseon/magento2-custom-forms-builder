@@ -5,6 +5,7 @@
  */
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml;
 
+use Alekseon\AlekseonEav\Api\Data\EntityInterface;
 use Magento\Framework\Controller\ResultFactory;
 
 /**
@@ -41,7 +42,7 @@ abstract class Form extends \Magento\Backend\App\Action
     /**
      * @param string $requestParam
      * @param null $storeId
-     * @return mixed
+     * @return EntityInterface mixed
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     protected function initForm($requestParam = 'entity_id', $storeId = null)

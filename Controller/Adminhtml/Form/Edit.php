@@ -18,6 +18,7 @@ class Edit extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
     {
         $this->_initAction();
         $entity = $this->initForm();
+
         if ($entity->getId()) {
             $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Edit Form'). ' ' . $entity->getTitle());
         } else {

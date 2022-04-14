@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.0.2] - 2020-04-14
+### Fixed
+- fixed issue with missing created_at column on fresh installation
+
 ## [102.0.1] - 2020-04-01
 ### Added
 - new entity notifiaction email
