@@ -29,7 +29,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'created_at',
                 [
                     'type' => Table::TYPE_TIMESTAMP,
-                    'comment' => 'Pickup Time',
+                    'comment' => 'Creation Time',
                     'DEFAULT' =>  Table::TIMESTAMP_INIT
                 ]
             );
