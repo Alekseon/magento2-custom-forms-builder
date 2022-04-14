@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
-## [102.0.2] - 2020-04-14
+## [102.0.3] - 2020-04-14
 ### Fixed
 - fixed issue with missing created_at column on fresh installation
 

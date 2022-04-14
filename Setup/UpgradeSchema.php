@@ -23,7 +23,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
-        if (version_compare($context->getVersion(), '1.0.1', '<')) {
+        if (version_compare($context->getVersion(), '1.0.2', '<')) {
             $setup->getConnection()->addColumn(
                 $setup->getTable('alekseon_custom_form_record'),
                 'created_at',
