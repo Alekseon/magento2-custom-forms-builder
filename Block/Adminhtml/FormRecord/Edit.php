@@ -5,6 +5,9 @@
  */
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord;
 
+use Magento\Backend\Block\Widget\Context;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+
 /**
  * Class Edit
  * @package Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord
@@ -17,6 +20,25 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      * @var string
      */
     protected $_blockGroup = 'Alekseon_CustomFormsBuilder';
+    /**
+     * @var \Magento\Framework\Registry
+     */
+    protected $coreRegistry;
+
+    /**
+     * Edit constructor.
+     * @param Context $context
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param array $data
+     */
+    public function __construct(
+        \Magento\Backend\Block\Widget\Context $context,
+        \Magento\Framework\Registry $coreRegistry,
+        array $data = []
+    ) {
+        $this->coreRegistry = $coreRegistry;
+        parent::__construct($context, $data);
+    }
 
     /**
      * @return void
@@ -40,6 +62,15 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
                 ]
             ]
         );
+
+        if (!$this->isSaveRecordAllowed()) {
+            $this->removeButton('save');
+            $this->removeButton('save_and_continue');
+        }
+
+        if (!$this->isDeleteRecordAllowed()) {
+            $this->removeButton('delete');
+        }
     }
 
     /**
@@ -74,5 +105,35 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
                 'form_id' => $this->getRequest()->getParam('form_id')
             ]
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getCurrentForm()
+    {
+        return $this->coreRegistry->registry('current_form');
+    }
+
+    /**
+     *
+     */
+    protected function isSaveRecordAllowed()
+    {
+        $manageResource = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+        if ($this->_authorization->isAllowed($manageResource)) {
+            return true;
+        }
+
+        $resource = 'Alekseon_CustomFormsBuilder::custom_form_' . $this->getCurrentForm()->getId() . '_save';
+        return $this->_authorization->isAllowed($resource);
+    }
+
+    /**
+     *
+     */
+    protected function isDeleteRecordAllowed()
+    {
+        return $this->isSaveRecordAllowed();
     }
 }

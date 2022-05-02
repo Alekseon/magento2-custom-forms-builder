@@ -7,6 +7,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Alekseon_CustomFormsBuilder::custom_forms" title="Custom Forms" translate="title" module="Alekseon_CustomFormsBuilder" sortOrder="100" parent="Magento_Backend::content_elements" action="alekseon_customFormsBuilder/form/index" resource="Alekseon_CustomFormsBuilder::custom_forms"/>
+        <add id="Alekseon_CustomFormsBuilder::manage_custom_forms" title="Manage Custom Forms" translate="title" module="Alekseon_CustomFormsBuilder" sortOrder="100" parent="Magento_Backend::content_elements" action="alekseon_customFormsBuilder/form/index" resource="Alekseon_CustomFormsBuilder::manage_custom_forms"/>
+        <add id="Alekseon_CustomFormsBuilder::custom_forms" title="Custom Forms" translate="title" module="Alekseon_CustomFormsBuilder" sortOrder="60" parent="Magento_Backend::marketing" resource="Alekseon_CustomFormsBuilder::custom_forms"/>
     </menu>
 </config>

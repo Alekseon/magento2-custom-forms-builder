@@ -53,6 +53,35 @@ abstract class FormRecord extends \Magento\Backend\App\Action
     }
 
     /**
+     * @return bool
+     */
+    protected function _isAllowed($formRequestParam  = 'form_id')
+    {
+        $manageResource = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+        if ($this->_authorization->isAllowed($manageResource)) {
+            return true;
+        }
+
+        $form = $this->initForm($formRequestParam);
+        if ($form) {
+            $resource = $this->getIsAllowedResource($form);
+        } else {
+            $resource = static::ADMIN_RESOURCE;
+        }
+
+        return $this->_authorization->isAllowed($resource);
+    }
+
+    /**
+     * @param $form
+     * @return string
+     */
+    protected function getIsAllowedResource($form)
+    {
+        return 'Alekseon_CustomFormsBuilder::custom_form_' . $form->getId();
+    }
+
+    /**
      * @param string $requestParam
      * @return mixed
      * @throws \Magento\Framework\Exception\NoSuchEntityException

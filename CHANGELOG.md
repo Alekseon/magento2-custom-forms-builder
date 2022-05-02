@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Added
 - csv and excel exports
+- show custome forms in adminhtml menu
+- permissions to view and save custom forms
 
 ## [102.0.3] - 2020-04-14
 ### Fixed

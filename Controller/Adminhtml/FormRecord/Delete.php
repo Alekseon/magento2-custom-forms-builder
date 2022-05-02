@@ -31,4 +31,13 @@ class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecor
         $this->messageManager->addError(__('We can\'t find an record to delete.'));
         return $this->returnResult('*/*', ['id' => $form->getId()]);
     }
+
+    /**
+     * @param $form
+     * @return string
+     */
+    protected function getIsAllowedResource($form)
+    {
+        return 'Alekseon_CustomFormsBuilder::custom_form_' . $form->getId() . '_save';
+    }
 }

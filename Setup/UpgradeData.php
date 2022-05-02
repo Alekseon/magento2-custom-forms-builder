@@ -47,6 +47,10 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '1.0.1', '<')) {
             $this->addEnableEmailNotificationAttribute($setup);
         }
+
+        if (version_compare($context->getVersion(), '1.0.3', '<')) {
+            $this->addShowInAdminMenuAttribute($setup);
+        }
     }
 
     /**
@@ -66,6 +70,28 @@ class UpgradeData implements UpgradeDataInterface
                 'sort_order' => 100,
                 'scope' => Scopes::SCOPE_GLOBAL,
             ]
+        );
+    }
+
+    /**
+     *
+     */
+    protected function addShowInAdminMenuAttribute()
+    {
+        $eavSetup = $this->eavSetupFactory->create();
+        $eavSetup->setAttributeRepository($this->formAttributeRepository);
+
+        $eavSetup->createAttribute(
+            'show_in_menu',
+                [
+                    'frontend_input' => 'boolean',
+                    'frontend_label' => 'Show in adminhtml menu',
+                    'visible_in_grid' => false,
+                    'is_required' => false,
+                    'sort_order' => 40,
+                    'scope' => Scopes::SCOPE_GLOBAL,
+                    'note' => __('Menu -> Marketing -> Custom Forms'),
+                ]
         );
     }
 }

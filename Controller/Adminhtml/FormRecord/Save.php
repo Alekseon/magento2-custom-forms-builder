@@ -51,4 +51,13 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
             return $this->returnResult('*/*', ['id' => $form->getId()]);
         }
     }
+
+    /**
+     * @param $form
+     * @return string
+     */
+    protected function getIsAllowedResource($form)
+    {
+        return 'Alekseon_CustomFormsBuilder::custom_form_' . $form->getId() . '_save';
+    }
 }
