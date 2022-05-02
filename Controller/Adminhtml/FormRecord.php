@@ -26,6 +26,10 @@ abstract class FormRecord extends \Magento\Backend\App\Action
      * @var \Alekseon\CUstomFormsBUilder\Model\FormRecordFactory
      */
     protected $formRecordFactory;
+    /**
+     * @var \Magento\Framework\App\Response\Http\FileFactory
+     */
+    protected $fileFactory;
 
     /**
      * FormRecord constructor.
@@ -38,11 +42,13 @@ abstract class FormRecord extends \Magento\Backend\App\Action
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Registry $coreRegistry,
         \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository,
-        \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory
+        \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory,
+        \Magento\Framework\App\Response\Http\FileFactory $fileFactory
     ) {
         $this->coreRegistry = $coreRegistry;
         $this->formRepository = $formRepository;
         $this->formRecordFactory = $formRecordFactory;
+        $this->fileFactory = $fileFactory;
         parent::__construct($context);
     }
 
