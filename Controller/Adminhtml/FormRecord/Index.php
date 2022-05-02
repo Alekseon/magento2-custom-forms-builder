@@ -13,6 +13,15 @@ namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 class Index extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
 {
     /**
+     * @param string $formRequestParam
+     * @return bool
+     */
+    protected function _isAllowed($formRequestParam  = 'id')
+    {
+        return parent::_isAllowed($formRequestParam);
+    }
+
+    /**
      * Widget Instances Grid
      *
      * @return void

@@ -41,6 +41,10 @@ class FormRecord extends \Magento\Backend\Block\Widget\Grid\Container
         $this->_headerText = __('Custom Form Records');
         $this->_addButtonLabel = __('Add New Record');
         parent::_construct();
+
+        if (!$this->isAddNewRecordAllowed()) {
+            $this->removeButton('add');
+        }
     }
 
     /**
@@ -57,5 +61,19 @@ class FormRecord extends \Magento\Backend\Block\Widget\Grid\Container
     protected function getCurrentForm()
     {
         return $this->coreRegistry->registry('current_form');
+    }
+
+    /**
+     *
+     */
+    protected function isAddNewRecordAllowed()
+    {
+        $manageResource = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+        if ($this->_authorization->isAllowed($manageResource)) {
+            return true;
+        }
+
+        $resource = 'Alekseon_CustomFormsBuilder::custom_form_' . $this->getCurrentForm()->getId() . '_save';
+        return $this->_authorization->isAllowed($resource);
     }
 }

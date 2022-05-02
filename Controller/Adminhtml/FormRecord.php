@@ -26,6 +26,10 @@ abstract class FormRecord extends \Magento\Backend\App\Action
      * @var \Alekseon\CUstomFormsBUilder\Model\FormRecordFactory
      */
     protected $formRecordFactory;
+    /**
+     * @var \Magento\Framework\App\Response\Http\FileFactory
+     */
+    protected $fileFactory;
 
     /**
      * FormRecord constructor.
@@ -38,12 +42,43 @@ abstract class FormRecord extends \Magento\Backend\App\Action
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Registry $coreRegistry,
         \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository,
-        \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory
+        \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory,
+        \Magento\Framework\App\Response\Http\FileFactory $fileFactory
     ) {
         $this->coreRegistry = $coreRegistry;
         $this->formRepository = $formRepository;
         $this->formRecordFactory = $formRecordFactory;
+        $this->fileFactory = $fileFactory;
         parent::__construct($context);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function _isAllowed($formRequestParam  = 'form_id')
+    {
+        $manageResource = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+        if ($this->_authorization->isAllowed($manageResource)) {
+            return true;
+        }
+
+        $form = $this->initForm($formRequestParam);
+        if ($form) {
+            $resource = $this->getIsAllowedResource($form);
+        } else {
+            $resource = static::ADMIN_RESOURCE;
+        }
+
+        return $this->_authorization->isAllowed($resource);
+    }
+
+    /**
+     * @param $form
+     * @return string
+     */
+    protected function getIsAllowedResource($form)
+    {
+        return 'Alekseon_CustomFormsBuilder::custom_form_' . $form->getId();
     }
 
     /**

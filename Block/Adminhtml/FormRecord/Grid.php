@@ -54,7 +54,7 @@ class Grid extends EavGrid
 
         $collection->addFieldToFilter('form_id', $this->getCurrentForm()->getId());
         $collection->getResource()->setCurrentForm($this->getCurrentForm());
-        
+
         return parent::_prepareCollection();
     }
 
@@ -79,6 +79,10 @@ class Grid extends EavGrid
         );
 
         $this->addAttributeColumns();
+
+        $this->addExportType('*/*/exportCsv', __('CSV'));
+        $this->addExportType('*/*/exportExcel', __('Excel XML'));
+
         return $this;
     }
 
