@@ -15,7 +15,7 @@
             <label>Custom Forms</label>
             <tab>alekseon</tab>
             <resource>Alekseon_CustomFormsBuilder::config</resource>
-            <group id="new_entity_notification_email" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="0" showInStore="1">
+            <group id="new_entity_notification_email" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="1">
                 <label>New Entity Notification Email</label>
                 <field id="identity" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Email Sender</label>
