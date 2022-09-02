@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.0.5] - 2022-08-02
+### Fixed
+- fix visibility of configuration
+
 ## [102.0.4] - 2020-05-02
 ### Added
 - csv and excel exports
