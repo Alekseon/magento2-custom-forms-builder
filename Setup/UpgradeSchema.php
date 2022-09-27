@@ -34,6 +34,19 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ]
             );
         }
+
+        if (version_compare($context->getVersion(), '1.0.4', '<')) {
+            $setup->getConnection()->addColumn(
+                $setup->getTable('alekseon_custom_form'),
+                'created_at',
+                [
+                    'type' => Table::TYPE_TIMESTAMP,
+                    'comment' => 'Creation Time',
+                    'DEFAULT' =>  Table::TIMESTAMP_INIT
+                ]
+            );
+        }
+        
         $setup->endSetup();
     }
 }

@@ -5,6 +5,7 @@
  */
 namespace Alekseon\CustomFormsBuilder\Model\ResourceModel;
 
+use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
 use Alekseon\AlekseonEav\Model\ResourceModel\Entity;
 use Magento\Framework\Data\Collection\AbstractDb;
 
@@ -87,5 +88,35 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
     public function setCurrentForm($form)
     {
         $this->currentForm = $form;
+    }
+
+    /**
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @param AttributeInterface $attribute
+     * @param string $fileName
+     * @return string
+     */
+    public function getNameForUploadedFile(
+        \Magento\Framework\Model\AbstractModel $object,
+        AttributeInterface $attribute,
+        string $fileName
+    ) {
+        $fileNameParts = explode('.', $fileName);
+        $ext = end($fileNameParts);
+        return md5($attribute->getAttributeCode() . $object->getId() . time()) . '.' . $ext;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagesDirName()
+    {
+        $imagesDirName = parent::getImagesDirName();
+        $form = $this->getCurrentForm();
+        if ($form) {
+            return $imagesDirName . '/' . substr(md5($form->getCreatedAt() . $form->getId()), 0, 10);
+        }
+
+        return $imagesDirName;
     }
 }

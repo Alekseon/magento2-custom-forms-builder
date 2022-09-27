@@ -191,6 +191,16 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         );
 
+        $inputParams = $this->getInputParams($settings);
+        foreach ($inputParams as $paramCode => $paramConfig) {
+            $fieldset->addField('form_field_' . $formFieldId . '_input_params_' . $paramCode, 'text',
+                [
+                    'label' => __($paramConfig['label']),
+                    'name' => 'form_fields[' . $formFieldId . '][input_params][' . $paramCode . ']'
+                ]
+            );
+        }
+
         $actionLinks = [];
         if (!$isNewField) {
             $actionLinks[] = '<a href="'
@@ -207,6 +217,25 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         );
 
+    }
+
+    /**
+     * @param $settings
+     * @return array
+     */
+    protected function getInputParams($settings)
+    {
+        if (isset($settings['attribute'])) {
+            $attribute = $settings['attribute'];
+            if ($attribute->getCanUseInputParams()) {
+                $inputTypeConfig = $attribute->getFrontendInputTypeConfig();
+                $params = $inputTypeConfig->getInputParams();
+                if ($params) {
+                    return $params;
+                }
+            }
+        }
+        return [];
     }
 
     /**
@@ -282,6 +311,18 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             $attributeData = $attribute->getData();
             foreach ($attributeData as $dataId => $dataValue) {
                 $this->formValues['form_field_' . $attribute->getId() . '_' . $dataId] = $dataValue;
+            }
+
+            $settings = [
+                'attribute' => $attribute
+            ];
+
+            $inputParams = $this->getInputParams($settings);
+            foreach ($inputParams as $paramCode => $paramConfig) {
+                $value = $attribute->getInputParam($paramCode);
+                if ($value !== '') {
+                    $this->formValues['form_field_' . $attribute->getId() . '_input_params_' . $paramCode] = $value;
+                }
             }
         }
     }
