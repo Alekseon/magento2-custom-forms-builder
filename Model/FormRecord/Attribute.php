@@ -72,6 +72,8 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
             }
         }
 
+        $this->setInputParams($this->getInputParams());
+
         return parent::beforeSave();
     }
 }

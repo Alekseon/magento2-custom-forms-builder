@@ -5,6 +5,8 @@
  */
 namespace Alekseon\CustomFormsBuilder\Model\ResourceModel\Form;
 
+use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
+
 /**
  * Class Attribute
  * @package Alekseon\CustomFormsBuilder\Model\ResourceModel\Form
