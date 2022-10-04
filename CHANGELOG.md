@@ -7,11 +7,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
-## [102.0.6] - 2022-09-27
-### Added
-- created at field for form
-- hashed images names and directory name for images (needs eav in version 101.0.11)
-- input params (needs eav in version 101.0.11)
+## [103] - 2022-08-02
+### Changed
+- remove new entity mail notification functionality
 
 ## [102.0.5] - 2022-08-02
 ### Fixed
