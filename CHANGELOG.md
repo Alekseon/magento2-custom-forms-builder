@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.0.7] - 2022-10-04
+### Changed
+- chenged composer requirements
+
 ## [102.0.6] - 2022-09-27
 ### Added
 - created at field for form
