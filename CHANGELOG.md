@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.0.8] - 2022-10-05
+### Added
+- compability to attribute default values
+
 ## [102.0.7] - 2022-10-04
 ### Changed
 - chenged composer requirements

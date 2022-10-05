@@ -111,9 +111,9 @@ abstract class FormRecord extends \Magento\Backend\App\Action
             $record = $this->formRecordFactory->create();
             $record->getResource()->setCurrentForm($form);
             $recordId = $this->getRequest()->getParam($requestParam, false);
-            if ($recordId) {
-                $record->getResource()->load($record, $recordId);
-            } else {
+            $record->getResource()->load($record, $recordId);
+
+            if (!$recordId) {
                 $record->setFormId($form->getId());
             }
             $this->coreRegistry->register('current_record', $record);
