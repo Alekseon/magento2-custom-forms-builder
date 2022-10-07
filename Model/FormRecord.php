@@ -12,6 +12,12 @@ namespace Alekseon\CustomFormsBuilder\Model;
 class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
 {
     /**
+     * Prefix of model events names
+     *
+     * @var string
+     */
+    protected $_eventPrefix = 'alekseon_custom_form_builder_form_record';
+    /**
      * @var FormRepository
      */
     protected $formRepository;
