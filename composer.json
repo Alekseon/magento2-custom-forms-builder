@@ -2,12 +2,13 @@
     "name": "alekseon/custom-forms-builder",
     "description": "N/A",
     "require": {
+        "php": "~7.0.0|~7.1.0|~7.2.0|~7.3.0|~7.4.0",
         "magento/framework": "100.* | 101.* | 102.* | 103.*",
 		"alekseon/alekseon-eav": "^101.0.15",
-        "php": "~7.0.0|~7.1.0|~7.2.0|~7.3.0|~7.4.0"
+        "alekseon/custom-forms-email-notification": "^100.1.1"
     },
     "type": "magento2-module",
-    "version": "102.0.8",
+    "version": "102.1.0",
     "license": [
         "OSL-3.0",
         "AFL-3.0"

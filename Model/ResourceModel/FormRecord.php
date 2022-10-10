@@ -16,6 +16,12 @@ use Magento\Framework\Data\Collection\AbstractDb;
 class FormRecord extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
 {
     /**
+     * Prefix of model events names
+     *
+     * @var string
+     */
+    protected $_eventPrefix = 'alekseon_custom_form_builder_form_record';
+    /**
      * @var string
      */
     protected $entityTypeCode = 'alekseon_custom_form_record';
