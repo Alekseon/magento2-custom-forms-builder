@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.0.9] - 2022-10-10
+### Changed
+- Move new entity mail notification functionality to alekseon/custom-forms-email-notification
+
 ## [102.0.8] - 2022-10-05
 ### Added
 - compability to attribute default values

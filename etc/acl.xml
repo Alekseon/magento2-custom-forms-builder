@@ -17,13 +17,6 @@
                 <resource id="Magento_Backend::marketing">
                     <resource id="Alekseon_CustomFormsBuilder::custom_forms" title="Custom Forms" translate="title" sortOrder="60" />
                 </resource>
-                <resource id="Magento_Backend::stores">
-                    <resource id="Magento_Backend::stores_settings">
-                        <resource id="Magento_Config::config">
-                            <resource id="Alekseon_CustomFormsBuilder::config" title="Custom Forms Section" translate="title" />
-                        </resource>
-                    </resource>
-                </resource>
             </resource>
         </resources>
     </acl>

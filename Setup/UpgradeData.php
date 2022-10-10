@@ -44,35 +44,10 @@ class UpgradeData implements UpgradeDataInterface
      */
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        if (version_compare($context->getVersion(), '1.0.1', '<')) {
-            $this->addEnableEmailNotificationAttribute($setup);
-        }
-
         if (version_compare($context->getVersion(), '1.0.3', '<')) {
             $this->addShowInAdminMenuAttribute($setup);
         }
     }
-
-    /**
-     * @param $setup
-     */
-    protected function addEnableEmailNotificationAttribute($setup)
-    {
-        $eavSetup = $this->eavSetupFactory->create();
-        $eavSetup->setAttributeRepository($this->formAttributeRepository);
-
-        $eavSetup->createAttribute(
-            'enable_email_notification',
-            [
-                'frontend_input' => 'boolean',
-                'frontend_label' => 'Notify By Email about new entities',
-                'visible_in_grid' => true,
-                'sort_order' => 100,
-                'scope' => Scopes::SCOPE_GLOBAL,
-            ]
-        );
-    }
-
     /**
      *
      */
