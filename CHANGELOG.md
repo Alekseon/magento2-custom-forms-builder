@@ -7,6 +7,12 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.1.1] - 2022-10-12
+### Changed
+- attribute_code field length in DB to 255 chars
+### Added
+- attribute source: TextFormAttributes
+
 ## [102.1.0] - 2022-10-10
 ### Changed
 - Move new entity mail notification functionality to alekseon/custom-forms-email-notification
