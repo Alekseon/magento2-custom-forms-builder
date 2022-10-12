@@ -14,7 +14,7 @@ use Magento\Framework\Setup\UpgradeSchemaInterface;
  * Class UpgradeSchema
  * @package Alekseon\CustomFormsBuilder\Setup
  */
-class UpgradeSchema implements UpgradeSchemaInterface
+class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements UpgradeSchemaInterface
 {
     /**
      * @param SchemaSetupInterface $setup
@@ -46,7 +46,12 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 ]
             );
         }
-        
+
+        if (version_compare($context->getVersion(), '1.0.5', '<')) {
+            $this->updateAttributeCodeColumnSize($setup, 'alekseon_custom_form_attribute');
+            $this->updateAttributeCodeColumnSize($setup, 'alekseon_custom_form_record_attribute');
+        }
+
         $setup->endSetup();
     }
 }
