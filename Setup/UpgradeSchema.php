@@ -47,7 +47,7 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
             );
         }
 
-        if (version_compare($context->getVersion(), '1.0.5', '<')) {
+        if ($context->getVersion() && version_compare($context->getVersion(), '1.0.5', '<')) {
             $this->updateAttributeCodeColumnSize($setup, 'alekseon_custom_form_attribute');
             $this->updateAttributeCodeColumnSize($setup, 'alekseon_custom_form_record_attribute');
         }
