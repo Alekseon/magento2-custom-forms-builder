@@ -7,6 +7,11 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.1.2] - 2022-10-13
+### Changed
+- chenged composer requirements
+- small fix in setup upgrade
+
 ## [102.1.1] - 2022-10-12
 ### Changed
 - attribute_code field length in DB to 255 chars
