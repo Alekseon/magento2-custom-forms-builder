@@ -52,6 +52,57 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
             $this->updateAttributeCodeColumnSize($setup, 'alekseon_custom_form_record_attribute');
         }
 
+        if (version_compare($context->getVersion(), '1.0.6', '<')) {
+            $this->addCodeFieldToFormAndRecord($setup);
+        }
+
         $setup->endSetup();
+    }
+
+    /**
+     * @param $setup
+     */
+    protected function addCodeFieldToFormAndRecord(SchemaSetupInterface $setup)
+    {
+        $setup->getConnection()->addColumn(
+            $setup->getTable('alekseon_custom_form'),
+            'form_code',
+            [
+                'type' => Table::TYPE_TEXT,
+                'length' => 255,
+                'comment' => 'Form Code',
+                'nullable' => true,
+            ]
+        );
+        $setup->getConnection()->addIndex(
+            $setup->getTable('alekseon_custom_form'),
+            $setup->getIdxName(
+                'alekseon_custom_form',
+                ['form_code'],
+                \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+            ),
+            ['form_code'],
+            \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+        );
+        $setup->getConnection()->addColumn(
+            $setup->getTable('alekseon_custom_form_record_attribute'),
+            'field_code',
+            [
+                'type' => Table::TYPE_TEXT,
+                'length' => 255,
+                'comment' => 'Field Code',
+                'nullable' => true,
+            ]
+        );
+       $setup->getConnection()->addIndex(
+            $setup->getTable('alekseon_custom_form_record_attribute'),
+            $setup->getIdxName(
+                'alekseon_custom_form_record_attribute',
+                ['field_code', 'form_id'],
+                \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+            ),
+            ['field_code', 'form_id'],
+            \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+        );
     }
 }

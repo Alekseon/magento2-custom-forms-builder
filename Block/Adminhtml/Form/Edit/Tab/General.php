@@ -78,6 +78,22 @@ class General extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form imp
         }
 
         $this->addAllAttributeFields($baseFieldset, $dataObject);
+
+        $advancedFieldset = $form->addFieldset('advanced_fieldset', ['legend' => __('Advanced Properties')]);
+
+        $advancedFieldset->addField('form_code',
+            'text',
+            [
+                'name' => 'form_code',
+                'label' => __('Code'),
+                'title' => __('Code'),
+                'note' => __(
+                    'This is used internally. Make sure you don\'t use spaces or more than %1 symbols.',
+                    255
+                ),
+            ]
+        );
+
         $this->setForm($form);
 
         return parent::_prepareForm();
