@@ -19,7 +19,6 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
      * @var
      */
     protected $_eventPrefix = 'alekseon_custom_form_record_attibute';
-    protected $_eventObject = 'attribute';
     /**
      * @var \Alekseon\CustomFormsBuilder\Model\FieldOptionSources
      */
