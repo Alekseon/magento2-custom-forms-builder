@@ -5,6 +5,8 @@
  */
 namespace Alekseon\CustomFormsBuilder\Model\Form;
 
+use Alekseon\CustomFormsBuilder\Model\Form;
+
 /**
  * Class Attribute
  * @package Alekseon\CustomFormsBuilder\Model\Form

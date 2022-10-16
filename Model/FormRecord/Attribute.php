@@ -6,6 +6,8 @@
 namespace Alekseon\CustomFormsBuilder\Model\FormRecord;
 
 use Alekseon\CustomFormsBuilder\Model\FieldOptionSources;
+use Alekseon\CustomFormsBuilder\Model\Form;
+use Alekseon\CustomFormsBuilder\Model\FormRepository;
 
 /**
  * Class Attribute
@@ -14,14 +16,19 @@ use Alekseon\CustomFormsBuilder\Model\FieldOptionSources;
 class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
 {
     /**
+     * @var
+     */
+    protected $_eventPrefix = 'alekseon_custom_form_record_attibute';
+    protected $_eventObject = 'attribute';
+    /**
      * @var \Alekseon\CustomFormsBuilder\Model\FieldOptionSources
      */
     protected $fieldOptionSources;
     /**
      * @var
      */
-    protected $_eventPrefix = 'alekseon_custom_form_record_attibute';
-    protected $_eventObject = 'attribute';
+    protected $form;
+
 
     /**
      * Attribute constructor.
@@ -40,9 +47,11 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
         \Alekseon\AlekseonEav\Model\Attribute\InputValidatorRepository $inputValidatorRepository,
         \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\Attribute $resource,
         \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\Attribute\Collection $resourceCollection,
-        FieldOptionSources $fieldOptionSources
+        FieldOptionSources $fieldOptionSources,
+        FormRepository $formRepository
     ) {
         $this->fieldOptionSources = $fieldOptionSources;
+        $this->formRepository = $formRepository;
         parent::__construct(
             $context, $registry, $inputTypeRepository, $inputValidatorRepository, $resource, $resourceCollection
         );
@@ -75,5 +84,28 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
         $this->setInputParams($this->getInputParams());
 
         return parent::beforeSave();
+    }
+
+
+    /**
+     * @param $form
+     * @return \Alekseon\CustomFormsBuilder\Model\Form\Attribute
+     */
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getForm(): Form
+    {
+        if ($this->form === null) {
+            $this->form = $this->formRepository->getById($this->getFormId());
+        }
+
+        return $this->form;
     }
 }

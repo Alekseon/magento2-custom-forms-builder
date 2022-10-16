@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [Unreleased]
+### Added
+- form property in form record attribute
+
 ## [102.1.2] - 2022-10-13
 ### Changed
 - chenged composer requirements
