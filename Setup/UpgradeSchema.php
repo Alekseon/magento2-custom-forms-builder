@@ -53,7 +53,7 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
         }
 
         if (version_compare($context->getVersion(), '1.0.6', '<')) {
-            $this->addCodeFieldToFormAndRecord($setup);
+            $this->addIdentifierToFormAndRecord($setup);
         }
 
         $setup->endSetup();
@@ -62,15 +62,15 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
     /**
      * @param $setup
      */
-    protected function addCodeFieldToFormAndRecord(SchemaSetupInterface $setup)
+    protected function addIdentifierToFormAndRecord(SchemaSetupInterface $setup)
     {
         $setup->getConnection()->addColumn(
             $setup->getTable('alekseon_custom_form'),
-            'form_code',
+            'identifier',
             [
                 'type' => Table::TYPE_TEXT,
                 'length' => 255,
-                'comment' => 'Form Code',
+                'comment' => 'Identifier',
                 'nullable' => true,
             ]
         );
@@ -78,19 +78,19 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
             $setup->getTable('alekseon_custom_form'),
             $setup->getIdxName(
                 'alekseon_custom_form',
-                ['form_code'],
+                ['identifier'],
                 \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
             ),
-            ['form_code'],
+            ['identifier'],
             \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
         );
         $setup->getConnection()->addColumn(
             $setup->getTable('alekseon_custom_form_record_attribute'),
-            'field_code',
+            'identifier',
             [
                 'type' => Table::TYPE_TEXT,
                 'length' => 255,
-                'comment' => 'Field Code',
+                'comment' => 'Identifier',
                 'nullable' => true,
             ]
         );
@@ -98,10 +98,10 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
             $setup->getTable('alekseon_custom_form_record_attribute'),
             $setup->getIdxName(
                 'alekseon_custom_form_record_attribute',
-                ['field_code', 'form_id'],
+                ['identifier', 'form_id'],
                 \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
             ),
-            ['field_code', 'form_id'],
+            ['identifier', 'form_id'],
             \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
         );
     }

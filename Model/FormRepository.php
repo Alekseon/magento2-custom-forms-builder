@@ -24,7 +24,7 @@ class FormRepository
     /**
      * @var array
      */
-    protected $loadedFormsByCodes = [];
+    protected $loadedFormsByIdentifiers = [];
 
     /**
      * FormRepository constructor.
@@ -62,28 +62,30 @@ class FormRepository
     }
 
     /**
-     * @param $formId
+     * @param $identifier
      * @param null $storeId
-     * @param false $graceful
+     * @param bool $graceful
+     * @return Form|mixed
+     * @throws NoSuchEntityException
      */
-    public function getByCode($formCode, $storeId = null, $graceful = true)
+    public function getByIdentifier($identifier, $storeId = null, $graceful = true)
     {
         $storeKey = $storeId ?? 'null';
-        if (!isset($this->loadedFormsByCodes[$formCode])) {
+        if (!isset($this->loadedFormsByIdentifiers[$identifier])) {
             $form = $this->formFactory->create();
             $form->setStoreId($storeId);
-            $form->getResource()->load($form, $formCode, 'form_code');
+            $form->getResource()->load($form, $identifier, 'identifier');
             if (!$form->getId()) {
                 if ($graceful) {
                     return $form;
                 } else {
-                    throw new NoSuchEntityException(__('Form with code "%1" does not exist.', $formCode));
+                    throw new NoSuchEntityException(__('Form with identifier "%1" does not exist.', $identifier));
                 }
             }
             $this->addFormToLoaded($form, $storeKey);
         }
 
-        $formId = $this->loadedFormsByCodes[$formCode];
+        $formId = $this->loadedFormsByIdentifiers[$identifier];
         return $this->loadedFormsByIds[$formId][$storeKey];
     }
 
@@ -93,8 +95,8 @@ class FormRepository
     protected function addFormToLoaded($form, $storeKey = 'null')
     {
         $this->loadedFormsByIds[$form->getId()][$storeKey] = $form;
-        if ($form->getFormCode()) {
-            $this->loadedFormsByCodes[$form->getFormCode()] = $form->getId();
+        if ($form->getIdentifier()) {
+            $this->loadedFormsByIdentifiers[$form->getIdentifier()] = $form->getId();
         }
     }
 }

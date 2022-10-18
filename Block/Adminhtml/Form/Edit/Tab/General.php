@@ -81,12 +81,12 @@ class General extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form imp
 
         $advancedFieldset = $form->addFieldset('advanced_fieldset', ['legend' => __('Advanced Properties')]);
 
-        $advancedFieldset->addField('form_code',
+        $advancedFieldset->addField('identifier',
             'text',
             [
-                'name' => 'form_code',
-                'label' => __('Code'),
-                'title' => __('Code'),
+                'name' => 'identifier',
+                'label' => __('Form Identifier'),
+                'title' => __('Form Identifier'),
                 'note' => __(
                     'This is used internally. Make sure you don\'t use spaces or more than %1 symbols.',
                     255
