@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - form property in form record attribute
 - form identifier
+- field identifier
 
 ## [102.1.2] - 2022-10-13
 ### Changed

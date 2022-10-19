@@ -103,7 +103,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     }
 
     /**
-     * @param $form
+     * @param \Magento\Framework\Data\Form $form
      * @param array $settings
      */
     protected function addFieldFieldset($form, $formFieldId, $settings = [])
@@ -117,25 +117,26 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
 
         $fieldset = $form->addFieldset('form_field_' . $formFieldId,
             [
-                'legend' => isset($settings['title']) ? $settings['title'] : 'no title',
+                'legend' => $settings['title'] ?? 'no title',
                 'collapsable' => true,
+                'header_bar' => isset($settings['identifier']) ? __('Identifier') . ': ' . $settings['identifier'] : '',
             ]
         );
 
-       $warningsHtml = $this->getFieldWarningsHtml($settings);
-       if ($warningsHtml) {
+        $warningsHtml = $this->getFieldWarningsHtml($settings);
+        if ($warningsHtml) {
             $fieldset->addField('form_field_' . $formFieldId . '_warning', 'note',
                 [
                     'text' => $warningsHtml
                 ]
             );
-       }
+        }
 
-       $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
+        $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
             [
                 'name' => 'form_fields[' . $formFieldId . '][id]'
             ]
-       );
+        );
 
         $fieldset->addField('form_field_' . $formFieldId . '_frontend_label', 'text',
             [
@@ -267,9 +268,17 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             $frontendInputLabel = $attribute->getFrontendInput();
         }
 
+        if ($attribute->getIdentifier()) {
+            $identifier = $attribute->getIdentifier();
+        } else {
+            $codePrefix = 'field_' . $this->getDataObject()->getId() . '_';
+            $identifier = substr($attribute->getAttributeCode(), strlen($codePrefix));
+        }
+
         $formFieldSettings = [
             'title' => '[' . $frontendInputLabel . '] ' . $attribute->getFrontendLabel(),
             'attribute' => $attribute,
+            'identifier' => $identifier,
         ];
 
         return $formFieldSettings;
