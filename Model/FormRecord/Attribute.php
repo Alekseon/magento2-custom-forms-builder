@@ -61,8 +61,11 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
      */
     public function beforeSave()
     {
-        if ($optionSourceCode = $this->getOptionSourceCode()) {
+        if ($this->getAttributeCode() == 'field_' . $this->getForm()->getId() . '_' . $this->getIdentifier()) {
+            $this->setIdentifier(null);
+        }
 
+        if ($optionSourceCode = $this->getOptionSourceCode()) {
             $optionSource = $this->fieldOptionSources->getOptionSourceByCode($optionSourceCode);
             $backendType = $this->getInputTypeModel()->getDefaultBackendType();
 

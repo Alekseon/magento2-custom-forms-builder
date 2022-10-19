@@ -114,12 +114,16 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             $isNewField = false;
         }
 
+        $identifierBlock = $this->_layout->createBlock(\Magento\Backend\Block\Template::class)
+            ->setSettings($settings)
+            ->setFormFieldId($formFieldId)
+            ->setTemplate('Alekseon_CustomFormsBuilder::form/edit/field/identifier.phtml');
 
         $fieldset = $form->addFieldset('form_field_' . $formFieldId,
             [
                 'legend' => $settings['title'] ?? 'no title',
                 'collapsable' => true,
-                'header_bar' => isset($settings['identifier']) ? __('Identifier') . ': ' . $settings['identifier'] : '',
+                'header_bar' => $identifierBlock->toHtml(),
             ]
         );
 

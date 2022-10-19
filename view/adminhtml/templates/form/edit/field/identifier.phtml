@@ -1,0 +1,24 @@
+<?php
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
+?>
+
+<?php $settings = $block->getSettings() ?>
+<?php if (isset($settings['identifier'])): ?>
+    <div
+        onmouseover="this.getElementsByClassName('identifier')[0].hide(); this.getElementsByClassName('identifier-input')[0].show();"
+        onmouseout="this.getElementsByClassName('identifier')[0].show(); this.getElementsByClassName('identifier-input')[0].hide();"
+    >
+        <?= __('Identifier') ?> :
+        <span class="identifier">
+            <?= $settings['identifier'] ?? '' ?>
+        </span>
+        <input
+            name="form_fields[<?= $block->getFormFieldId() ?>][identifier]"
+            onchange="this.parentNode.getElementsByClassName('identifier')[0].update(this.value);"
+            style="display:none" class="identifier-input" type="text" value="<?= $settings['identifier'] ?? '' ?>"
+        />
+    </div>
+<?php endif ?>
