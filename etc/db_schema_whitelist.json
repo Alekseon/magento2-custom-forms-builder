@@ -1,0 +1,24 @@
+{
+    "alekseon_custom_form": {
+        "column": {
+            "entity_id": true,
+            "created_at": true,
+            "identifier": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "ALEKSEON_CUSTOM_FORM_IDENTIFIER": true
+        }
+    },
+    "alekseon_custom_form_record": {
+        "column": {
+            "entity_id": true,
+            "form_id": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "ALEKSEON_CUSTOM_FORM_RECORD_FORM_ID_ALEKSEON_CUSTOM_FORM_ENTT_ID": true
+        }
+    }
+}

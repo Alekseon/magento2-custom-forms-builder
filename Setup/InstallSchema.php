@@ -44,34 +44,6 @@ class InstallSchema implements InstallSchemaInterface
     ) {
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
 
-        $formTable = $setup->getConnection()
-            ->newTable($setup->getTable('alekseon_custom_form'))
-            ->addColumn(
-                'entity_id',
-                Table::TYPE_INTEGER,
-                null,
-                ['identity' => true, 'nullable' => false, 'unsigned' => true, 'primary' => true],
-                'Form Entity ID'
-            );
-        $setup->getConnection()->createTable($formTable);
-
-        $formRecordTable = $setup->getConnection()
-            ->newTable($setup->getTable('alekseon_custom_form_record'))
-            ->addColumn(
-                'entity_id',
-                Table::TYPE_INTEGER,
-                null,
-                ['identity' => true, 'nullable' => false, 'unsigned' => true, 'primary' => true],
-                'Record Entity ID'
-            )->addColumn(
-                'form_id',
-                Table::TYPE_INTEGER,
-                null,
-                ['unsigned' => true, 'nullable' => false, 'default' => '0'],
-                'Form Id'
-            );
-        $setup->getConnection()->createTable($formRecordTable);
-
         $eavSetup->createFullEavStructure(
             'alekseon_custom_form_attribute',
             'alekseon_custom_form_entity',
@@ -107,20 +79,6 @@ class InstallSchema implements InstallSchemaInterface
                 'entity_id'
             ),
             $setup->getTable('alekseon_custom_form_record_attribute'),
-            'form_id',
-            $setup->getTable('alekseon_custom_form'),
-            'entity_id',
-            AdapterInterface::FK_ACTION_CASCADE
-        );
-
-        $setup->getConnection()->addForeignKey(
-            $setup->getConnection()->getForeignKeyName(
-                $setup->getTable('alekseon_custom_form_record'),
-                'form_id',
-                $setup->getTable('alekseon_custom_form'),
-                'entity_id'
-            ),
-            $setup->getTable('alekseon_custom_form_record'),
             'form_id',
             $setup->getTable('alekseon_custom_form'),
             'entity_id',

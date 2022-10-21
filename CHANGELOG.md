@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - form identifier
 - field identifier
 - max length validator modifications
+- db_schema.xml
 
 ## [102.1.2] - 2022-10-13
 ### Changed
