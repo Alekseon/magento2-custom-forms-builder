@@ -20,9 +20,9 @@
             </block>
         </referenceContainer>
         <referenceContainer name="content">
-            <container label="Edit Attribute" name="edit_attribute">
+            <container name="edit_attribute">
                 <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormField\Edit" name="attribute_edit_form" />
-                <block class="Magento\Framework\View\Element\Template" name="attribute_js" template="Alekseon_AlekseonEav::attribute/edit/js.phtml" />
+                <block class="Alekseon\AlekseonEav\Block\Adminhtml\Attribute\Edit\Js" name="attribute_js" template="Alekseon_AlekseonEav::attribute/edit/js.phtml" />
             </container>
         </referenceContainer>
     </body>

@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - form property in form record attribute
 - form identifier
 - field identifier
+- max length validator modifications
 
 ## [102.1.2] - 2022-10-13
 ### Changed
