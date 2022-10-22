@@ -2,6 +2,7 @@
     "name": "alekseon/custom-forms-builder",
     "description": "N/A",
     "require": {
+        "magento/framework": "102.* | 103.*",
 		"alekseon/alekseon-eav": "^101.0.17",
         "alekseon/custom-forms-email-notification": "*"
     },
