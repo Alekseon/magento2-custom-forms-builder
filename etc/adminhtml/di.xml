@@ -20,6 +20,11 @@
                     <item name="source_model" xsi:type="string">Alekseon\AlekseonEav\Model\Attribute\Source\Country</item>
                     <item name="backend_type" xsi:type="string">varchar</item>
                 </item>
+                <item name="website_countries" xsi:type="array">
+                    <item name="label" xsi:type="string">Website Allow Countries</item>
+                    <item name="source_model" xsi:type="string">Alekseon\AlekseonEav\Model\Attribute\Source\WebsiteAllowCountry</item>
+                    <item name="backend_type" xsi:type="string">varchar</item>
+                </item>
             </argument>
         </arguments>
     </type>

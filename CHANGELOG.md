@@ -7,13 +7,15 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
-## [Unreleased]
+## [102.2.0] - 2022-10-22
 ### Added
-- form property in form record attribute
 - form identifier
 - field identifier
+- form property in form record attribute
+- added alekseon/custom-forms-frontend requirerment to composer
+### Changed
 - max length validator modifications
-- db_schema.xml
+- moved table definition to db_schema.xml
 
 ## [102.1.2] - 2022-10-13
 ### Changed
