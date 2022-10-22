@@ -232,14 +232,9 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     {
         if (isset($settings['attribute'])) {
             $attribute = $settings['attribute'];
-            if ($attribute->getCanUseInputParams()) {
-                $inputTypeConfig = $attribute->getFrontendInputTypeConfig();
-                $params = $inputTypeConfig->getInputParams();
-                if ($params) {
-                    return $params;
-                }
-            }
+            return $attribute->getInputParamsConfig();
         }
+
         return [];
     }
 

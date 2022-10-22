@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="alekseon_custom_form" resource="default" engine="innodb" comment="Alekseon Custom Forms">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Form Entity ID"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"/>
+        <column xsi:type="varchar" name="identifier" nullable="true" length="255" comment="Identifier"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="ALEKSEON_CUSTOM_FORM_IDENTIFIER_UNIQUE">
+            <column name="identifier"/>
+        </constraint>
+    </table>
+    <table name="alekseon_custom_form_record" resource="default" engine="innodb" comment="Alekseon Custom Form Records">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Form Record Entity ID"/>
+        <column xsi:type="int" name="form_id" unsigned="true" nullable="false"
+                comment="Form Entity ID"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="ALEKSEON_CUSTOM_FORM_RECORD_FORM_ID_ALEKSEON_CUSTOM_FORM_ENTT_ID"
+                    table="alekseon_custom_form_record" column="form_id" referenceTable="alekseon_custom_form"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+</schema>

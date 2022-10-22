@@ -23,29 +23,6 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
-        if (version_compare($context->getVersion(), '1.0.2', '<')) {
-            $setup->getConnection()->addColumn(
-                $setup->getTable('alekseon_custom_form_record'),
-                'created_at',
-                [
-                    'type' => Table::TYPE_TIMESTAMP,
-                    'comment' => 'Creation Time',
-                    'DEFAULT' =>  Table::TIMESTAMP_INIT
-                ]
-            );
-        }
-
-        if (version_compare($context->getVersion(), '1.0.4', '<')) {
-            $setup->getConnection()->addColumn(
-                $setup->getTable('alekseon_custom_form'),
-                'created_at',
-                [
-                    'type' => Table::TYPE_TIMESTAMP,
-                    'comment' => 'Creation Time',
-                    'DEFAULT' =>  Table::TIMESTAMP_INIT
-                ]
-            );
-        }
 
         if ($context->getVersion() && version_compare($context->getVersion(), '1.0.5', '<')) {
             $this->updateAttributeCodeColumnSize($setup, 'alekseon_custom_form_attribute');
@@ -53,7 +30,7 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
         }
 
         if (version_compare($context->getVersion(), '1.0.6', '<')) {
-            $this->addIdentifierToFormAndRecord($setup);
+            $this->addIdentifierToFormRecord($setup);
         }
 
         $setup->endSetup();
@@ -62,28 +39,8 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
     /**
      * @param $setup
      */
-    protected function addIdentifierToFormAndRecord(SchemaSetupInterface $setup)
+    protected function addIdentifierToFormRecord(SchemaSetupInterface $setup)
     {
-        $setup->getConnection()->addColumn(
-            $setup->getTable('alekseon_custom_form'),
-            'identifier',
-            [
-                'type' => Table::TYPE_TEXT,
-                'length' => 255,
-                'comment' => 'Identifier',
-                'nullable' => true,
-            ]
-        );
-        $setup->getConnection()->addIndex(
-            $setup->getTable('alekseon_custom_form'),
-            $setup->getIdxName(
-                'alekseon_custom_form',
-                ['identifier'],
-                \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
-            ),
-            ['identifier'],
-            \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
-        );
         $setup->getConnection()->addColumn(
             $setup->getTable('alekseon_custom_form_record_attribute'),
             'identifier',

@@ -6,12 +6,18 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Alekseon\AlekseonEav\Model\Attribute\InputTypeRepository">
+    <type name="Alekseon\AlekseonEav\Model\Attribute\InputValidatorRepository">
         <arguments>
-            <argument name="frontendInputTypes" xsi:type="array">
-                <item name="textarea" xsi:type="array">
+            <argument name="inputValidators" xsi:type="array">
+                <item name="maxLength" xsi:type="array">
+                    <item name="label" xsi:type="string">Max Length</item>
+                    <item name="factory" xsi:type="object">Alekseon\AlekseonEav\Model\Attribute\InputValidator\MaxLengthFactory</item>
+                    <item name="applicable_frontend_inputs" xsi:type="array">
+                        <item name="text" xsi:type="string">text</item>
+                        <item name="textarea" xsi:type="string">textarea</item>
+                    </item>
                     <item name="input_params" xsi:type="array">
-                        <item name="maxlength" xsi:type="array">
+                        <item name="maxLength" xsi:type="array">
                             <item name="label" xsi:type="string">Max Length</item>
                         </item>
                     </item>
