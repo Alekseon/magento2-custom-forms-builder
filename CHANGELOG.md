@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.2.1] - 2022-10-22
+### Fixed
+- fix error during setup:upgrade for fresh installation
+
 ## [102.2.0] - 2022-10-22
 ### Added
 - form identifier

@@ -34,10 +34,12 @@ class TextFormAttributes extends \Alekseon\AlekseonEav\Model\Attribute\Source\Ab
         /** @var Form $form */
         $form = $this->coreRegistry->registry('current_form');
 
-        $fields = $form->getFieldsCollection();
-        foreach ($fields as $field) {
-            if ($field->getFrontendInput() == 'text') {
-                $options[$field->getAttributeCode()] = $field->getFrontendLabel();
+        if ($form) {
+            $fields = $form->getFieldsCollection();
+            foreach ($fields as $field) {
+                if ($field->getFrontendInput() == 'text') {
+                    $options[$field->getAttributeCode()] = $field->getFrontendLabel();
+                }
             }
         }
 
