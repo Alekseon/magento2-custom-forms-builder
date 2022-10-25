@@ -1,11 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-
 ## [Unreleased]
 ### Changed
 ### Fixed
 ### Added
+
+## [Unreleased]
+### Fixed
+- fix setUp() descaration in tests
 
 ## [102.2.1] - 2022-10-22
 ### Fixed
