@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
-## [Unreleased]
+## [102.2.2] - 2022-11-19
 ### Fixed
 - fix setUp() declaration in tests
 ### Added
