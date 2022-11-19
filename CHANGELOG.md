@@ -8,7 +8,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Fixed
-- fix setUp() descaration in tests
+- fix setUp() declaration in tests
+### Added
+- admin note field
 
 ## [102.2.1] - 2022-10-22
 ### Fixed
