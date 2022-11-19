@@ -13,6 +13,7 @@
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Creation Time"/>
         <column xsi:type="varchar" name="identifier" nullable="true" length="255" comment="Identifier"/>
+        <column xsi:type="varchar" name="admin_note" nullable="true" comment="Admin Note"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>

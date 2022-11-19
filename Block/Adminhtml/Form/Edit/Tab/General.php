@@ -94,6 +94,21 @@ class General extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form imp
             ]
         );
 
+        $adminNoteFieldset = $form->addFieldset('admin_note_fieldset', ['legend' => __('Admin Note')]);
+
+        $adminNoteFieldset->addField('admin_note',
+            'textarea',
+            [
+                'name' => 'admin_note',
+                'label' => 'Admin Note',
+                'title' => 'Admin Note',
+                'note' => __(
+                    'Note is not visible on forntend.'
+                ),
+            ]
+        );
+
+
         $this->setForm($form);
 
         return parent::_prepareForm();

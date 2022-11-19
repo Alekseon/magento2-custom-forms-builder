@@ -65,6 +65,14 @@ class Grid extends EavGrid
         $this->addAttributeColumns();
 
         $this->addColumn(
+            'admin_note',
+            [
+                'header' => __('Admin Note'),
+                'index' => 'admin_note',
+            ]
+        );
+
+        $this->addColumn(
             'actions',
             [
                 'header' => __('Actions'),

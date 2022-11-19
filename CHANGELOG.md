@@ -1,11 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-
 ## [Unreleased]
 ### Changed
 ### Fixed
 ### Added
+
+## [102.2.2] - 2022-11-19
+### Fixed
+- fix setUp() declaration in tests
+### Added
+- admin note field
+- mass delete action for form records
 
 ## [102.2.1] - 2022-10-22
 ### Fixed

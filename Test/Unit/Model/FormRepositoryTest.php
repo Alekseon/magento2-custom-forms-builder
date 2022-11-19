@@ -1,14 +1,19 @@
 <?php
-
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
 namespace Alekseon\CustomFormsBuilder\Test\Unit\Model;
 
 use Alekseon\CustomFormsBuilder\Model\Form;
 use Alekseon\CustomFormsBuilder\Model\FormRepository;
 
-
+/**
+ * Class FormRepositoryTest
+ * @package Alekseon\CustomFormsBuilder\Test\Unit\Model
+ */
 class FormRepositoryTest extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\Alekseon\CustomFormBuilder\Model\Form
      */
@@ -27,7 +32,7 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
     /**
      * Initialize repository
      */
-    protected function setUp()
+    protected function setUp(): void
     {
 
         $formFactory = $this->getMockBuilder(\Alekseon\CustomFormsBuilder\Model\FormFactory::class)
