@@ -86,6 +86,27 @@ class Grid extends EavGrid
         return $this;
     }
 
+    protected function _prepareMassaction()
+    {
+        $this->setMassactionIdField('entity_id');
+        $this->getMassactionBlock()->setFormFieldName('records');
+
+        $this->getMassactionBlock()->addItem(
+            'delete',
+            [
+                'label' => __('Delete'),
+                'url' => $this->getUrl(
+                    '*/*/massDelete',
+                    [
+                        'id' => $this->getCurrentForm()->getId(),
+                    ]
+                ),
+                'confirm' => __('Are you sure?')
+            ]
+        );
+
+    }
+
     /**
      * @return mixed
      */

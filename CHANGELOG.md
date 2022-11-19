@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - fix setUp() declaration in tests
 ### Added
 - admin note field
+- mass delete action for form records
 
 ## [102.2.1] - 2022-10-22
 ### Fixed
