@@ -66,12 +66,8 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
         if ($this->allAttributesLoaded) {
             return $this;
         }
-        $attributeCollection = $this->attributeCollectionFactory->create();
-        $attributeCollection->setOrder('sort_order', AbstractDb::SORT_ORDER_ASC);
 
-        if ($this->getCurrentForm()) {
-            $attributeCollection->addFieldToFilter('form_id', $this->getCurrentForm()->getId());
-        }
+        $attributeCollection = $this->getCurrentForm()->getFieldsCollection();
 
         foreach ($attributeCollection as $attribute) {
             $this->attributes[$attribute->getAttributeCode()] = $attribute;

@@ -5,6 +5,7 @@
  */
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit;
 
+use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
 use Alekseon\AlekseonEav\Model\Adminhtml\System\Config\Source\InputType;
 use Alekseon\AlekseonEav\Api\Data\EntityInterface;
 use Magento\Framework\Data\Form\Element\AbstractElement;
@@ -40,6 +41,15 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     }
 
     /**
+     * @param EntityInterface $entity
+     * @return mixed|void
+     */
+    protected function getEntityAttributes(EntityInterface $entity)
+    {
+        return $this->getCurrentFormObject()->getFieldsCollection();
+    }
+
+    /**
      * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -71,7 +81,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
 
         return parent::_prepareForm();
     }
-
 
     /**
      * Initialize form fileds values

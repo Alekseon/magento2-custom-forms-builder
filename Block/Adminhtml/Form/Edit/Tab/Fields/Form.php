@@ -114,6 +114,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             $isNewField = false;
         }
 
+        $attribute = $settings['attribute'] ?? false;
+
         $identifierBlock = $this->_layout->createBlock(\Magento\Backend\Block\Template::class)
             ->setSettings($settings)
             ->setFormFieldId($formFieldId)
@@ -139,6 +141,12 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
             [
                 'name' => 'form_fields[' . $formFieldId . '][id]'
+            ]
+        );
+
+        $fieldset->addField('form_field_' . $formFieldId . '_is_enabled', 'hidden',
+            [
+                'name' => 'form_fields[' . $formFieldId . '][is_enabled]'
             ]
         );
 
@@ -168,7 +176,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "is_required");
 
-        if (isset($settings['attribute']) && $this->canSelectOptionSource($settings['attribute'])) {
+        if ($attribute && $this->canSelectOptionSource($attribute)) {
             $fieldset->addField('form_field_' . $formFieldId . '_option_source_code', 'select',
                 [
                     'label' => __('Options Source'),
@@ -213,6 +221,18 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 . '" target="_blank" class="edit-field-button">'
                 . __('Advanced Settings')
                 . '</a>';
+
+            if ($attribute->getIsEnabled()) {
+                $actionLinks[] = '<span class="enable-disable-field-buttons">'
+                    . '<a href="#" class="disable-button" >' . __('Disable') . '</a>'
+                    . '<a href="#" class="enable-button" style="display: none">' . __('Enable') . '</a>'
+                    . '</span>';
+            } else {
+                $actionLinks[] = '<span class="enable-disable-field-buttons">'
+                    . '<a href="#" class="disable-button" style="display: none">' . __('Disable') . '</a>'
+                    . '<a href="#" class="enable-button">' . __('Enable') . '</a>'
+                    . '</span>';
+            }
         }
         $actionLinks[] = '<a href="#" class="delete-field-button">' . __('Delete') . '</a>';
 
@@ -306,7 +326,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected function addCurrentFormFields($form)
     {
-        $recordAttributeCollection = $this->getDataObject()->getFieldsCollection();
+        $recordAttributeCollection = $this->getDataObject()->getFieldsCollection(true);
         foreach ($recordAttributeCollection as $attribute) {
             $formFieldSettings = $this->getFieldSettings($attribute);
             $this->addFieldFieldset($form,  $attribute->getId(), $formFieldSettings);
