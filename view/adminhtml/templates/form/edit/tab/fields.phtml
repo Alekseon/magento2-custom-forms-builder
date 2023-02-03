@@ -4,8 +4,28 @@
  * http://www.alekseon.com/
  */
 ?>
-<?= $block->getChildHtml('form_fields_tab_form') ?>
-<?= $block->getChildHtml('add_new_field_button') ?>
+<div class="dashboard-container">
+    <div class="dashboard-store-stats">
+        <div id="grid_tab" class="ui-tabs">
+            <ul class="tabs-horiz" role="tablist">
+                <li class="ui-corner-top ui-state-default tabs-active ui-state-active" role="tab">
+                    <a href="" class="tab-item-link ui-tabs-anchor" title="test"><span>test</span></a>
+                </li>
+                <li class="ui-corner-top ui-state-default" role="tab">
+                    <a href="" class="tab-item-link ui-tabs-anchor" title="test"><span>2</span></a>
+                </li>
+                <li class="ui-corner-top ui-state-default" role="tab">
+                    <a href="" class="tab-item-link ui-tabs-anchor" title="test"><span>+</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="page-main-actions" style="border-top: #000 1px solid">
+        Tab Name: <input type="text" value="test"></input> | <a href="">Remove tab</a>
+    </div>
+    <?= $block->getChildHtml('form_fields_tab_form') ?>
+    <?= $block->getChildHtml('add_new_field_button') ?>
+</div>
 <script type="text/x-magento-init">
 {
     "*": {

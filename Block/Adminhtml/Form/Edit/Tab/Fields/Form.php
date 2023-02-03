@@ -124,6 +124,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 'legend' => $settings['title'] ?? 'no title',
                 'collapsable' => true,
                 'header_bar' => $identifierBlock->toHtml(),
+                'class' => isset($settings['group_code']) ? 'group_' . $settings['group_code'] : '',
             ]
         );
 
@@ -214,6 +215,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 . __('Advanced Settings')
                 . '</a>';
         }
+
+        $actionLinks[] = '<a href="">' . __('Change tab') . '</a>';
         $actionLinks[] = '<a href="#" class="delete-field-button">' . __('Delete') . '</a>';
 
         $fieldset->addField('form_field_' . $formFieldId . '_action', 'note',
@@ -278,6 +281,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             'title' => '[' . $frontendInputLabel . '] ' . $attribute->getFrontendLabel(),
             'attribute' => $attribute,
             'identifier' => $identifier,
+            'group_code' => $attribute->getGroupCode()
         ];
 
         return $formFieldSettings;
