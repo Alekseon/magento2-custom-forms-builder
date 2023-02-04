@@ -8,11 +8,9 @@
     <div class="dashboard-store-stats">
         <div id="grid_tab" class="ui-tabs">
             <ul class="tabs-horiz" role="tablist">
-                <?php foreach ($block->getFormTabs() as $tab): ?>
-                    <li class="form-tab ui-corner-top ui-state-default" role="tab" data-id="<?= $tab->getCode() ?>">
-                        <a href="" class="tab-item-link ui-tabs-anchor" title="<?= $tab->getLabel() ?>"><span><?= $tab->getLabel() ?></span></a>
-                    </li>
-                <?php endforeach; ?>
+                <li id="tab-template" class="form-tab ui-corner-top ui-state-default" role="tab" style="display: none;">
+                    <a href="" class="tab-item-link ui-tabs-anchor" ></span></a>
+                </li>
                 <li id="add_tab_button" class="ui-corner-top ui-state-default" role="tab" data-id="add">
                     <a href="" class="tab-item-link ui-tabs-anchor" title="<?= __('Add new tab') ?>"><span>+</span></a>
                 </li>
@@ -20,11 +18,9 @@
         </div>
     </div>
     <div id="tabs-settings-container">
-        <?php foreach ($block->getFormTabs() as $tab): ?>
-            <div id="tab-settings-<?= $tab->getCode() ?>" class="page-main-actions tab-settings" style="border-top: #000 1px solid; display: none;">
-                Tab Name: <input type="text" name="form_tabs[<?= $tab->getCode() ?>][label]" class="label-input" value="<?= $tab->getLabel() ?>"></input> | <a href=""><?= ''//__('Remove tab') ?></a>
-            </div>
-        <?php endforeach ?>
+        <div id="tab-settings-template" class="page-main-actions tab-settings" style="border-top: #000 1px solid; display: none;">
+            Tab Name: <input type="text" class="label-input"></input> | <a href=""><?= __('Remove tab') ?></a>
+        </div>
     </div>
     <?= $block->getChildHtml('form_fields_tab_form') ?>
     <?= $block->getChildHtml('add_new_field_button') ?>
@@ -46,7 +42,8 @@
     "*": {
         "Alekseon_CustomFormsBuilder/js/form/edit/formTabs": {
             "formContainerId": "form_tabs_fields_tab_content",
-            "activeTab": "<?= $block->getActiveFormTab()->getCode() ?>",
+            "formTabs": <?= $block->getFormTabs() ?>,
+            "activeTab": "<?= $block->getActiveFormTab()['code'] ?>",
             "newTabLabel": "<?= __('New tab') ?>",
             "lastTabNumber": "<?= $block->getLastTabNumber() ?>"
         }

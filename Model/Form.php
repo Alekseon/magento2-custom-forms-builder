@@ -179,11 +179,12 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
             $this->formTabs = [];
 
             foreach ($formTabs as $tabCode => $tabData) {
-                $tab = new DataObject();
-                $tab->setLabel($tabData['label'] ?? __('New Tab'));
-                $tab->setCode($tabCode);
+                $tab = [
+                    'label' => $tabData['label'] ?? __('New Tab'),
+                    'code' => $tabCode,
+                ];
+
                 if (empty($this->formTabs)) {
-                    $tab->setIsFirst(true);
                     $this->firstFormTab = $tab;
                 }
                 $this->formTabs[$tabCode] = $tab;

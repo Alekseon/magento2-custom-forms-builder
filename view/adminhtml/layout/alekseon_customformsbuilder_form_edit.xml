@@ -22,7 +22,9 @@
             <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tabs" name="form_edit_tabs">
                 <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\General" name="form_general_tab"/>
                 <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields" name="form_fields_tab" template="Alekseon_CustomFormsBuilder::form/edit/tab/fields.phtml">
-                    <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields\Form" name="form_fields_tab_form" />
+                    <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields\Form" name="form_fields_tab_form">
+                        <block template="Alekseon_CustomFormsBuilder::form/edit/field/changeTab.phtml" name="form_field_change_tab" />
+                    </block>
                 </block>
                 <action method="addTab">
                     <argument name="name" xsi:type="string">general_tab</argument>

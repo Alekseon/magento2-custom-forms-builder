@@ -124,7 +124,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 'legend' => $settings['title'] ?? 'no title',
                 'collapsable' => true,
                 'header_bar' => $identifierBlock->toHtml(),
-                'class' => $settings['tab_id'] ?? '',
+                'class' => 'form_tab_' . ($settings['tab_id'] ?? ''),
             ]
         );
 
@@ -140,6 +140,12 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
             [
                 'name' => 'form_fields[' . $formFieldId . '][id]'
+            ]
+        );
+
+        $fieldset->addField('form_field_' . $formFieldId . '_group_code', 'text',
+            [
+                'name' => 'form_fields[' . $formFieldId . '][group_code]'
             ]
         );
 
@@ -338,6 +344,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             foreach ($attributeData as $dataId => $dataValue) {
                 $this->formValues['form_field_' . $attribute->getId() . '_' . $dataId] = $dataValue;
             }
+
+            $this->formValues['form_field_' . $attribute->getId() . '_' . 'group_code'] = $formFieldSettings['tab_id'] ?? '';
 
             $settings = [
                 'attribute' => $attribute

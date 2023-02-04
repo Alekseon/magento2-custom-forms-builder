@@ -13,12 +13,20 @@ define([
 
         init: function (config) {
             this.formContainer = $('#' + config.formContainerId);
+            this.tabs = {};
             this.newTabLabel = config.newTabLabel;
             this.activeTab = config.activeTab;
-            this.onTabChange();
-            this.addOnClickEvents();
-            this.vars = false;
             this.lastTabNumber = config.lastTabNumber;
+            this.initTabs(config.formTabs);
+            this.onTabChange();
+            this.addNewTabClickEvent();
+        },
+
+        initTabs: function (tabsJson) {
+            var self = this;
+            $.each(tabsJson, function() {
+                self.addTab(this.label, this.code);
+            });
         },
 
         onTabChange: function () {
@@ -26,7 +34,8 @@ define([
             $(this.formContainer).find('.fieldset' ).each(function() {
                 $(this).closest('.fieldset-wrapper').hide();
             });
-            $(this.formContainer).find('.fieldset.' + this.activeTab).each(function() {
+
+            $(this.formContainer).find('.fieldset.' + 'form_tab_' + this.activeTab).each(function() {
                 $(this).closest('.fieldset-wrapper').show();
             });
 
@@ -37,10 +46,15 @@ define([
             $('#tab-settings-' + this.activeTab).show();
         },
 
-        addOnClickEvents: function () {
+        addNewTabClickEvent: function () {
             var self = this;
-            $.each(this.getTabs(), function() {
-                self.addOnClickTabEvent($(this));
+            var addNewButton = $('#add_tab_button');
+            addNewButton.click(function () {
+                self.lastTabNumber ++;
+                var newTab = self.addTab(self.newTabLabel);
+                self.activeTab = newTab.attr("data-id");
+                self.onTabChange();
+                return false;
             });
         },
 
@@ -51,13 +65,7 @@ define([
                     $(this).parent().removeClass('ui-state-active');
                 });
 
-                var tab_id = $(this).parent().attr("data-id");
-                if (tab_id == 'add') {
-                    self.addNewTab();
-                } else {
-                    self.activeTab = tab_id;
-                }
-
+                self.activeTab = $(this).parent().attr("data-id");
                 self.onTabChange();
                 return false;
             });
@@ -76,28 +84,31 @@ define([
             return this.tabs;
         },
 
-        addNewTab: function () {
-            this.lastTabNumber ++;
-            var newTab = $('.form-tab')[0].clone(true);
-            $($('.form-tab')[0]).parent()[0].insertBefore(newTab, $('#add_tab_button')[0]);
+        addTab: function (label, tabId=null) {
+            var tabTemplate = $('#tab-template')[0];
+            var newTab = tabTemplate.clone(true);
+            $(tabTemplate).parent()[0].insertBefore(newTab, $('#add_tab_button')[0]);
             newTab = $(newTab);
-            newTab.attr("data-id", "new_tab_" + this.lastTabNumber);
+            if (tabId) {
+                newTab.attr("data-id", tabId);
+            } else {
+                newTab.attr("data-id", this.lastTabNumber);
+            }
+
             newTab.removeAttr('id');
             var tabLink = newTab.find(".tab-item-link");
-            tabLink.title = this.newTabLabel;
-            tabLink.text(this.newTabLabel);
+            tabLink.title = label;
+            tabLink.text(label);
             this.addOnClickTabEvent(tabLink);
             this.tabs[newTab.attr("data-id")] = tabLink;
-
-            var newSettings = $('#tabs-settings-container .tab-settings')[0].clone(true);
+            var newSettings = $('#tab-settings-template')[0].clone(true);
             newSettings.id = "tab-settings-new_tab_" + this.lastTabNumber;
             var labelInput = $(newSettings).find(".label-input");
-            labelInput.val(this.newTabLabel);
+            labelInput.val(label);
             labelInput.attr('name', 'new_form_tab[' + this.lastTabNumber + '][label]');
             $("#tabs-settings-container")[0].appendChild(newSettings);
             newTab.show();
-            this.activeTab = newTab.attr("data-id");
-            this.onTabChange();
+            return newTab;
         }
     };
 

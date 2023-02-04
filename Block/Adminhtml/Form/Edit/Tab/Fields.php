@@ -95,7 +95,9 @@ class Fields extends \Magento\Backend\Block\Template implements
      */
     public function getFormTabs()
     {
-        return $this->getCurrentForm()->getFormTabs();
+        $jsonHelper = $this->getData('jsonHelper');
+        $formTabs = $this->getCurrentForm()->getFormTabs();
+        return $jsonHelper->jsonEncode($formTabs);
     }
 
     /**
@@ -112,9 +114,9 @@ class Fields extends \Magento\Backend\Block\Template implements
     public function getLastTabNumber()
     {
         $lastTabNumber = 1;
-        $tabs = $this->getFormTabs();
-        foreach ($tabs as $tab) {
-            $tabNumber = (int) $tab->getCode();
+        $formTabs = $this->getCurrentForm()->getFormTabs();
+        foreach ($formTabs as $tab) {
+            $tabNumber = (int) $tab['code'];
             if ($tabNumber > $lastTabNumber) {
                 $lastTabNumber = $tabNumber;
             }
