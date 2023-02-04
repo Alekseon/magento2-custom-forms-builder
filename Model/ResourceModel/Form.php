@@ -20,6 +20,10 @@ class Form extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
      * @var string
      */
     protected $imagesDirName = 'alekseon_custom_forms';
+    /**
+     * @var array[]
+     */
+    protected $_serializableFields = ['form_tabs' => [[], []]];
 
     /**
      * Form constructor.

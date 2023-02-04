@@ -8,20 +8,23 @@
     <div class="dashboard-store-stats">
         <div id="grid_tab" class="ui-tabs">
             <ul class="tabs-horiz" role="tablist">
-                <li class="ui-corner-top ui-state-default tabs-active ui-state-active" role="tab">
-                    <a href="" class="tab-item-link ui-tabs-anchor" title="test"><span>test</span></a>
-                </li>
-                <li class="ui-corner-top ui-state-default" role="tab">
-                    <a href="" class="tab-item-link ui-tabs-anchor" title="test"><span>2</span></a>
-                </li>
-                <li class="ui-corner-top ui-state-default" role="tab">
-                    <a href="" class="tab-item-link ui-tabs-anchor" title="test"><span>+</span></a>
+                <?php foreach ($block->getFormTabs() as $tab): ?>
+                    <li class="form-tab ui-corner-top ui-state-default" role="tab" data-id="<?= $tab->getCode() ?>">
+                        <a href="" class="tab-item-link ui-tabs-anchor" title="<?= $tab->getLabel() ?>"><span><?= $tab->getLabel() ?></span></a>
+                    </li>
+                <?php endforeach; ?>
+                <li id="add_tab_button" class="ui-corner-top ui-state-default" role="tab" data-id="add">
+                    <a href="" class="tab-item-link ui-tabs-anchor" title="<?= __('Add new tab') ?>"><span>+</span></a>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="page-main-actions" style="border-top: #000 1px solid">
-        Tab Name: <input type="text" value="test"></input> | <a href="">Remove tab</a>
+    <div id="tabs-settings-container">
+        <?php foreach ($block->getFormTabs() as $tab): ?>
+            <div id="tab-settings-<?= $tab->getCode() ?>" class="page-main-actions tab-settings" style="border-top: #000 1px solid; display: none;">
+                Tab Name: <input type="text" name="form_tabs[<?= $tab->getCode() ?>][label]" class="label-input" value="<?= $tab->getLabel() ?>"></input> | <a href=""><?= ''//__('Remove tab') ?></a>
+            </div>
+        <?php endforeach ?>
     </div>
     <?= $block->getChildHtml('form_fields_tab_form') ?>
     <?= $block->getChildHtml('add_new_field_button') ?>
@@ -32,8 +35,20 @@
         "Alekseon_CustomFormsBuilder/js/form/edit/formFields": {
             "newFieldButtonId": "add_field_button",
             "newFieldTemplateId": "form_field_new_field-wrapper",
-            "formContianerId": "form_tabs_fields_tab_content",
+            "formContainerId": "form_tabs_fields_tab_content",
             "formRemovedFieldsInputId": "form_removed_fields"
+        }
+    }
+}
+</script>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Alekseon_CustomFormsBuilder/js/form/edit/formTabs": {
+            "formContainerId": "form_tabs_fields_tab_content",
+            "activeTab": "<?= $block->getActiveFormTab()->getCode() ?>",
+            "newTabLabel": "<?= __('New tab') ?>",
+            "lastTabNumber": "<?= $block->getLastTabNumber() ?>"
         }
     }
 }

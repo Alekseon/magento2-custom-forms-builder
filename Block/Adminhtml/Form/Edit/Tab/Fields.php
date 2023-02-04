@@ -12,6 +12,24 @@ namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab;
 class Fields extends \Magento\Backend\Block\Template implements
     \Magento\Backend\Block\Widget\Tab\TabInterface
 {
+    const DEFAULT_FORM_TAB_LABEL = 'General';
+    /**
+     * @var \Magento\Framework\Registry
+     */
+    protected $registry;
+
+    /**
+     * @param \Magento\Backend\Block\Template\Context $context
+     * @param \Magento\Framework\Registry $registry
+     */
+    public function __construct(
+        \Magento\Backend\Block\Template\Context $context,
+        \Magento\Framework\Registry $registry
+    ) {
+        $this->registry = $registry;
+        parent::__construct($context);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -62,5 +80,46 @@ class Fields extends \Magento\Backend\Block\Template implements
         );
 
         return parent::_prepareLayout();
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getCurrentForm()
+    {
+        return $this->registry->registry('current_form');
+    }
+
+    /**
+     * @return array[]
+     */
+    public function getFormTabs()
+    {
+        return $this->getCurrentForm()->getFormTabs();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActiveFormTab()
+    {
+        return $this->getCurrentForm()->getFirstFormTab();
+    }
+
+    /**
+     * @return void
+     */
+    public function getLastTabNumber()
+    {
+        $lastTabNumber = 1;
+        $tabs = $this->getFormTabs();
+        foreach ($tabs as $tab) {
+            $tabNumber = (int) $tab->getCode();
+            if ($tabNumber > $lastTabNumber) {
+                $lastTabNumber = $tabNumber;
+            }
+        }
+
+        return $lastTabNumber;
     }
 }

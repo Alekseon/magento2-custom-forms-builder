@@ -15,7 +15,7 @@ define([
             this.newFieldsCounter = 0;
             this.newFieldTemplate = $('#' + config.newFieldTemplateId)[0];
 
-            this.formContainer = $('#' + config.formContianerId + ' .form-inline')[0];
+            this.formContainer = $('#' + config.formContainerId + ' .form-inline')[0];
             this.newFieldButton = $('#' + config.newFieldButtonId);
             this.formRemovedFieldsInputId = $('#' + config.formRemovedFieldsInputId);
             this.hideNewFieldTemplate();

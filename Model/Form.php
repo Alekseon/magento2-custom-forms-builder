@@ -6,6 +6,7 @@
 namespace Alekseon\CustomFormsBuilder\Model;
 
 use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\DataObject;
 
 /**
  * Class Form
@@ -13,10 +14,20 @@ use Magento\Framework\Data\Collection\AbstractDb;
  */
 class Form extends \Alekseon\AlekseonEav\Model\Entity
 {
+    const DEFAULT_FORM_TAB_LABEL = 'General';
+
     /**
      * @var FormRecord\AttributeRepository
      */
     protected $recordAttributeRepository;
+    /**
+     * @var
+     */
+    protected $formTabs;
+    /**
+     * @var
+     */
+    protected $firstFormTab;
 
     /**
      * Form constructor.
@@ -40,6 +51,26 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
             $resource,
             $resourceCollection
         );
+    }
+
+    /**
+     * @return Form
+     */
+    public function beforeSave()
+    {
+        if ($this->getData('new_form_tab')) {
+            $newFormTabs = $this->getData('new_form_tab');
+            if (is_array($newFormTabs)) {
+                $formTabs = $this->getData('form_tabs');
+                foreach ($newFormTabs as $tabKey => $tabData) {
+                    $formTabs[$tabKey] = [
+                        'label' => $tabData['label'],
+                    ];
+                }
+                $this->setData('form_tabs', $formTabs);
+            }
+        }
+        return parent::beforeSave();
     }
 
     /**
@@ -128,5 +159,46 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
         $recordAttributeCollection->addFieldToFilter('form_id', $this->getId());
         $recordAttributeCollection->setOrder('sort_order', AbstractDb::SORT_ORDER_ASC);
         return $recordAttributeCollection;
+    }
+
+    /**
+     * @return void
+     */
+    public function getFormTabs()
+    {
+        if ($this->formTabs === null) {
+            $formTabs = $this->getData('form_tabs');
+            if (!$formTabs) {
+                $formTabs = [
+                    1 => [
+                        'label' => __(self::DEFAULT_FORM_TAB_LABEL),
+                    ]
+                ];
+            }
+
+            $this->formTabs = [];
+
+            foreach ($formTabs as $tabCode => $tabData) {
+                $tab = new DataObject();
+                $tab->setLabel($tabData['label'] ?? __('New Tab'));
+                $tab->setCode($tabCode);
+                if (empty($this->formTabs)) {
+                    $tab->setIsFirst(true);
+                    $this->firstFormTab = $tab;
+                }
+                $this->formTabs[$tabCode] = $tab;
+            }
+        }
+
+        return $this->formTabs;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFirstFormTab()
+    {
+        $this->getFormTabs();
+        return $this->firstFormTab;
     }
 }

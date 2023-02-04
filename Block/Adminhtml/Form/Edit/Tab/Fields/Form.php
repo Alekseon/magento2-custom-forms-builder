@@ -124,7 +124,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 'legend' => $settings['title'] ?? 'no title',
                 'collapsable' => true,
                 'header_bar' => $identifierBlock->toHtml(),
-                'class' => isset($settings['group_code']) ? 'group_' . $settings['group_code'] : '',
+                'class' => $settings['tab_id'] ?? '',
             ]
         );
 
@@ -281,10 +281,24 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             'title' => '[' . $frontendInputLabel . '] ' . $attribute->getFrontendLabel(),
             'attribute' => $attribute,
             'identifier' => $identifier,
-            'group_code' => $attribute->getGroupCode()
+            'tab_id' => $this->getFieldTabId($attribute)
         ];
 
         return $formFieldSettings;
+    }
+
+    /**
+     * @param $field
+     * @return int
+     */
+    protected function getFieldTabId($field)
+    {
+        $formTabs = $this->getDataObject()->getFormTabs();
+        $fieldTabId = $field->getGroupCode();
+        if (!isset($formTabs[$fieldTabId])) {
+            $fieldTabId = $this->getDataObject()->getFirstFormTab()->getCode();
+        }
+        return $fieldTabId;
     }
 
     /**
