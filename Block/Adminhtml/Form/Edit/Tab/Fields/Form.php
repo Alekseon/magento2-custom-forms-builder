@@ -143,9 +143,10 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         );
 
-        $fieldset->addField('form_field_' . $formFieldId . '_group_code', 'text',
+        $fieldset->addField('form_field_' . $formFieldId . '_group_code', 'hidden',
             [
-                'name' => 'form_fields[' . $formFieldId . '][group_code]'
+                'name' => 'form_fields[' . $formFieldId . '][group_code]',
+                'class' => 'group-code',
             ]
         );
 
@@ -222,7 +223,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 . '</a>';
         }
 
-        $actionLinks[] = '<a href="">' . __('Change tab') . '</a>';
+        $actionLinks[] = '<a class="form-field-change-tab-button" href="">' . __('Change tab')
+            . '</a><select class="change-tab-select" style="display: none"></select>';
         $actionLinks[] = '<a href="#" class="delete-field-button">' . __('Delete') . '</a>';
 
         $fieldset->addField('form_field_' . $formFieldId . '_action', 'note',
@@ -302,7 +304,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         $formTabs = $this->getDataObject()->getFormTabs();
         $fieldTabId = $field->getGroupCode();
         if (!isset($formTabs[$fieldTabId])) {
-            $fieldTabId = $this->getDataObject()->getFirstFormTab()->getCode();
+            $fieldTabId = $this->getDataObject()->getFirstFormTab()['code'];
         }
         return $fieldTabId;
     }

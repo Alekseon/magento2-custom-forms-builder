@@ -20,7 +20,7 @@ define([
             this.formRemovedFieldsInputId = $('#' + config.formRemovedFieldsInputId);
             this.hideNewFieldTemplate();
             this.addNewFieldButtonEvent();
-            this.addDeleteFieldsEvents();
+            this.addFieldsEvents();
         },
 
         addNewField: function () {
@@ -35,6 +35,10 @@ define([
 
             var removeButton = $(newField).find('.delete-field-button')[0];
             this.addRemoveFieldEvent(removeButton);
+
+            var changeTabButton = $(newField).find('.form-field-change-tab-button')[0];
+            this.addChangeTabButtonEvent(changeTabButton);
+
             this.formContainer.appendChild(newField);
 
             $(newField).slideDown();
@@ -51,10 +55,20 @@ define([
             this.newFieldTemplate.hide();
         },
 
-        addDeleteFieldsEvents: function () {
-            var formFields = this;
+        addFieldsEvents: function () {
+            var self = this;
             $(this.formContainer).find('.delete-field-button').each(function() {
-                formFields.addRemoveFieldEvent(this);
+                self.addRemoveFieldEvent(this);
+            });
+            $(this.formContainer).find('.form-field-change-tab-button').each(function() {
+                self.addChangeTabButtonEvent(this);
+            });
+        },
+
+        addChangeTabButtonEvent: function (changeTabButton) {
+            $(changeTabButton).click(function () {
+                $(document).trigger('change-tab', [this]);
+                return false;
             });
         },
 
