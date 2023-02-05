@@ -19,7 +19,8 @@
     </div>
     <div id="tabs-settings-container">
         <div id="tab-settings-template" class="page-main-actions tab-settings" style="border-top: #000 1px solid; display: none;">
-            Tab Name: <input type="text" class="label-input"></input> | <a href=""><?= __('Remove tab') ?></a>
+            Tab Name: <input type="text" class="label-input"></input>
+            <span class="remove-button-wrapper" style="display: none">| <a href="" class="form-remove-tab"><?= __('Remove tab') ?></a></span>
         </div>
     </div>
     <?= $block->getChildHtml('form_fields_tab_form') ?>

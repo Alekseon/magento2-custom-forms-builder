@@ -41,6 +41,7 @@ define([
 
             this.formContainer.appendChild(newField);
 
+            $(document).trigger('form-new-field', [newField]);
             $(newField).slideDown();
         },
 
@@ -67,7 +68,7 @@ define([
 
         addChangeTabButtonEvent: function (changeTabButton) {
             $(changeTabButton).click(function () {
-                $(document).trigger('change-tab', [this]);
+                $(document).trigger('form-field-change-tab-click', [this]);
                 return false;
             });
         },

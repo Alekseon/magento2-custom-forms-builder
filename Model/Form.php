@@ -54,26 +54,6 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
     }
 
     /**
-     * @return Form
-     */
-    public function beforeSave()
-    {
-        if ($this->getData('new_form_tab')) {
-            $newFormTabs = $this->getData('new_form_tab');
-            if (is_array($newFormTabs)) {
-                $formTabs = $this->getData('form_tabs');
-                foreach ($newFormTabs as $tabKey => $tabData) {
-                    $formTabs[$tabKey] = [
-                        'label' => $tabData['label'],
-                    ];
-                }
-                $this->setData('form_tabs', $formTabs);
-            }
-        }
-        return parent::beforeSave();
-    }
-
-    /**
      * @return \Alekseon\AlekseonEav\Model\Entity
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\TemporaryState\CouldNotSaveException

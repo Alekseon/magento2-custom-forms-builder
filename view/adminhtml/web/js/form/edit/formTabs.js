@@ -26,7 +26,7 @@ define([
         {
             var self = this;
             $(document).on(
-                "change-tab",
+                "form-field-change-tab-click",
                 function(e, clickedButton) {
                     self.onChangeTabButtonClick(clickedButton);
                 }
@@ -51,13 +51,18 @@ define([
             select.val(this.activeTab);
             select.on('change', function() {
                 var fieldset = select.closest('.fieldset');
-                $(fieldset.find('.group-code')[0]).val(this.value);
-                fieldset.removeClass('form_tab_' + self.activeTab);
-                fieldset.addClass('form_tab_' + this.value);
+                self.setFieldTab(fieldset, this.value);
                 self.onTabChange();
             });
             select.show();
             $(clickedButton).parent().find('.form-field-change-tab-button').hide();
+        },
+
+        setFieldTab: function(fieldset, tabId)
+        {
+            $(fieldset.find('.group-code')[0]).val(tabId);
+            fieldset.removeClass('form_tab_' + this.activeTab);
+            fieldset.addClass('form_tab_' + tabId);
         },
 
         hideChangeButtonSelects: function()
@@ -69,9 +74,19 @@ define([
         initTabs: function (tabsJson) {
             var self = this;
             $.each(tabsJson, function() {
+                if (!self.firstTabId) {
+                    self.firstTabId = this.code;
+                }
                 self.addTab(this.label, this.code);
             });
             this.addNewTabClickEvent();
+            $(document).on(
+                "form-new-field",
+                function(e, newField) {
+                    var fieldset = $(newField).find('.fieldset')[0];
+                    self.setFieldTab($(fieldset), self.activeTab);
+                }
+            );
         },
 
         onTabChange: function () {
@@ -119,6 +134,7 @@ define([
         },
 
         addTab: function (label, tabId=null) {
+            var self = this;
             var tabTemplate = $('#tab-template')[0];
             var newTab = tabTemplate.clone(true);
             $(tabTemplate).parent()[0].insertBefore(newTab, $('#add_tab_button')[0]);
@@ -136,18 +152,55 @@ define([
             newSettings.id = "tab-settings-" + tabId;
             var labelInput = $(newSettings).find(".label-input");
             labelInput.val(label);
-            labelInput.attr('name', 'new_form_tab[' + tabId + '][label]');
+            labelInput.attr('name', 'form_tabs[' + tabId + '][label]');
             $("#tabs-settings-container")[0].appendChild(newSettings);
-            newTab.show();
+
+            if (tabId != this.firstTabId) {
+                var removeTabButton = $(newSettings).find('.form-remove-tab')[0];
+                $(removeTabButton).parent().show();
+                $(removeTabButton).click(function() {
+                    self.removeTab(tabId);
+                    return false;
+                });
+            }
 
             this.tabs[newTab.attr("data-id")] = {
                 "tab": newTab,
                 "link": tabLink,
+                "settings": newSettings,
                 "label": label,
                 "id": tabId
             };
+            newTab.show();
 
             return newTab;
+        },
+
+        removeTab: function(tabId) {
+            var self = this;
+            var selectTab = $('<select id="move_to_tab_id">');
+            $.each(this.tabs, function () {
+                if (this.id != tabId) {
+                    selectTab.append(new Option(this.label, this.id));
+                }
+            });
+            confirm({
+                content: $t('Are You Sure?') + '<br>' + $t('Move fields to selected tab:') + ' ' + selectTab.get(0).outerHTML,
+                actions: {
+                    confirm: function () {
+                        var selectedTabToMove = $('#move_to_tab_id').val();
+                        var tab = self.tabs[tabId];
+                        tab.tab.remove();
+                        tab.settings.remove();
+                        delete self.tabs[tabId];
+                        self.activeTab = selectedTabToMove;
+                        $(self.formContainer).find('.fieldset.' + 'form_tab_' + tabId).each(function() {
+                            self.setFieldTab($(this), selectedTabToMove);
+                        });
+                        self.onTabChange();
+                    }
+                }
+            });
         }
     };
 
