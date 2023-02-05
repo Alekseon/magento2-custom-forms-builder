@@ -26,12 +26,7 @@ class Edit extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
         }
 
         $this->_initAction();
-        if ($record->getId()) {
-            $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Edit Form Record'));
-        } else {
-            $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Create New Form Record'));
-        }
-
+        $this->_view->getPage()->getConfig()->getTitle()->prepend($record->getForm()->getTitle());
         $this->_view->renderLayout();
     }
 }
