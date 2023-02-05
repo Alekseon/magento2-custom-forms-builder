@@ -141,14 +141,14 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             [
                 'name' => 'form_fields[' . $formFieldId . '][id]'
             ]
-        );
+        )->addCustomAttribute("data-fieldcode", "id");
 
         $fieldset->addField('form_field_' . $formFieldId . '_group_code', 'hidden',
             [
                 'name' => 'form_fields[' . $formFieldId . '][group_code]',
                 'class' => 'group-code',
             ]
-        );
+        )->addCustomAttribute("data-fieldcode", "group_code");
 
         $fieldset->addField('form_field_' . $formFieldId . '_frontend_label', 'text',
             [
