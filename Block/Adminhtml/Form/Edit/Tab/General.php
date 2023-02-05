@@ -79,9 +79,7 @@ class General extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form imp
 
         $this->addAllAttributeFields($baseFieldset, $dataObject);
 
-        $advancedFieldset = $form->addFieldset('advanced_fieldset', ['legend' => __('Advanced Properties')]);
-
-        $advancedFieldset->addField('identifier',
+        $baseFieldset->addField('identifier',
             'text',
             [
                 'name' => 'identifier',
