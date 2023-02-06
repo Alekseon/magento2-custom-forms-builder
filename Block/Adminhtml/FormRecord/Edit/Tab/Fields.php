@@ -21,24 +21,20 @@ class Fields extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected function _prepareForm() // @codingStandardsIgnoreLine
     {
-        $form = $this->getRecordForm();
-
-        if ($form && $this->groupFieldsInTabs()) {
-            return Generic::_prepareForm();
-        }
-
-        if (!$form) {
-            $form = $this->_formFactory->create();
-            $this->setForm($form);
-        }
+        $form = $this->_formFactory->create();
+        $this->setForm($form);
 
         $formTabs = $this->getDataObject()->getForm()->getFormTabs();
+        $currentTabLabel = '';
         foreach ($formTabs as $formTab) {
             $this->formTabCodes[$formTab['code']] = $formTab['code'];
+            if ($formTab['code'] == $this->getTabCode()) {
+                $currentTabLabel = $formTab['label'];
+            }
         }
 
         if ($this->groupFieldsInTabs()) {
-            $fieldset = $form->addFieldset('fieldset', []);
+            $fieldset = $form->addFieldset('fieldset', ['legend' => $currentTabLabel]);
             $this->addFields($fieldset, $this->getTabCode());
         } else {
             $this->setIsFirstTab(true);
@@ -84,7 +80,7 @@ class Fields extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         $this->getForm()->addValues($this->getDataObject()->getData());
         return parent::_initFormValues();
     }
-    
+
     /**
      * @return bool
      */

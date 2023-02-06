@@ -13,7 +13,7 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
  * Class Form
  * @package Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit
  */
-class Form extends \Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit\Tab\Fields
+class Form extends \Magento\Backend\Block\Widget\Form\Generic
 {
     /**
      * @return $this
@@ -32,8 +32,7 @@ class Form extends \Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit\
                 ]
             ]
         );
-    
-        $this->setRecordForm($form);
+
         $this->setForm($form);
         $this->getForm()->setUseContainer(true);
 

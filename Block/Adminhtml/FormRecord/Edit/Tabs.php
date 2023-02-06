@@ -5,6 +5,8 @@
  */
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit;
 
+use Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields;
+
 /**
  * Class Tabs
  * @package Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit
@@ -48,6 +50,19 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                     ]
                 );
             }
+        } else {
+            $fieldsBlock = $this->getLayout()->createBlock(
+                'Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit\Tab\Fields'
+            );
+            $this->addTab(
+                'form-tab',
+                [
+                    'label' => __('Record Data'),
+                    'title' => __('Record Data'),
+                    'active' => true,
+                    'content' => $fieldsBlock->toHtml(),
+                ]
+            );
         }
 
         return parent::_beforeToHtml();
