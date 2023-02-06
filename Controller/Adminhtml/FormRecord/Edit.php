@@ -5,6 +5,8 @@
  */
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
+use Alekseon\CustomFormsBuilder\Model\Form;
+
 /**
  * Class Edit
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
@@ -26,7 +28,8 @@ class Edit extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
         }
 
         $this->_initAction();
-        $this->_view->getPage()->getConfig()->getTitle()->prepend($record->getForm()->getTitle());
+        $title = $record->getForm()->getTitle();
+        $this->_view->getPage()->getConfig()->getTitle()->prepend($title);
         $this->_view->renderLayout();
     }
 }

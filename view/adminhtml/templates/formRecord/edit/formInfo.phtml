@@ -1,0 +1,7 @@
+<div class="admin__page-nav">
+    <div class="admin__page-nav-link">
+        <strong><?= $block->getTitle() ?></strong>
+        <br>
+        <span><?= __('Created at') ?>: <?= $block->formatDate($block->getCurrentRecord()->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?></span>
+    </div>
+</div>

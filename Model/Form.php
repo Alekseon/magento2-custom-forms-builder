@@ -15,6 +15,8 @@ use Magento\Framework\DataObject;
 class Form extends \Alekseon\AlekseonEav\Model\Entity
 {
     const DEFAULT_FORM_TAB_LABEL = 'General';
+    const GROUP_FEILDS_IN_FIELDSETS_OPTION = 'fieldsets';
+    const GROUP_FIELDS_IN_TABS_OPTION = 'tabs';
 
     /**
      * @var FormRecord\AttributeRepository
