@@ -8,7 +8,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
-- possibility to disable form field 
+- possibility to disable form field
+- check if "is required" field is editable
 
 ## [102.2.2] - 2022-11-19
 ### Fixed
