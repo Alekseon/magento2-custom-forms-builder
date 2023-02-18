@@ -44,9 +44,9 @@
         "Alekseon_CustomFormsBuilder/js/form/edit/formTabs": {
             "formContainerId": "form_tabs_fields_tab_content",
             "formTabs": <?= $block->getFormTabs() ?>,
-            "activeTab": "<?= $block->getActiveFormTab()['code'] ?>",
+            "activeTab": "<?= $block->getActiveFormTab()->getId() ?>",
             "newTabLabel": "<?= __('New tab') ?>",
-            "lastTabNumber": "<?= $block->getLastTabNumber() ?>"
+            "lastTabNumber": "<?= $block->getLastTabId() ?>"
         }
     }
 }

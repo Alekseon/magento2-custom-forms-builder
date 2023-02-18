@@ -14,8 +14,6 @@
                 comment="Creation Time"/>
         <column xsi:type="varchar" name="identifier" nullable="true" length="255" comment="Identifier"/>
         <column xsi:type="text" name="admin_note" nullable="true" comment="Admin Note"/>
-        <column xsi:type="text" name="form_tabs" nullable="true" comment="Tabs"/>
-        <column xsi:type="varchar" name="group_fields_in" nullable="true" comment="Tabs"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>
@@ -35,6 +33,19 @@
         </constraint>
         <constraint xsi:type="foreign" referenceId="ALEKSEON_CUSTOM_FORM_RECORD_FORM_ID_ALEKSEON_CUSTOM_FORM_ENTT_ID"
                     table="alekseon_custom_form_record" column="form_id" referenceTable="alekseon_custom_form"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="alekseon_custom_form_tab" resource="default" engine="innodb" comment="Alekseon Custom Form Tabs">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Form Entity ID"/>
+        <column xsi:type="varchar" name="label" nullable="true" length="255" comment="Label"/>
+        <column xsi:type="int" name="form_id" unsigned="true" nullable="false"
+                comment="Form Entity ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="ALEKSEON_CUSTOM_FORM_TAB_FORM_ID_ALEKSEON_CUSTOM_FORM_ENTITY_ID"
+                    table="alekseon_custom_form_tab" column="form_id" referenceTable="alekseon_custom_form"
                     referenceColumn="entity_id" onDelete="CASCADE"/>
     </table>
 </schema>

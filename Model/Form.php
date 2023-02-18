@@ -23,13 +23,13 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
      */
     protected $recordAttributeRepository;
     /**
-     * @var
+     * @var FormTabFactory
      */
-    protected $formTabs;
+    protected $formTabFactory;
     /**
      * @var
      */
-    protected $firstFormTab;
+    protected $formTabs;
 
     /**
      * Form constructor.
@@ -44,9 +44,11 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
         \Magento\Framework\Registry $registry,
         \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form $resource,
         \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form\Collection $resourceCollection,
-        \Alekseon\CustomFormsBuilder\Model\FormRecord\AttributeRepository $recordAttributeRepository
+        \Alekseon\CustomFormsBuilder\Model\FormRecord\AttributeRepository $recordAttributeRepository,
+        \Alekseon\CustomFormsBuilder\Model\FormTabFactory $formTabFactory
     ) {
         $this->recordAttributeRepository = $recordAttributeRepository;
+        $this->formTabFactory = $formTabFactory;
         parent::__construct(
             $context,
             $registry,
@@ -149,31 +151,35 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
     public function getFormTabs()
     {
         if ($this->formTabs === null) {
-            $formTabs = $this->getData('form_tabs');
-            if (!$formTabs) {
-                $formTabs = [
-                    1 => [
-                        'label' => __(self::DEFAULT_FORM_TAB_LABEL),
-                    ]
-                ];
+            $formTabsCollection = $this->formTabFactory->create()->getCollection()->addFormFilter($this);
+            $this->formTabs = [];
+            foreach ($formTabsCollection as $tab) {
+                $this->formTabs[$tab->getId()] = $tab;
             }
 
-            $this->formTabs = [];
-
-            foreach ($formTabs as $tabCode => $tabData) {
-                $tab = [
-                    'label' => $tabData['label'] ?? __('New Tab'),
-                    'code' => $tabCode,
-                ];
-
-                if (empty($this->formTabs)) {
-                    $this->firstFormTab = $tab;
-                }
-                $this->formTabs[$tabCode] = $tab;
+            if (empty($this->formTabs)) {
+                $this->addFormTab(
+                    [
+                        'label' => __(self::DEFAULT_FORM_TAB_LABEL),
+                    ]
+                );
             }
         }
 
         return $this->formTabs;
+    }
+
+    /**
+     * @param $tabData
+     * @return void
+     */
+    public function addFormTab(array $tabData)
+    {
+        $this->getFormTabs();
+        $tab = $this->formTabFactory->create();
+        $tab->setData($tabData);
+        $this->formTabs[] = $tab;
+        return $this;
     }
 
     /**
@@ -182,6 +188,6 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
     public function getFirstFormTab()
     {
         $this->getFormTabs();
-        return $this->firstFormTab;
+        return reset($this->formTabs);
     }
 }
