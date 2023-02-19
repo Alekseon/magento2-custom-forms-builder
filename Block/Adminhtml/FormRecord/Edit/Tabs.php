@@ -34,17 +34,17 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
 
             $firstFormTab = $this->getCurrentForm()->getFirstFormTab();
             foreach ($formTabs as $tab) {
-                $isFirstTab = $firstFormTab['code'] == $tab['code'];
+                $isFirstTab = $firstFormTab->getId() == $tab->getId();
                 $fieldsBlock = $this->getLayout()->createBlock(
                     'Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit\Tab\Fields'
                 );
-                $fieldsBlock->setTabCode($tab['code']);
+                $fieldsBlock->setTabCode($tab->getId());
                 $fieldsBlock->setIsFirstTab($isFirstTab);
                 $this->addTab(
-                    'form-tab-' . $tab['code'],
+                    'form-tab-' . $tab->getId(),
                     [
-                        'label' => $tab['label'],
-                        'title' => $tab['label'],
+                        'label' => $tab->getLabel(),
+                        'title' => $tab->getLabel(),
                         'active' => $isFirstTab,
                         'content' => $fieldsBlock->toHtml(),
                     ]

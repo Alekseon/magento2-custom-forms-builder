@@ -17,6 +17,10 @@ class Fields extends \Magento\Backend\Block\Template implements
      * @var \Magento\Framework\Registry
      */
     protected $registry;
+    /**
+     * @var
+     */
+    protected $lastTab;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
@@ -97,7 +101,15 @@ class Fields extends \Magento\Backend\Block\Template implements
     {
         $jsonHelper = $this->getData('jsonHelper');
         $formTabs = $this->getCurrentForm()->getFormTabs();
-        return $jsonHelper->jsonEncode($formTabs);
+        $tabsData  = [];
+        foreach ($formTabs as $tab) {
+            $tabsData[] = [
+                'label' => $tab->getLabel(),
+                'code' => $tab->getId()
+            ];
+            $this->lastTab = $tab;
+        }
+        return $jsonHelper->jsonEncode($tabsData);
     }
 
     /**
@@ -111,17 +123,8 @@ class Fields extends \Magento\Backend\Block\Template implements
     /**
      * @return void
      */
-    public function getLastTabNumber()
+    public function getLastTabId()
     {
-        $lastTabNumber = 1;
-        $formTabs = $this->getCurrentForm()->getFormTabs();
-        foreach ($formTabs as $tab) {
-            $tabNumber = (int) $tab['code'];
-            if ($tabNumber > $lastTabNumber) {
-                $lastTabNumber = $tabNumber;
-            }
-        }
-
-        return $lastTabNumber;
+        return $this->lastTab->getId();
     }
 }

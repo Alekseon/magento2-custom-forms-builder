@@ -158,12 +158,14 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
             }
 
             if (empty($this->formTabs)) {
-                $this->addFormTab(
+                $tab = $this->addFormTab(
                     [
                         'label' => __(self::DEFAULT_FORM_TAB_LABEL),
                     ]
                 );
             }
+
+            $tab->setIsLastTab(true);
         }
 
         return $this->formTabs;
@@ -179,7 +181,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
         $tab = $this->formTabFactory->create();
         $tab->setData($tabData);
         $this->formTabs[] = $tab;
-        return $this;
+        return $tab;
     }
 
     /**

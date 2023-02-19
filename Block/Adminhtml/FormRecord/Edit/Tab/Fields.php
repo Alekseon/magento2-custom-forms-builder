@@ -27,9 +27,9 @@ class Fields extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         $formTabs = $this->getDataObject()->getForm()->getFormTabs();
         $currentTabLabel = '';
         foreach ($formTabs as $formTab) {
-            $this->formTabCodes[$formTab['code']] = $formTab['code'];
-            if ($formTab['code'] == $this->getTabCode()) {
-                $currentTabLabel = $formTab['label'];
+            $this->formTabCodes[$formTab->getId()] = $formTab->getId();
+            if ($formTab->getId() == $this->getTabCode()) {
+                $currentTabLabel = $formTab->getLabel();
             }
         }
 
@@ -39,8 +39,8 @@ class Fields extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         } else {
             $this->setIsFirstTab(true);
             foreach ($formTabs as $formTab) {
-                $fieldset = $form->addFieldset('fieldset_' . $formTab['code'], ['legend' => $formTab['label']]);
-                $this->addFields($fieldset, $formTab['code']);
+                $fieldset = $form->addFieldset('fieldset_' . $formTab->getId(), ['legend' => $formTab->getLabel()]);
+                $this->addFields($fieldset, $formTab->getId());
                 $this->setIsFirstTab(false);
             }
         }
@@ -55,8 +55,9 @@ class Fields extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     {
         $dataObject = $this->getDataObject();
         if ($this->getIsFirstTab()) {
-            $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
-            $formTabs = $dataObject->getForm()->getFormTabs();
+            if ($dataObject->getId()) {
+                $fieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
+            }
             $excluded = array_diff($this->formTabCodes, [$tabCode]);
             $this->addAllAttributeFields($fieldset, $dataObject, ['excluded' => $excluded]);
         } else {

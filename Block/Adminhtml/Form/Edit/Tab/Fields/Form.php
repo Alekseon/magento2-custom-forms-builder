@@ -108,6 +108,12 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected function addFieldFieldset($form, $formFieldId, $settings = [])
     {
+        if (isset($settings['attribute'])) {
+            $attribute = $settings['attribute'];
+        } else {
+            $attribute = false;
+        }
+
         if (isset($settings['is_new_field']) && $settings['is_new_field']) {
             $isNewField = true;
         } else {
@@ -168,15 +174,17 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             )->addCustomAttribute("data-fieldcode", "frontend_input");
         }
 
-        $fieldset->addField('form_field_' . $formFieldId . '_is_required', 'select',
-            [
-                'label' => __('Is Required'),
-                'name' => 'form_fields[' . $formFieldId . '][is_required]',
-                'values' => $this->yesNoSource->toOptionArray()
-            ]
-        )->addCustomAttribute("data-fieldcode", "is_required");
+        if (!$attribute || $attribute->getIsRequiredEditable()) {
+            $fieldset->addField('form_field_' . $formFieldId . '_is_required', 'select',
+                [
+                    'label' => __('Is Required'),
+                    'name' => 'form_fields[' . $formFieldId . '][is_required]',
+                    'values' => $this->yesNoSource->toOptionArray()
+                ]
+            )->addCustomAttribute("data-fieldcode", "is_required");
+        }
 
-        if (isset($settings['attribute']) && $this->canSelectOptionSource($settings['attribute'])) {
+        if ($this->canSelectOptionSource($attribute)) {
             $fieldset->addField('form_field_' . $formFieldId . '_option_source_code', 'select',
                 [
                     'label' => __('Options Source'),
@@ -304,7 +312,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         $formTabs = $this->getDataObject()->getFormTabs();
         $fieldTabId = $field->getGroupCode();
         if (!isset($formTabs[$fieldTabId])) {
-            $fieldTabId = $this->getDataObject()->getFirstFormTab()['code'];
+            $fieldTabId = $this->getDataObject()->getFirstFormTab()->getId();
         }
         return $fieldTabId;
     }
@@ -314,6 +322,10 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected function canSelectOptionSource($attribute)
     {
+        if (!$attribute) {
+            return false;
+        }
+
         if (!$attribute->usesSource()) {
             return false;
         }

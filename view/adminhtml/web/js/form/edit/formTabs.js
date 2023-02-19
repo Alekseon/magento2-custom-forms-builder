@@ -185,7 +185,7 @@ define([
                 }
             });
             confirm({
-                content: $t('Are You Sure?') + '<br>' + $t('Move fields to selected tab:') + ' ' + selectTab.get(0).outerHTML,
+                content: $t('Are You Sure?') + '<br>' + $t('Move fields to tab:') + ' ' + selectTab.get(0).outerHTML,
                 actions: {
                     confirm: function () {
                         var selectedTabToMove = $('#move_to_tab_id').val();
