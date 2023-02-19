@@ -120,6 +120,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             $isNewField = false;
         }
 
+        $attribute = $settings['attribute'] ?? false;
+
         $identifierBlock = $this->_layout->createBlock(\Magento\Backend\Block\Template::class)
             ->setSettings($settings)
             ->setFormFieldId($formFieldId)
@@ -155,6 +157,12 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 'class' => 'group-code',
             ]
         )->addCustomAttribute("data-fieldcode", "group_code");
+
+        $fieldset->addField('form_field_' . $formFieldId . '_is_enabled', 'hidden',
+            [
+                'name' => 'form_fields[' . $formFieldId . '][is_enabled]'
+            ]
+        );
 
         $fieldset->addField('form_field_' . $formFieldId . '_frontend_label', 'text',
             [
@@ -229,6 +237,18 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 . '" target="_blank" class="edit-field-button">'
                 . __('Advanced Settings')
                 . '</a>';
+
+            if ($attribute->getIsEnabled()) {
+                $actionLinks[] = '<span class="enable-disable-field-buttons">'
+                    . '<a href="#" class="disable-button" >' . __('Disable') . '</a>'
+                    . '<a href="#" class="enable-button" style="display: none">' . __('Enable') . '</a>'
+                    . '</span>';
+            } else {
+                $actionLinks[] = '<span class="enable-disable-field-buttons">'
+                    . '<a href="#" class="disable-button" style="display: none">' . __('Disable') . '</a>'
+                    . '<a href="#" class="enable-button">' . __('Enable') . '</a>'
+                    . '</span>';
+            }
         }
 
         $actionLinks[] = '<a class="form-field-change-tab-button" href="">' . __('Change tab')
@@ -344,7 +364,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected function addCurrentFormFields($form)
     {
-        $recordAttributeCollection = $this->getDataObject()->getFieldsCollection();
+        $recordAttributeCollection = $this->getDataObject()->getFieldsCollection(true);
         foreach ($recordAttributeCollection as $attribute) {
             $formFieldSettings = $this->getFieldSettings($attribute);
             $this->addFieldFieldset($form,  $attribute->getId(), $formFieldSettings);

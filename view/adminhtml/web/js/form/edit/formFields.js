@@ -81,7 +81,7 @@ define([
                     actions: {
                         confirm: function () {
                             var fieldsetWrapper = $(removeButton).closest('.fieldset-wrapper');
-                            var fieldsetId = $(fieldsetWrapper.find('fieldset')[0]).attr('id').substr('form_field_'.length);
+                            var fieldsetId = self.getFieldsetId($(removeButton));
                             if (fieldsetId !== 'new_field') {
                                 var removedIds = [];
                                 var removedIdsVal = $(self.formRemovedFieldsInputId).val();
@@ -101,6 +101,60 @@ define([
                 });
                 return false;
             });
+        },
+
+        addEnableDisableFieldsEvents: function () {
+            var self = this;
+            $(this.formContainer).find('.enable-disable-field-buttons').each(function() {
+                var enableButton = this.querySelector('.enable-button');
+                var disableButton = this.querySelector('.disable-button');
+                self.updateDisableNotice(enableButton);
+                self.addEnableDisableFieldEvent(enableButton, disableButton);
+            });
+        },
+
+        updateDisableNotice: function (enablebutton) {
+            var fieldsetWrapper = $(enablebutton).closest('.fieldset-wrapper');
+            var fieldsetId = this.getFieldsetId($(enablebutton));
+            var isDisabled = $('#form_field_' + fieldsetId + '_is_enabled').val();
+            var formDisableNotice = $('#form_disable_notice_' + fieldsetId);
+            if (formDisableNotice.length != 0) {
+                formDisableNotice.remove();
+            }
+
+            if (isDisabled == 0) {
+                $(fieldsetWrapper.find('strong')).prepend(
+                    "<span id=\"form_disable_notice_" + fieldsetId + "\" class=\"message message-warning\">"+ $t('Disabled') + "</span>"
+                );
+            }
+        },
+
+        addEnableDisableFieldEvent: function (enableButton, disableButton) {
+            var self = this;
+
+            $(disableButton).click(function () {
+                var fieldsetId = self.getFieldsetId($(disableButton));
+                $('#form_field_' + fieldsetId + '_is_enabled').val(0);
+                $(enableButton).show();
+                $(disableButton).hide();
+                self.updateDisableNotice(enableButton);
+                return false;
+            });
+
+            $(enableButton).click(function () {
+                var fieldsetId = self.getFieldsetId($(disableButton));
+                $('#form_field_' + fieldsetId + '_is_enabled').val(1);
+                $(enableButton).hide();
+                $(disableButton).show();
+                self.updateDisableNotice(enableButton);
+                return false;
+            });
+        },
+
+        getFieldsetId: function (fieldsetChildElement) {
+            var fieldsetWrapper = fieldsetChildElement.closest('.fieldset-wrapper');
+            var fieldsetId = $(fieldsetWrapper.find('fieldset')[0]).attr('id').substr('form_field_'.length);
+            return fieldsetId;
         }
     };
 

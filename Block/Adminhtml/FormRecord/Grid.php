@@ -5,6 +5,7 @@
  */
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord;
 
+use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
 use Alekseon\AlekseonEav\Block\Adminhtml\Entity\Grid as EavGrid;
 
 /**
@@ -86,6 +87,17 @@ class Grid extends EavGrid
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    protected function getAttributes()
+    {
+        return $this->getCurrentForm()->getFieldsCollection();
+    }
+
+    /**
+     * @return Grid|void
+     */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('entity_id');

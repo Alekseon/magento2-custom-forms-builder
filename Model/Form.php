@@ -136,11 +136,14 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
     /**
      * @return \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
      */
-    public function getFieldsCollection()
+    public function getFieldsCollection($withDisabled = false)
     {
         $attributeObject = $this->recordAttributeRepository->getAttributeFactory()->create();
         $recordAttributeCollection = $attributeObject->getCollection();
         $recordAttributeCollection->addFieldToFilter('form_id', $this->getId());
+        if (!$withDisabled) {
+            $recordAttributeCollection->addFieldToFilter('is_enabled', 1);
+        }
         $recordAttributeCollection->setOrder('sort_order', AbstractDb::SORT_ORDER_ASC);
         return $recordAttributeCollection;
     }

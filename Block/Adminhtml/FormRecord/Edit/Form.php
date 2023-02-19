@@ -5,6 +5,7 @@
  */
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit;
 
+use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
 use Alekseon\AlekseonEav\Model\Adminhtml\System\Config\Source\InputType;
 use Alekseon\AlekseonEav\Api\Data\EntityInterface;
 use Magento\Framework\Data\Form\Element\AbstractElement;

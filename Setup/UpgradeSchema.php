@@ -33,6 +33,10 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
             $this->addIdentifierToFormRecord($setup);
         }
 
+        if (version_compare($context->getVersion(), '1.0.7', '<')) {
+            $this->addIsEnabledToFormRecord($setup);
+        }
+
         $setup->endSetup();
     }
 
@@ -60,6 +64,23 @@ class UpgradeSchema extends \Alekseon\AlekseonEav\Setup\UpgradeSchema implements
             ),
             ['identifier', 'form_id'],
             \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+        );
+    }
+
+    /**
+     * @param SchemaSetupInterface $setup
+     */
+    protected function addIsEnabledToFormRecord(SchemaSetupInterface $setup)
+    {
+        $setup->getConnection()->addColumn(
+            $setup->getTable('alekseon_custom_form_record_attribute'),
+            'is_enabled',
+            [
+                'type' => Table::TYPE_SMALLINT,
+                'comment' => 'Is Enabled',
+                'nullable' => false,
+                'default' => 1,
+            ]
         );
     }
 }
