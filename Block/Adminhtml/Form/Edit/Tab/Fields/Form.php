@@ -292,7 +292,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         if (isset($frontendInputs[$attribute->getFrontendInput()])) {
             $frontendInputLabel = $frontendInputs[$attribute->getFrontendInput()];
         } else {
-            $frontendInputLabel = $attribute->getFrontendInput();
+            $frontendInputLabel = __('Unknown') . ':' . $attribute->getFrontendInput();
         }
 
         if ($attribute->getIdentifier()) {
