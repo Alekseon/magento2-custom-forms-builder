@@ -127,12 +127,17 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ->setFormFieldId($formFieldId)
             ->setTemplate('Alekseon_CustomFormsBuilder::form/edit/field/identifier.phtml');
 
+        $class = 'form_tab_' . ($settings['tab_id'] ?? '');
+        if ($isNewField) {
+            $class = '';
+        }
+
         $fieldset = $form->addFieldset('form_field_' . $formFieldId,
             [
                 'legend' => $settings['title'] ?? 'no title',
                 'collapsable' => true,
                 'header_bar' => $identifierBlock->toHtml(),
-                'class' => 'form_tab_' . ($settings['tab_id'] ?? ''),
+                'class' => $class,
             ]
         );
 
@@ -347,8 +352,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         }
 
         $inputTypeModel = $attribute->getInputTypeModel();
-        if ($inputTypeModel instanceof Boolean) {
-            return false;
+        if ($inputTypeModel->hasCustomOptionSource()) {
+            return true;
         }
 
         return true;

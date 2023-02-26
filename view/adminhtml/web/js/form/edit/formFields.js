@@ -96,12 +96,11 @@ define([
                                 }
                                 removedIds.push(fieldsetId);
                                 $(self.formRemovedFieldsInputId).val(removedIds.join(','));
-                                fieldsetWrapper.slideUp("slow");
-                            } else {
-                                fieldsetWrapper.slideUp("slow", function () {
-                                    this.remove();
-                                });
                             }
+
+                            fieldsetWrapper.slideUp("slow", function () {
+                                this.remove();
+                            });
                         }
                     }
                 });
