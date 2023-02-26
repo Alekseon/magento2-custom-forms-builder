@@ -64,6 +64,12 @@ define([
             $(this.formContainer).find('.form-field-change-tab-button').each(function() {
                 self.addChangeTabButtonEvent(this);
             });
+            $(this.formContainer).find('.enable-disable-field-buttons').each(function() {
+                var enableButton = this.querySelector('.enable-button');
+                var disableButton = this.querySelector('.disable-button');
+                self.updateDisableNotice(enableButton);
+                self.addEnableDisableFieldEvent(enableButton, disableButton);
+            });
         },
 
         addChangeTabButtonEvent: function (changeTabButton) {
@@ -103,16 +109,6 @@ define([
             });
         },
 
-        addEnableDisableFieldsEvents: function () {
-            var self = this;
-            $(this.formContainer).find('.enable-disable-field-buttons').each(function() {
-                var enableButton = this.querySelector('.enable-button');
-                var disableButton = this.querySelector('.disable-button');
-                self.updateDisableNotice(enableButton);
-                self.addEnableDisableFieldEvent(enableButton, disableButton);
-            });
-        },
-
         updateDisableNotice: function (enablebutton) {
             var fieldsetWrapper = $(enablebutton).closest('.fieldset-wrapper');
             var fieldsetId = this.getFieldsetId($(enablebutton));
@@ -131,7 +127,6 @@ define([
 
         addEnableDisableFieldEvent: function (enableButton, disableButton) {
             var self = this;
-
             $(disableButton).click(function () {
                 var fieldsetId = self.getFieldsetId($(disableButton));
                 $('#form_field_' + fieldsetId + '_is_enabled').val(0);
