@@ -15,7 +15,7 @@
             </block>
         </referenceContainer>
         <referenceContainer name="content">
-            <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord" />
+            <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord" name="grid" />
         </referenceContainer>
     </body>
 </page>
