@@ -192,7 +192,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             )->addCustomAttribute("data-fieldcode", "is_required");
         }
 
-        if ($this->canSelectOptionSource($attribute)) {
+        if (!$this->canSelectOptionSource($attribute)) {
             $fieldset->addField('form_field_' . $formFieldId . '_option_source_code', 'select',
                 [
                     'label' => __('Options Source'),
@@ -342,11 +342,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected function canSelectOptionSource($attribute)
     {
-        if (!$attribute) {
-            return false;
-        }
-
-        if (!$attribute->usesSource()) {
+        if (!$attribute || !$attribute->usesSource()) {
             return false;
         }
 

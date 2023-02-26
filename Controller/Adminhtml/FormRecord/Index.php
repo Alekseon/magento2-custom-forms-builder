@@ -35,7 +35,15 @@ class Index extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
         }
 
         $this->_initAction();
-        $this->_view->getPage()->getConfig()->getTitle()->prepend($form->getTitle());
-        $this->_view->renderLayout();
+
+        if ($this->getRequest()->getParam('isAjax')) {
+            $this->getResponse()->setBody(
+                $this->_view->getLayout()->getBlock('grid')->toHtml()
+            );
+            return;
+        } else {
+            $this->_view->getPage()->getConfig()->getTitle()->prepend($form->getTitle());
+            $this->_view->renderLayout();
+        }
     }
 }

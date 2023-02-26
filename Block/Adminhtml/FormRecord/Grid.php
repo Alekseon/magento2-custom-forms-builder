@@ -46,6 +46,15 @@ class Grid extends EavGrid
     }
 
     /**
+     * @return void
+     */
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setUseAjax(true);
+    }
+
+    /**
      * @return $this
      */
     protected function _prepareCollection()

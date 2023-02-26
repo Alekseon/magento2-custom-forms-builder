@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 - possibility to disable form field
 - check if "is required" field is editable
 - scopable records grid and record edit page
+### Changed
+- use ajax on grids
 
 ## [102.2.2] - 2022-11-19
 ### Fixed
