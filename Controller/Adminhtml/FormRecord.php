@@ -103,12 +103,16 @@ abstract class FormRecord extends \Magento\Backend\App\Action
      * @return mixed
      * @throws LocalizedException
      */
-    protected function initRecord($requestParam = 'id', $formRequestParam = 'form_id')
+    protected function initRecord($requestParam = 'id', $formRequestParam = 'form_id', $storeId = null)
     {
+        if ($storeId === null) {
+            $storeId = $this->getRequest()->getParam('store');
+        }
         $record = $this->coreRegistry->registry('current_record');
         $form = $this->initForm($formRequestParam);
         if (!$record) {
             $record = $this->formRecordFactory->create();
+            $record->setStoreId($storeId);
             $record->getResource()->setCurrentForm($form);
             $recordId = $this->getRequest()->getParam($requestParam, false);
             $record->getResource()->load($record, $recordId);
