@@ -11,6 +11,13 @@
         <css src="css/styles-old.css"/>
     </head>
     <body>
+        <referenceContainer name="page.main.actions">
+            <block class="Magento\Backend\Block\Store\Switcher" name="store_switcher" as="store_switcher" template="Magento_Backend::store/switcher.phtml">
+                <action method="setUseConfirm">
+                    <argument name="params" xsi:type="string">1</argument>
+                </action>
+            </block>
+        </referenceContainer>
         <referenceContainer name="content">
             <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit" name="form_record_edit"/>
         </referenceContainer>

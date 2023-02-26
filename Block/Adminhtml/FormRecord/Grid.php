@@ -53,6 +53,8 @@ class Grid extends EavGrid
         $collection = $this->_collectionFactory->create();
         $this->setCollection($collection);
 
+        $storeId = $this->getRequest()->getParam('store', null);
+        $collection->setStoreId($storeId);
         $collection->addFieldToFilter('form_id', $this->getCurrentForm()->getId());
         $collection->getResource()->setCurrentForm($this->getCurrentForm());
 

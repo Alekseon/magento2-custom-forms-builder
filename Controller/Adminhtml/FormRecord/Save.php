@@ -43,9 +43,9 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
 
         if ($returnToEdit) {
             if ($recordId) {
-                return $this->returnResult('*/*/edit', ['form_id' => $form->getId(), 'id' => $recordId]);
+                return $this->returnResult('*/*/edit', ['_current' => true, 'id' => $recordId]);
             } else {
-                return $this->returnResult('*/*/new', ['form_id' => $form->getId()]);
+                return $this->returnResult('*/*/new', ['_current' => true]);
             }
         } else {
             return $this->returnResult('*/*', ['id' => $form->getId()]);
