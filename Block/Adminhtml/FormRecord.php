@@ -58,7 +58,7 @@ class FormRecord extends \Magento\Backend\Block\Widget\Grid\Container
     /**
      * @return mixed
      */
-    protected function getCurrentForm()
+    public function getCurrentForm()
     {
         return $this->coreRegistry->registry('current_form');
     }
