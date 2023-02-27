@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - use ajax on grids
 
+## [102.2.3] - 2023-02-27
+### Added
+- notification with link to wiki
+
 ## [102.2.2] - 2022-11-19
 ### Fixed
 - fix setUp() declaration in tests
