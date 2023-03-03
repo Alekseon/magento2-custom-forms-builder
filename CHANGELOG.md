@@ -7,10 +7,14 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 ## [Unreleased]
+
+## [102.3.0] - 2023-03-03
 ### Added
 - possibility to disable form field
 - check if "is required" field is editable
 - scopable records grid and record edit page
+- group fields in tabs
+- added "alekseon/widget-forms-statistics" in composer
 ### Changed
 - use ajax on grids
 
