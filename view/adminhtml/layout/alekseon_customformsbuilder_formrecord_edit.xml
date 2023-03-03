@@ -5,7 +5,7 @@
  * http://www.alekseon.com/
  */
 -->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="formkey"/>
     <head>
         <css src="css/styles-old.css"/>
@@ -19,9 +19,11 @@
             </block>
         </referenceContainer>
         <referenceContainer name="content">
-            <container name="form.wrapper" htmlTag="div" htmlClass="admin__scope-old">
-                <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit" name="entity_edit"/>
-            </container>
+            <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit" name="form_record_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit\FormInfo" name="form_record_edit_info" />
+            <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit\Tabs" name="form_record_edit_tabs" />
         </referenceContainer>
     </body>
 </page>

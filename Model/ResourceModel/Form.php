@@ -43,4 +43,28 @@ class Form extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
     {
         $this->_init('alekseon_custom_form', 'entity_id');
     }
+
+    /**
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return Form
+     * @throws \Exception
+     */
+    protected function _afterSave(\Magento\Framework\Model\AbstractModel $object) // @codingStandardsIgnoreLine
+    {
+        $formTabs = $object->getFormTabs();
+        if ($formTabs !== null) {
+            foreach ($formTabs as $tab) {
+                if ($tab->getDeleted()) {
+                    $tab->getResource()->delete($tab);
+                    continue;
+                }
+                if (!$tab->getId()) {
+                    $tab->setFormId($object->getId());
+                }
+                $tab->getResource()->save($tab);
+            }
+        }
+
+        return parent::_afterSave($object);
+    }
 }

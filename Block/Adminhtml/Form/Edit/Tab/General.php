@@ -7,6 +7,7 @@ namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab;
 
 use Alekseon\AlekseonEav\Model\Adminhtml\System\Config\Source\InputType;
 use Alekseon\AlekseonEav\Api\Data\EntityInterface;
+use Alekseon\CustomFormsBuilder\Model\Form;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
 /**
@@ -79,9 +80,7 @@ class General extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form imp
 
         $this->addAllAttributeFields($baseFieldset, $dataObject);
 
-        $advancedFieldset = $form->addFieldset('advanced_fieldset', ['legend' => __('Advanced Properties')]);
-
-        $advancedFieldset->addField('identifier',
+        $baseFieldset->addField('identifier',
             'text',
             [
                 'name' => 'identifier',
@@ -93,6 +92,20 @@ class General extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form imp
                 ),
             ]
         );
+
+        $baseFieldset->addField('group_fields_in',
+            'select',
+            [
+                'name' => 'group_fields_in',
+                'label' => __('Group Fields In'),
+                'title' => __('Group Fields In'),
+                'options' => [
+                    Form::GROUP_FEILDS_IN_FIELDSETS_OPTION => __('Fieldsets'),
+                    Form::GROUP_FIELDS_IN_TABS_OPTION => __('Tabs'),
+                ],
+            ]
+        );
+
 
         $adminNoteFieldset = $form->addFieldset('admin_note_fieldset', ['legend' => __('Admin Note')]);
 

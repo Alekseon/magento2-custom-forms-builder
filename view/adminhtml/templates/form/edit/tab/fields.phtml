@@ -4,16 +4,49 @@
  * http://www.alekseon.com/
  */
 ?>
-<?= $block->getChildHtml('form_fields_tab_form') ?>
-<?= $block->getChildHtml('add_new_field_button') ?>
+<div class="dashboard-container">
+    <div class="dashboard-store-stats">
+        <div id="grid_tab" class="ui-tabs">
+            <ul class="tabs-horiz" role="tablist">
+                <li id="tab-template" class="form-tab ui-corner-top ui-state-default" role="tab" style="display: none;">
+                    <a href="" class="tab-item-link ui-tabs-anchor" ></span></a>
+                </li>
+                <li id="add_tab_button" class="ui-corner-top ui-state-default" role="tab" data-id="add" style="display: none;">
+                    <a href="" class="tab-item-link ui-tabs-anchor" title="<?= __('Add new tab') ?>"><span>+</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="tabs-settings-container">
+        <div id="tab-settings-template" class="page-main-actions tab-settings" style="border-top: #000 1px solid; display: none;">
+            Tab Name: <input type="text" class="label-input"></input>
+            <span class="remove-button-wrapper" style="display: none">| <a href="" class="form-remove-tab"><?= __('Remove tab') ?></a></span>
+        </div>
+    </div>
+    <?= $block->getChildHtml('form_fields_tab_form') ?>
+    <?= $block->getChildHtml('add_new_field_button') ?>
+</div>
 <script type="text/x-magento-init">
 {
     "*": {
         "Alekseon_CustomFormsBuilder/js/form/edit/formFields": {
             "newFieldButtonId": "add_field_button",
             "newFieldTemplateId": "form_field_new_field-wrapper",
-            "formContianerId": "form_tabs_fields_tab_content",
+            "formContainerId": "form_tabs_fields_tab_content",
             "formRemovedFieldsInputId": "form_removed_fields"
+        }
+    }
+}
+</script>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Alekseon_CustomFormsBuilder/js/form/edit/formTabs": {
+            "formContainerId": "form_tabs_fields_tab_content",
+            "formTabs": <?= $block->getFormTabs() ?>,
+            "activeTab": "<?= $block->getActiveFormTab()->getId() ?>",
+            "newTabLabel": "<?= __('New tab') ?>",
+            "lastTabNumber": "<?= $block->getLastTabId() ?>"
         }
     }
 }

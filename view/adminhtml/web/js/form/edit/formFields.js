@@ -15,13 +15,12 @@ define([
             this.newFieldsCounter = 0;
             this.newFieldTemplate = $('#' + config.newFieldTemplateId)[0];
 
-            this.formContainer = $('#' + config.formContianerId + ' .form-inline')[0];
+            this.formContainer = $('#' + config.formContainerId + ' .form-inline')[0];
             this.newFieldButton = $('#' + config.newFieldButtonId);
             this.formRemovedFieldsInputId = $('#' + config.formRemovedFieldsInputId);
             this.hideNewFieldTemplate();
             this.addNewFieldButtonEvent();
-            this.addDeleteFieldsEvents();
-            this.addEnableDisableFieldsEvents();
+            this.addFieldsEvents();
         },
 
         addNewField: function () {
@@ -36,8 +35,13 @@ define([
 
             var removeButton = $(newField).find('.delete-field-button')[0];
             this.addRemoveFieldEvent(removeButton);
+
+            var changeTabButton = $(newField).find('.form-field-change-tab-button')[0];
+            this.addChangeTabButtonEvent(changeTabButton);
+
             this.formContainer.appendChild(newField);
 
+            $(document).trigger('form-new-field', [newField]);
             $(newField).slideDown();
         },
 
@@ -52,10 +56,26 @@ define([
             this.newFieldTemplate.hide();
         },
 
-        addDeleteFieldsEvents: function () {
-            var formFields = this;
+        addFieldsEvents: function () {
+            var self = this;
             $(this.formContainer).find('.delete-field-button').each(function() {
-                formFields.addRemoveFieldEvent(this);
+                self.addRemoveFieldEvent(this);
+            });
+            $(this.formContainer).find('.form-field-change-tab-button').each(function() {
+                self.addChangeTabButtonEvent(this);
+            });
+            $(this.formContainer).find('.enable-disable-field-buttons').each(function() {
+                var enableButton = this.querySelector('.enable-button');
+                var disableButton = this.querySelector('.disable-button');
+                self.updateDisableNotice(enableButton);
+                self.addEnableDisableFieldEvent(enableButton, disableButton);
+            });
+        },
+
+        addChangeTabButtonEvent: function (changeTabButton) {
+            $(changeTabButton).click(function () {
+                $(document).trigger('form-field-change-tab-click', [this]);
+                return false;
             });
         },
 
@@ -76,26 +96,15 @@ define([
                                 }
                                 removedIds.push(fieldsetId);
                                 $(self.formRemovedFieldsInputId).val(removedIds.join(','));
-                                fieldsetWrapper.slideUp("slow");
-                            } else {
-                                fieldsetWrapper.slideUp("slow", function () {
-                                    this.remove();
-                                });
                             }
+
+                            fieldsetWrapper.slideUp("slow", function () {
+                                this.remove();
+                            });
                         }
                     }
                 });
                 return false;
-            });
-        },
-
-        addEnableDisableFieldsEvents: function () {
-            var self = this;
-            $(this.formContainer).find('.enable-disable-field-buttons').each(function() {
-                var enableButton = this.querySelector('.enable-button');
-                var disableButton = this.querySelector('.disable-button');
-                self.updateDisableNotice(enableButton);
-                self.addEnableDisableFieldEvent(enableButton, disableButton);
             });
         },
 
@@ -117,7 +126,6 @@ define([
 
         addEnableDisableFieldEvent: function (enableButton, disableButton) {
             var self = this;
-
             $(disableButton).click(function () {
                 var fieldsetId = self.getFieldsetId($(disableButton));
                 $('#form_field_' + fieldsetId + '_is_enabled').val(0);

@@ -127,11 +127,17 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ->setFormFieldId($formFieldId)
             ->setTemplate('Alekseon_CustomFormsBuilder::form/edit/field/identifier.phtml');
 
+        $class = 'form_tab_' . ($settings['tab_id'] ?? '');
+        if ($isNewField) {
+            $class = '';
+        }
+
         $fieldset = $form->addFieldset('form_field_' . $formFieldId,
             [
                 'legend' => $settings['title'] ?? 'no title',
                 'collapsable' => true,
                 'header_bar' => $identifierBlock->toHtml(),
+                'class' => $class,
             ]
         );
 
@@ -148,7 +154,14 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             [
                 'name' => 'form_fields[' . $formFieldId . '][id]'
             ]
-        );
+        )->addCustomAttribute("data-fieldcode", "id");
+
+        $fieldset->addField('form_field_' . $formFieldId . '_group_code', 'hidden',
+            [
+                'name' => 'form_fields[' . $formFieldId . '][group_code]',
+                'class' => 'group-code',
+            ]
+        )->addCustomAttribute("data-fieldcode", "group_code");
 
         $fieldset->addField('form_field_' . $formFieldId . '_is_enabled', 'hidden',
             [
@@ -242,6 +255,9 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                     . '</span>';
             }
         }
+
+        $actionLinks[] = '<a class="form-field-change-tab-button" href="">' . __('Change tab')
+            . '</a><select class="change-tab-select" style="display: none"></select>';
         $actionLinks[] = '<a href="#" class="delete-field-button">' . __('Delete') . '</a>';
 
         $fieldset->addField('form_field_' . $formFieldId . '_action', 'note',
@@ -306,9 +322,24 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             'title' => '[' . $frontendInputLabel . '] ' . $attribute->getFrontendLabel(),
             'attribute' => $attribute,
             'identifier' => $identifier,
+            'tab_id' => $this->getFieldTabId($attribute)
         ];
 
         return $formFieldSettings;
+    }
+
+    /**
+     * @param $field
+     * @return int
+     */
+    protected function getFieldTabId($field)
+    {
+        $formTabs = $this->getDataObject()->getFormTabs();
+        $fieldTabId = $field->getGroupCode();
+        if (!isset($formTabs[$fieldTabId])) {
+            $fieldTabId = $this->getDataObject()->getFirstFormTab()->getId();
+        }
+        return $fieldTabId;
     }
 
     /**
@@ -321,8 +352,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         }
 
         $inputTypeModel = $attribute->getInputTypeModel();
-        if ($inputTypeModel instanceof Boolean) {
-            return false;
+        if ($inputTypeModel->hasCustomOptionSource()) {
+            return true;
         }
 
         return true;
@@ -348,6 +379,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             foreach ($attributeData as $dataId => $dataValue) {
                 $this->formValues['form_field_' . $attribute->getId() . '_' . $dataId] = $dataValue;
             }
+
+            $this->formValues['form_field_' . $attribute->getId() . '_' . 'group_code'] = $formFieldSettings['tab_id'] ?? '';
 
             $settings = [
                 'attribute' => $attribute

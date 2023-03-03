@@ -14,49 +14,14 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
  * Class Form
  * @package Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit
  */
-class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
+class Form extends \Magento\Backend\Block\Widget\Form\Generic
 {
-    /**
-     * @var
-     */
-    protected $dataObject;
-
-    /**
-     * @return mixed
-     */
-    public function getDataObject()
-    {
-        if (null === $this->dataObject) {
-            return $this->_coreRegistry->registry('current_record');
-        }
-        return $this->dataObject;
-    }
-
-    /**
-     * @return \Magento\Framework\Data\Form|mixed
-     */
-    protected function getCurrentFormObject()
-    {
-        return $this->_coreRegistry->registry('current_form');
-    }
-
-    /**
-     * @param EntityInterface $entity
-     * @return mixed|void
-     */
-    protected function getEntityAttributes(EntityInterface $entity)
-    {
-        return $this->getCurrentFormObject()->getFieldsCollection();
-    }
-
     /**
      * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareForm()
     {
-        $dataObject = $this->getDataObject();
-
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create(
             [
@@ -69,27 +34,9 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         );
 
-        $baseFieldset = $form->addFieldset('base_fieldset', ['legend' => $this->getCurrentFormObject()->getTitle()]);
-
-        if ($dataObject->getId()) {
-            $baseFieldset->addField('entity_id', 'hidden', ['name' => 'entity_id']);
-        }
-
-        $this->addAllAttributeFields($baseFieldset, $dataObject);
         $this->setForm($form);
         $this->getForm()->setUseContainer(true);
 
         return parent::_prepareForm();
-    }
-
-    /**
-     * Initialize form fileds values
-     *
-     * @return $this
-     */
-    protected function _initFormValues()
-    {
-        $this->getForm()->addValues($this->getDataObject()->getData());
-        return parent::_initFormValues();
     }
 }

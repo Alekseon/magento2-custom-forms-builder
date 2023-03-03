@@ -6,6 +6,7 @@
 namespace Alekseon\CustomFormsBuilder\Model;
 
 use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\DataObject;
 
 /**
  * Class Form
@@ -13,10 +14,22 @@ use Magento\Framework\Data\Collection\AbstractDb;
  */
 class Form extends \Alekseon\AlekseonEav\Model\Entity
 {
+    const DEFAULT_FORM_TAB_LABEL = 'General';
+    const GROUP_FEILDS_IN_FIELDSETS_OPTION = 'fieldsets';
+    const GROUP_FIELDS_IN_TABS_OPTION = 'tabs';
+
     /**
      * @var FormRecord\AttributeRepository
      */
     protected $recordAttributeRepository;
+    /**
+     * @var FormTabFactory
+     */
+    protected $formTabFactory;
+    /**
+     * @var
+     */
+    protected $formTabs;
 
     /**
      * Form constructor.
@@ -31,9 +44,11 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
         \Magento\Framework\Registry $registry,
         \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form $resource,
         \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form\Collection $resourceCollection,
-        \Alekseon\CustomFormsBuilder\Model\FormRecord\AttributeRepository $recordAttributeRepository
+        \Alekseon\CustomFormsBuilder\Model\FormRecord\AttributeRepository $recordAttributeRepository,
+        \Alekseon\CustomFormsBuilder\Model\FormTabFactory $formTabFactory
     ) {
         $this->recordAttributeRepository = $recordAttributeRepository;
+        $this->formTabFactory = $formTabFactory;
         parent::__construct(
             $context,
             $registry,
@@ -131,5 +146,53 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
         }
         $recordAttributeCollection->setOrder('sort_order', AbstractDb::SORT_ORDER_ASC);
         return $recordAttributeCollection;
+    }
+
+    /**
+     * @return void
+     */
+    public function getFormTabs()
+    {
+        if ($this->formTabs === null) {
+            $formTabsCollection = $this->formTabFactory->create()->getCollection()->addFormFilter($this);
+            $this->formTabs = [];
+            foreach ($formTabsCollection as $tab) {
+                $this->formTabs[$tab->getId()] = $tab;
+            }
+
+            if (empty($this->formTabs)) {
+                $tab = $this->addFormTab(
+                    [
+                        'label' => __(self::DEFAULT_FORM_TAB_LABEL),
+                    ]
+                );
+            }
+
+            $tab->setIsLastTab(true);
+        }
+
+        return $this->formTabs;
+    }
+
+    /**
+     * @param $tabData
+     * @return void
+     */
+    public function addFormTab(array $tabData)
+    {
+        $this->getFormTabs();
+        $tab = $this->formTabFactory->create();
+        $tab->setData($tabData);
+        $this->formTabs[] = $tab;
+        return $tab;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFirstFormTab()
+    {
+        $this->getFormTabs();
+        return reset($this->formTabs);
     }
 }
