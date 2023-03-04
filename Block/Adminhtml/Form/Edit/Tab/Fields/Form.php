@@ -356,7 +356,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
