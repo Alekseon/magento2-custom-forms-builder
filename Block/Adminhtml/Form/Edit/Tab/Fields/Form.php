@@ -187,15 +187,13 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             )->addCustomAttribute("data-fieldcode", "frontend_input");
         }
 
-        if (!$attribute || $attribute->getIsRequiredEditable()) {
-            $fieldset->addField('form_field_' . $formFieldId . '_is_required', 'select',
-                [
-                    'label' => __('Is Required'),
-                    'name' => 'form_fields[' . $formFieldId . '][is_required]',
-                    'values' => $this->yesNoSource->toOptionArray()
-                ]
-            )->addCustomAttribute("data-fieldcode", "is_required");
-        }
+        $fieldset->addField('form_field_' . $formFieldId . '_is_required', 'select',
+            [
+                'label' => __('Is Required'),
+                'name' => 'form_fields[' . $formFieldId . '][is_required]',
+                'values' => $this->yesNoSource->toOptionArray()
+            ]
+        )->addCustomAttribute("data-fieldcode", "is_required");
 
         if ($this->canSelectOptionSource($attribute)) {
             $fieldset->addField('form_field_' . $formFieldId . '_option_source_code', 'select',
