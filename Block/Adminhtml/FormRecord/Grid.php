@@ -15,10 +15,6 @@ use Alekseon\AlekseonEav\Block\Adminhtml\Entity\Grid as EavGrid;
 class Grid extends EavGrid
 {
     /**
-     * @var \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\CollectionFactory
-     */
-    protected $_collectionFactory;
-    /**
      * @var \Magento\Framework\Registry
      */
     protected $coreRegistry;
@@ -27,18 +23,15 @@ class Grid extends EavGrid
      * Grid constructor.
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Backend\Helper\Data $backendHelper
-     * @param \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\CollectionFactory $collectionFactory
      * @param \Magento\Framework\Registry $coreRegistry
      * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
-        \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\CollectionFactory $collectionFactory,
         \Magento\Framework\Registry $coreRegistry,
         array $data = []
     ) {
-        $this->_collectionFactory = $collectionFactory;
         $this->coreRegistry = $coreRegistry;
         parent::__construct($context, $backendHelper, $data);
         $this->setDefaultSort('created_at');
@@ -59,14 +52,8 @@ class Grid extends EavGrid
      */
     protected function _prepareCollection()
     {
-        $collection = $this->_collectionFactory->create();
+        $collection = $this->getCurrentForm()->getRecordCollection();
         $this->setCollection($collection);
-
-        $storeId = $this->getRequest()->getParam('store', null);
-        $collection->setStoreId($storeId);
-        $collection->addFieldToFilter('form_id', $this->getCurrentForm()->getId());
-        $collection->getResource()->setCurrentForm($this->getCurrentForm());
-
         return parent::_prepareCollection();
     }
 

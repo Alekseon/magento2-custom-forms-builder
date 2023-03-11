@@ -21,6 +21,10 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
      * @var FormRepository
      */
     protected $formRepository;
+    /**
+     * @var
+     */
+    protected $fieldIdentifierMap;
 
     /**
      * FormRecord constructor.
@@ -51,5 +55,55 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
     public function getForm()
     {
         return $this->formRepository->getById($this->getFormId());
+    }
+
+    /**
+     * @param Form $form
+     * @return $this
+     */
+    public function setFieldIdentifierMap(Form $form)
+    {
+        $fields = $form->getFieldsCollection();
+        foreach ($fields as $field) {
+            if ($field->getIdentifier()) {
+                $this->fieldIdentifierMap[$field->getIdentifier()] = $field->getAttributeCode();
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $attributeCode
+     * @return string
+     */
+    protected function getMappedAttributeCode($attributeCode)
+    {
+        $notMappedKeys = ['form_id'];
+        if (in_array($attributeCode, $notMappedKeys)) {
+           return $attributeCode;
+        }
+        if ($this->fieldIdentifierMap === null) {
+            $this->setFieldIdentifierMap($this->getForm());
+        }
+        if (isset($this->fieldIdentifierMap[$attributeCode])) {
+            $attributeCode = $this->fieldIdentifierMap[$attributeCode];
+        }
+        return $attributeCode;
+    }
+
+    public function getAttribute($attributeCode)
+    {
+        $attributeCode = $this->getMappedAttributeCode($attributeCode);
+        return parent::getAttribute($attributeCode);
+    }
+
+    /**
+     * @param $key
+     * @return mixed|void|null
+     */
+    protected function _getData($key)
+    {
+        $key = $this->getMappedAttributeCode($key);
+        return parent::_getData($key);
     }
 }

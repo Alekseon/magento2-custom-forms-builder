@@ -91,7 +91,8 @@ abstract class FormRecord extends \Magento\Backend\App\Action
         $form = $this->coreRegistry->registry('current_form');
         if (!$form) {
             $fromId = $this->getRequest()->getParam($requestParam, false);
-            $form = $this->formRepository->getById($fromId, null, true);
+            $storeId = $this->getRequest()->getParam('store', null);
+            $form = $this->formRepository->getById($fromId, $storeId, true);
             $this->coreRegistry->register('current_form', $form);
         }
         return $form;

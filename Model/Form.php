@@ -5,8 +5,10 @@
  */
 namespace Alekseon\CustomFormsBuilder\Model;
 
+use Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\Collection;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
  * Class Form
@@ -32,6 +34,10 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
      * @var
      */
     protected $formTabs;
+    /**
+     * @var FormRecordFactory
+     */
+    protected $formRecordFactory;
 
     /**
      * Form constructor.
@@ -47,10 +53,12 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
         \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form $resource,
         \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form\Collection $resourceCollection,
         \Alekseon\CustomFormsBuilder\Model\FormRecord\AttributeRepository $recordAttributeRepository,
-        \Alekseon\CustomFormsBuilder\Model\FormTabFactory $formTabFactory
+        \Alekseon\CustomFormsBuilder\Model\FormTabFactory $formTabFactory,
+        \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory
     ) {
         $this->recordAttributeRepository = $recordAttributeRepository;
         $this->formTabFactory = $formTabFactory;
+        $this->formRecordFactory = $formRecordFactory;
         parent::__construct(
             $context,
             $registry,
@@ -97,6 +105,19 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
                 $this->recordAttributeRepository->save($attribute);
             }
         }
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getRecordCollection()
+    {
+        /** @var Collection $collection */
+        $collection = $this->formRecordFactory->create()->getCollection();
+        $collection->setStoreId($this->getStoreId());
+        $collection->addFormFilter($this);
+        $collection->getResource()->setCurrentForm($this);
+        return $collection;
     }
 
     /**
