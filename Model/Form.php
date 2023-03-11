@@ -6,17 +6,19 @@
 namespace Alekseon\CustomFormsBuilder\Model;
 
 use Magento\Framework\Data\Collection\AbstractDb;
-use Magento\Framework\DataObject;
+use Magento\Framework\DataObject\IdentityInterface;
 
 /**
  * Class Form
  * @package Alekseon\CustomFormsBuilder\Model
  */
-class Form extends \Alekseon\AlekseonEav\Model\Entity
+class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterface
 {
     const DEFAULT_FORM_TAB_LABEL = 'General';
     const GROUP_FEILDS_IN_FIELDSETS_OPTION = 'fieldsets';
     const GROUP_FIELDS_IN_TABS_OPTION = 'tabs';
+
+    const CACHE_TAG = 'alekseon_custom_form';
 
     /**
      * @var FormRecord\AttributeRepository
@@ -149,7 +151,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
     }
 
     /**
-     * @return void
+     * @return array
      */
     public function getFormTabs()
     {
@@ -175,8 +177,8 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
     }
 
     /**
-     * @param $tabData
-     * @return void
+     * @param array $tabData
+     * @return FormTab
      */
     public function addFormTab(array $tabData)
     {
@@ -194,5 +196,23 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity
     {
         $this->getFormTabs();
         return reset($this->formTabs);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getIdentities()
+    {
+        return [
+            self::CACHE_TAG . '_' . $this->getId(),
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCacheTags()
+    {
+        return $this->getIdentities();
     }
 }
