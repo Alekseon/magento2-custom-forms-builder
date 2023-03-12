@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
-## [Unreleased]
+## [102.3.2] - 2023-03-12
 ### Added
 - small alekseon logo
 - cache tags
