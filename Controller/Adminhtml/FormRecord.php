@@ -83,7 +83,7 @@ abstract class FormRecord extends \Magento\Backend\App\Action
 
     /**
      * @param string $requestParam
-     * @return mixed
+     * @return \Alekseon\CustomFormsBuilder\Model\Form
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     protected function initForm($requestParam = 'id')
@@ -101,24 +101,17 @@ abstract class FormRecord extends \Magento\Backend\App\Action
     /**
      * @param string $requestParam
      * @param string $formRequestParam
-     * @return mixed
+     * @return \Alekseon\CustomFormsBuilder\Model\FormRecord
      * @throws LocalizedException
      */
-    protected function initRecord($requestParam = 'id', $formRequestParam = 'form_id', $storeId = null)
+    protected function initRecord($requestParam = 'id', $formRequestParam = 'form_id')
     {
-        if ($storeId === null) {
-            $storeId = $this->getRequest()->getParam('store');
-        }
         $record = $this->coreRegistry->registry('current_record');
         $form = $this->initForm($formRequestParam);
         if (!$record) {
-            $record = $this->formRecordFactory->create();
-            $record->setStoreId($storeId);
-            $record->getResource()->setCurrentForm($form);
             $recordId = $this->getRequest()->getParam($requestParam, false);
-            $record->getResource()->load($record, $recordId);
-
-            if (!$recordId) {
+            $record = $form->getRecordById($recordId, true);
+            if (!$record->getId()) {
                 $record->setFormId($form->getId());
             }
             $this->coreRegistry->register('current_record', $record);

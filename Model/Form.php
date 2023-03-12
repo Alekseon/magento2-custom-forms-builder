@@ -8,6 +8,7 @@ namespace Alekseon\CustomFormsBuilder\Model;
 use Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\Collection;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
@@ -118,6 +119,23 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
         $collection->addFormFilter($this);
         $collection->getResource()->setCurrentForm($this);
         return $collection;
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getRecordById($id, $graceful = false)
+    {
+        $record = $this->formRecordFactory->create();
+        $record->setStoreId($this->getStoreId());
+        $record->getResource()->setCurrentForm($this);
+        $record->getResource()->load($record, $id);
+        if (!$graceful && (!$record->getId() || $record->getFormId() != $this->getId())) {
+            throw new NoSuchEntityException(__('Form record not found.'));
+        }
+
+        return $record;
     }
 
     /**
