@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 - filter,sort,select on form records collection by field identifier
 - getData from form record by field identifier
 
+## [102.3.1] - 2023-03-04
+### Fixed
+- removed "Options Source" input from rating and boolean fields
+
 ## [102.3.0] - 2023-03-03
 ### Added
 - possibility to disable form field
