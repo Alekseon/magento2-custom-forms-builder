@@ -79,24 +79,11 @@ class Grid extends EavGrid
         );
 
         $this->addColumn(
-            'created_at',
-            [
-                'header' => __('Created At'),
-                'index' => 'created_at',
-                'gmtoffset' => true,
-                'type' => 'datetime',
-                'header_css_class' => 'col-updated col-date',
-                'column_css_class' => 'col-updated col-date'
-            ]
-        );
-
-        $this->addColumn(
             'created_from_store_id',
             [
                 'header' => __('Created From'),
                 'index' => 'created_from_store_id',
                 'type' => 'store',
-                'store_view' => true
             ]
         );
 
