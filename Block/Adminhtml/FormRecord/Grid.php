@@ -7,6 +7,7 @@ namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord;
 
 use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
 use Alekseon\AlekseonEav\Block\Adminhtml\Entity\Grid as EavGrid;
+use Alekseon\CustomFormsBuilder\Model\Form;
 
 /**
  * Class Grid
@@ -77,6 +78,28 @@ class Grid extends EavGrid
             ]
         );
 
+        $this->addColumn(
+            'created_at',
+            [
+                'header' => __('Created At'),
+                'index' => 'created_at',
+                'gmtoffset' => true,
+                'type' => 'datetime',
+                'header_css_class' => 'col-updated col-date',
+                'column_css_class' => 'col-updated col-date'
+            ]
+        );
+
+        $this->addColumn(
+            'created_from_store_id',
+            [
+                'header' => __('Created From'),
+                'index' => 'created_from_store_id',
+                'type' => 'store',
+                'store_view' => true
+            ]
+        );
+
         $this->addAttributeColumns();
 
         $this->addExportType('*/*/exportCsv', __('CSV'));
@@ -118,7 +141,7 @@ class Grid extends EavGrid
     }
 
     /**
-     * @return mixed
+     * @return Form
      */
     protected function getCurrentForm()
     {

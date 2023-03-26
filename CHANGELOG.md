@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [Unreleased]
+### Added
+- Created From Store Id for Record entity 
+
 ## [102.3.2] - 2023-03-12
 ### Added
 - small alekseon logo

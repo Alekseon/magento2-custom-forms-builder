@@ -110,4 +110,16 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
         $key = $this->getMappedAttributeCode($key);
         return parent::_getData($key);
     }
+
+    /**
+     * @param $storeId
+     * @return FormRecord
+     */
+    public function setStoreId($storeId)
+    {
+        if (!$this->getId()) {
+            $this->setCreatedFromStoreId($storeId);
+        }
+        return parent::setStoreId($storeId);
+    }
 }

@@ -34,4 +34,20 @@ class FormInfo extends \Magento\Backend\Block\Template
     {
         return $this->getLayout()->getBlock('form_record_edit')->getCurrentRecord();
     }
+
+    /**
+     * @return string|void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getCreatedFrom()
+    {
+        if ($this->getCurrentRecord()->getCreatedFromStoreId()) {
+            try {
+                $store = $this->_storeManager->getStore($this->getCurrentRecord()->getCreatedFromStoreId());
+                return $store->getName();
+            } catch (\Exception $e) {
+                // do nothing
+            }
+        }
+    }
 }
