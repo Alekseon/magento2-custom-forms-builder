@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="alekseon" translate="label" sortOrder="150">
+            <label>Alekseon Extensions</label>
+        </tab>
+        <section id="alekseon_custom_forms" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Custom Forms</label>
+            <tab>alekseon</tab>
+            <resource>Alekseon_CustomForms::config</resource>
+        </section>
+    </system>
+</config>
