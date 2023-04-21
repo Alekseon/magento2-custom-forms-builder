@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Created From Store Id for Record entity 
 - system.xml file
+### Fixed
+- added missing group_fields_in column to alekseon_custom_form table
 
 ## [102.3.2] - 2023-03-12
 ### Added
