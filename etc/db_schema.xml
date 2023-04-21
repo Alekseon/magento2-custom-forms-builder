@@ -13,6 +13,7 @@
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Creation Time"/>
         <column xsi:type="varchar" name="identifier" nullable="true" length="255" comment="Identifier"/>
+        <column xsi:type="varchar" name="group_fields_in" nullable="true" length="255" comment="Group Fields In"/>
         <column xsi:type="text" name="admin_note" nullable="true" comment="Admin Note"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
@@ -26,6 +27,8 @@
                 comment="Form Record Entity ID"/>
         <column xsi:type="int" name="form_id" unsigned="true" nullable="false"
                 comment="Form Entity ID"/>
+        <column xsi:type="smallint" name="created_from_store_id" unsigned="true" nullable="true" identity="false"
+                comment="Created From Store ID"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Creation Time"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
@@ -34,6 +37,9 @@
         <constraint xsi:type="foreign" referenceId="ALEKSEON_CUSTOM_FORM_RECORD_FORM_ID_ALEKSEON_CUSTOM_FORM_ENTT_ID"
                     table="alekseon_custom_form_record" column="form_id" referenceTable="alekseon_custom_form"
                     referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="ALEKSEON_CUSTOM_FORM_RECORD_STORE_ID_STORE_STORE_ID"
+                    table="alekseon_custom_form_record" column="created_from_store_id" referenceTable="store" referenceColumn="store_id"
+                    onDelete="SET NULL"/>
     </table>
     <table name="alekseon_custom_form_tab" resource="default" engine="innodb" comment="Alekseon Custom Form Tabs">
         <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"

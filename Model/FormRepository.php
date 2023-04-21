@@ -38,7 +38,7 @@ class FormRepository
 
     /**
      * @param $formId
-     * @return mixed
+     * @return Form
      * @throws NoSuchEntityException
      */
     public function getById($formId, $storeId = null, $graceful = false)
@@ -65,7 +65,7 @@ class FormRepository
      * @param $identifier
      * @param null $storeId
      * @param bool $graceful
-     * @return Form|mixed
+     * @return Form
      * @throws NoSuchEntityException
      */
     public function getByIdentifier($identifier, $storeId = null, $graceful = true)
