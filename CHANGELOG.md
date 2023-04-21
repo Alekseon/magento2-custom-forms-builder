@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 ## [Unreleased]
+
+## [102.3.3] - 2023-04-21
 ### Added
 - Created From Store Id for Record entity 
 - system.xml file
