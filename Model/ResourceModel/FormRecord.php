@@ -125,4 +125,14 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
 
         return $imagesDirName;
     }
+
+    /**
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return Entity
+     */
+    protected function _beforeDelete(\Magento\Framework\Model\AbstractModel $object)
+    {
+        $this->setCurrentForm($object->getForm());
+        return parent::_beforeDelete($object);
+    }
 }

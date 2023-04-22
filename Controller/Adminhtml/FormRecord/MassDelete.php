@@ -5,7 +5,7 @@
  */
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
-use Magento\Framework\App\Filesystem\DirectoryList;
+use Alekseon\CustomFormsBuilder\Model\Form;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 
@@ -53,18 +53,17 @@ class MassDelete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormR
     }
 
     /**
-     * @return \Magento\Framework\Data\Collection\AbstractDb|\Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection|null
+     * @return \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\Collection
+     * @throws LocalizedException
      */
     protected function getCollection()
     {
+        /** @var Form $form */
         $form = $this->coreRegistry->registry('current_form');
-        $collection = $this->formRecordFactory->create()->getCollection();
+        $collection = $form->getRecordCollection();
         $collection->addFieldToFilter(
             'entity_id',
             $this->getRequest()->getParam('records')
-        )->addFieldToFilter(
-            'form_id',
-            $form->getId()
         );
 
         return $collection;
