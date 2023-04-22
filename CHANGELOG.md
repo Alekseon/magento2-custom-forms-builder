@@ -7,10 +7,13 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 ## [Unreleased]
+### Fixed
+- display default label instead of store label as fieldset label
 
 ## [102.3.4] - 2023-04-22
 ### Fixed
 - fixed mass delete action
+- remove image file during mass delete action
 
 ## [102.3.3] - 2023-04-21
 ### Added

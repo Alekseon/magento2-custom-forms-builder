@@ -5,6 +5,7 @@
  */
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields;
 
+use Alekseon\AlekseonEav\Model\Attribute;
 use Alekseon\AlekseonEav\Model\Attribute\InputType\Boolean;
 use Alekseon\AlekseonEav\Model\Attribute\InputTypeRepository;
 use Magento\Framework\Data\Collection\AbstractDb;
@@ -108,12 +109,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected function addFieldFieldset($form, $formFieldId, $settings = [])
     {
-        if (isset($settings['attribute'])) {
-            $attribute = $settings['attribute'];
-        } else {
-            $attribute = false;
-        }
-
         if (isset($settings['is_new_field']) && $settings['is_new_field']) {
             $isNewField = true;
         } else {
@@ -297,7 +292,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     }
 
     /**
-     * @param $attribute
+     * @param \Alekseon\CustomFormsBuilder\Model\Form\Attribute $attribute
      * @return array
      */
     public function getFieldSettings($attribute)
@@ -317,7 +312,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         }
 
         $formFieldSettings = [
-            'title' => '[' . $frontendInputLabel . '] ' . $attribute->getFrontendLabel(),
+            'title' => '[' . $frontendInputLabel . '] ' . $attribute->getDefaultFrontendLabel(),
             'attribute' => $attribute,
             'identifier' => $identifier,
             'tab_id' => $this->getFieldTabId($attribute)
