@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [102.3.4] - 2023-04-22
+### Fixed
+- fixed mass delete action
+
 ## [102.3.3] - 2023-04-21
 ### Added
 - Created From Store Id for Record entity 
