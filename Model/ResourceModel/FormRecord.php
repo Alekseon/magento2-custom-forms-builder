@@ -67,6 +67,10 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
             return $this;
         }
 
+        if (!$this->getCurrentForm()) {
+            return $this;
+        }
+
         $attributeCollection = $this->getCurrentForm()->getFieldsCollection();
 
         foreach ($attributeCollection as $attribute) {
