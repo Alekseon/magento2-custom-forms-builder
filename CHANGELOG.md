@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Fixed
 - display default label instead of store label as fieldset label
+- stay on same scope view after "save and continue" form
 
 ## [102.3.4] - 2023-04-22
 ### Fixed
