@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 ## [Unreleased]
+### Added
+- github actions
 ### Fixed
 - display default label instead of store label as fieldset label
 - stay on same scope view after "save and continue" form
