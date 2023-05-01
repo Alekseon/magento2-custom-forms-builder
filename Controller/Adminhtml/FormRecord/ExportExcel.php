@@ -3,6 +3,8 @@
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
  */
+declare(strict_types=1);
+
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
 use Magento\Backend\App\Action\Context;

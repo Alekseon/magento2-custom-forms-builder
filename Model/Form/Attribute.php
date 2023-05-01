@@ -3,9 +3,9 @@
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
  */
-namespace Alekseon\CustomFormsBuilder\Model\Form;
+declare(strict_types=1);
 
-use Alekseon\CustomFormsBuilder\Model\Form;
+namespace Alekseon\CustomFormsBuilder\Model\Form;
 
 /**
  * Class Attribute

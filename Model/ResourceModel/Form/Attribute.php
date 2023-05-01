@@ -3,9 +3,9 @@
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
  */
-namespace Alekseon\CustomFormsBuilder\Model\ResourceModel\Form;
+declare(strict_types=1);
 
-use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
+namespace Alekseon\CustomFormsBuilder\Model\ResourceModel\Form;
 
 /**
  * Class Attribute

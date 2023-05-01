@@ -3,9 +3,9 @@
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
  */
-namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit;
+declare(strict_types=1);
 
-use Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields;
+namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit;
 
 /**
  * Class Tabs
