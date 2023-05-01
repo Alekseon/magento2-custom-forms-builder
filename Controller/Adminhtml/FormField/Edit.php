@@ -3,9 +3,9 @@
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
  */
-namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormField;
+declare(strict_types=1);
 
-use Magento\Framework\Controller\ResultFactory;
+namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormField;
 
 /**
  * Class Edit

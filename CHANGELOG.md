@@ -6,11 +6,19 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
-## [Unreleased]
+## [102.3.5] - 2023-05-01
+### Added
+- github actions
+- intoroduced strict_types
+### Fixed
+- display default label instead of store label as fieldset label
+- stay on same scope view after "save and continue" form
+- code quality improvements
 
 ## [102.3.4] - 2023-04-22
 ### Fixed
 - fixed mass delete action
+- remove image file during mass delete action
 
 ## [102.3.3] - 2023-04-21
 ### Added

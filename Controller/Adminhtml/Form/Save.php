@@ -3,6 +3,8 @@
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
  */
+declare(strict_types=1);
+
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form;
 
 /**
@@ -54,7 +56,7 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
             }
         }
         if ($returnToEdit && $form) {
-            return $this->returnResult('*/*/edit', ['entity_id' => $form->getId()]);
+            return $this->returnResult('*/*/edit', ['_current' => true, 'entity_id' => $form->getId()]);
         } else {
             return $this->returnResult('*/*/');
         }

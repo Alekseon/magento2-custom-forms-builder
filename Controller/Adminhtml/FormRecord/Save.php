@@ -3,6 +3,8 @@
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
  */
+declare(strict_types=1);
+
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
 /**
@@ -24,16 +26,13 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
 
         $form = $this->initForm('form_id');
         $data = $this->getRequest()->getPostValue();
-        $recordId = false;
+        $record = $this->initRecord();
 
         if ($data) {
             try {
-                $record = $this->initRecord();
-                $recordId = $record->getId();
                 $record->addData($data);
                 $record->setFormId($form->getId());
                 $record->getResource()->save($record);
-                $recordId = $record->getId();
                 $this->messageManager->addSuccess(__('You saved the record.'));
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
@@ -42,8 +41,8 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
         }
 
         if ($returnToEdit) {
-            if ($recordId) {
-                return $this->returnResult('*/*/edit', ['_current' => true, 'id' => $recordId]);
+            if ($record->getId()) {
+                return $this->returnResult('*/*/edit', ['_current' => true, 'id' => $record->getId()]);
             } else {
                 return $this->returnResult('*/*/new', ['_current' => true]);
             }

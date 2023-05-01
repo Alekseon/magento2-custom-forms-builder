@@ -3,6 +3,8 @@
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
  */
+declare(strict_types=1);
+
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form;
 
 use Alekseon\AlekseonEav\Block\Adminhtml\Entity\Grid as EavGrid;
@@ -99,6 +101,7 @@ class Grid extends EavGrid
     /**
      * @param \Magento\Framework\DataObject $row
      * @return string
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function getRowUrl($row)
     {
