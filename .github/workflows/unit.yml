@@ -1,21 +1,13 @@
-name: Unit Test
-
-on:
-  push:
-    branches:
-      - unit-test
-
+name: ExtDN Actions
+on: [push]
 jobs:
-  unit-test:
-    strategy:
-      matrix:
-        php_version:
-          - 7.4
-          - 8.1
+  unit-tests:
+    name: Magento 2 Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: graycoreio/github-actions-magento2/unit-test@main
-        with:
-          php_version: ${{ matrix.php_version }}
-          composer_auth: ${{ secrets.COMPOSER_AUTH }}
+      - uses: actions/checkout@v3
+      - uses: docker://yireo/github-actions-magento-unit-tests:7.3
+        env:
+          MAGENTO_VERSION: '2.3.4'
+          MODULE_NAME: Alekseon_CustomFormsBuilder
+          COMPOSER_NAME: alekseon/custom-forms-builder
