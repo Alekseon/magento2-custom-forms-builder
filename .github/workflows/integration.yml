@@ -15,13 +15,11 @@ jobs:
           - 8.1
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: graycoreio/github-actions-magento2/unit-test@main
         with:
           php_version: ${{ matrix.php_version }}
           composer_auth: ${{ secrets.COMPOSER_AUTH }}
-          module_name: Alekseon_CustomFormsBuilder
-          composer_name: alekseon/custom-forms-builder
   integration-tests:
     name: Magento 2 Integration Tests
     runs-on: ubuntu-latest
