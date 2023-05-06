@@ -11,3 +11,6 @@ jobs:
           MAGENTO_VERSION: '2.3.4'
           MODULE_NAME: Alekseon_CustomFormsBuilder
           COMPOSER_NAME: alekseon/custom-forms-builder
+          REPOSITORY_URL: https://repo.magento.com/
+          MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
+          MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
