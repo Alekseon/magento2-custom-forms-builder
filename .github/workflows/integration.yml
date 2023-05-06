@@ -2,24 +2,10 @@ name: M2 Integration Tests
 on:
   push:
     branches:
-      - unit-test
+      - master
   pull_request:
 
 jobs:
-  unit-test:
-    name: Magento 2 Unit Tests
-    strategy:
-      matrix:
-        php_version:
-          - 7.4
-          - 8.1
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: graycoreio/github-actions-magento2/unit-test@main
-        with:
-          php_version: ${{ matrix.php_version }}
-          composer_auth: ${{ secrets.COMPOSER_AUTH }}
   integration-tests:
     name: Magento 2 Integration Tests
     runs-on: ubuntu-latest
