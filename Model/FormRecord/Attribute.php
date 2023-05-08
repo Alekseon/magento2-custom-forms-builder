@@ -33,6 +33,12 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
      * @var bool
      */
     protected $canUseGroup = true;
+
+    /**
+     * @var FormRepository
+     */
+    private $formRepository;
+
     /**
      * Attribute constructor.
      * @param \Magento\Framework\Model\Context $context

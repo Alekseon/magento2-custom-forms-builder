@@ -7,10 +7,8 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields;
 
-use Alekseon\AlekseonEav\Model\Attribute;
-use Alekseon\AlekseonEav\Model\Attribute\InputType\Boolean;
 use Alekseon\AlekseonEav\Model\Attribute\InputTypeRepository;
-use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Data\Form\Element\Fieldset;
 
 /**
  * Class Form
@@ -107,34 +105,20 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
 
     /**
      * @param \Magento\Framework\Data\Form $form
+     * @param string $formFieldId
      * @param array $settings
      */
-    protected function addFieldFieldset($form, $formFieldId, $settings = [])
+    protected function addFieldFieldset(\Magento\Framework\Data\Form $form, string $formFieldId, array $settings = [])
     {
-        if (isset($settings['is_new_field']) && $settings['is_new_field']) {
-            $isNewField = true;
-        } else {
-            $isNewField = false;
-        }
-
+        $isNewField = (bool) ($settings['is_new_field'] ?? false);
         $attribute = $settings['attribute'] ?? false;
-
-        $identifierBlock = $this->_layout->createBlock(\Magento\Backend\Block\Template::class)
-            ->setSettings($settings)
-            ->setFormFieldId($formFieldId)
-            ->setTemplate('Alekseon_CustomFormsBuilder::form/edit/field/identifier.phtml');
-
-        $class = 'form_tab_' . ($settings['tab_id'] ?? '');
-        if ($isNewField) {
-            $class = '';
-        }
 
         $fieldset = $form->addFieldset('form_field_' . $formFieldId,
             [
                 'legend' => $settings['title'] ?? 'no title',
                 'collapsable' => true,
-                'header_bar' => $identifierBlock->toHtml(),
-                'class' => $class,
+                'header_bar' => $this->getIdentifierBlockHtml($formFieldId, $settings),
+                'class' => $isNewField ? '' : 'form_tab_' . ($settings['tab_id'] ?? ''),
             ]
         );
 
@@ -220,6 +204,34 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         );
 
+        $this->addInputParamsField($fieldset, $formFieldId, $settings);
+        $this->addActionLinks($fieldset, $formFieldId, $settings);
+    }
+
+    /**
+     * @param string $formFieldId
+     * @param array $settings
+     * @return string
+     */
+    private function getIdentifierBlockHtml(string $formFieldId, array $settings)
+    {
+        /** @var \Magento\Backend\Block\Template $identifierBlock */
+        $identifierBlock = $this->_layout->createBlock(\Magento\Backend\Block\Template::class)
+            ->setSettings($settings)
+            ->setFormFieldId($formFieldId)
+            ->setTemplate('Alekseon_CustomFormsBuilder::form/edit/field/identifier.phtml');
+
+        return $identifierBlock->toHtml();
+    }
+
+    /**
+     * @param Fieldset $fieldset
+     * @param string $formFieldId
+     * @param array $settings
+     * @return void
+     */
+    private function addInputParamsField(Fieldset $fieldset, string $formFieldId, array $settings)
+    {
         $inputParams = $this->getInputParams($settings);
         foreach ($inputParams as $paramCode => $paramConfig) {
             $fieldset->addField('form_field_' . $formFieldId . '_input_params_' . $paramCode, 'text',
@@ -229,6 +241,18 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 ]
             );
         }
+    }
+
+    /**
+     * @param Fieldset $fieldset
+     * @param string $formFieldId
+     * @param array $settings
+     * @return void
+     */
+    private function addActionLinks(Fieldset $fieldset, string $formFieldId, array $settings)
+    {
+        $isNewField = (bool) ($settings['is_new_field'] ?? false);
+        $attribute = $settings['attribute'] ?? false;
 
         $actionLinks = [];
         if (!$isNewField) {
@@ -260,7 +284,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 'text' => implode(' | ', $actionLinks)
             ]
         );
-
     }
 
     /**
@@ -382,7 +405,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ];
 
             $inputParams = $this->getInputParams($settings);
-            foreach ($inputParams as $paramCode => $paramConfig) {
+            foreach (array_keys($inputParams) as $paramCode) {
                 $value = $attribute->getInputParam($paramCode);
                 if ($value !== '') {
                     $this->formValues['form_field_' . $attribute->getId() . '_input_params_' . $paramCode] = $value;

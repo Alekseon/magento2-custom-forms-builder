@@ -39,6 +39,7 @@ class InstallSchema implements InstallSchemaInterface
      * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
      * @throws \Zend_Db_Exception
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function install(
         SchemaSetupInterface $setup,

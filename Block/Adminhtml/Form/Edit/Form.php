@@ -14,10 +14,11 @@ namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit;
 class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
 {
     /**
-     * @return mixed|void
+     * @inheritdoc
      */
     public function getDataObject()
     {
+        return false;
     }
 
     /**

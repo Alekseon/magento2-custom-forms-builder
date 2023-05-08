@@ -43,11 +43,12 @@ class UpgradeData implements UpgradeDataInterface
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         if (version_compare($context->getVersion(), '1.0.3', '<')) {
-            $this->addShowInAdminMenuAttribute($setup);
+            $this->addShowInAdminMenuAttribute();
         }
     }
     /**

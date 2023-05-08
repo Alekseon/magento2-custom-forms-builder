@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.6] - 2023-05-08
+### Changed
+- code quality improvements
+
 ## [102.3.5] - 2023-05-01
 ### Added
 - github actions

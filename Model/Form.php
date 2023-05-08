@@ -16,6 +16,7 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 /**
  * Class Form
  * @package Alekseon\CustomFormsBuilder\Model
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterface
 {
@@ -84,16 +85,16 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     }
 
     /**
-     * @return bool
+     * @return void
      */
-    protected function addNewFields()
+    private function addNewFields()
     {
         $formId = $this->getId();
 
         $newFieldsData = $this->getNewFields();
 
         if (!$formId || !is_array($newFieldsData)) {
-            return false;
+            return;
         }
 
         $attributeFactory = $this->recordAttributeRepository->getAttributeFactory();
@@ -143,7 +144,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     /**
      *
      */
-    protected function updateFields()
+    private function updateFields()
     {
         $removedFields = explode(',', $this->getFormRemovedFields());
         $formFields = $this->getFormFields();
@@ -199,19 +200,21 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
         if ($this->formTabs === null) {
             $formTabsCollection = $this->formTabFactory->create()->getCollection()->addFormFilter($this);
             $this->formTabs = [];
+            $lastTab = false;
             foreach ($formTabsCollection as $tab) {
                 $this->formTabs[$tab->getId()] = $tab;
+                $lastTab = $tab;
             }
 
-            if (empty($this->formTabs)) {
-                $tab = $this->addFormTab(
+            if (!$lastTab) {
+                $lastTab = $this->addFormTab(
                     [
                         'label' => __(self::DEFAULT_FORM_TAB_LABEL),
                     ]
                 );
             }
 
-            $tab->setIsLastTab(true);
+            $lastTab->setIsLastTab(true);
         }
 
         return $this->formTabs;

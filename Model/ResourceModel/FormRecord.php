@@ -111,7 +111,7 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
     ) {
         $fileNameParts = explode('.', $fileName);
         $ext = end($fileNameParts);
-        return md5($attribute->getAttributeCode() . $object->getId() . time()) . '.' . $ext;
+        return hash('sha256', $attribute->getAttributeCode() . $object->getId() . time()) . '.' . $ext;
     }
 
     /**
@@ -122,7 +122,7 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
         $imagesDirName = parent::getImagesDirName();
         $form = $this->getCurrentForm();
         if ($form) {
-            return $imagesDirName . '/' . substr(md5($form->getCreatedAt() . $form->getId()), 0, 10);
+            return $imagesDirName . '/' . substr(hash('sha256', $form->getCreatedAt() . $form->getId()), 0, 10);
         }
 
         return $imagesDirName;
