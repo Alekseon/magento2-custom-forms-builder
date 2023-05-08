@@ -42,23 +42,17 @@ class FieldOptionSources
     public function getOptionSourceByCode($code)
     {
         $optionsSources = $this->getOptionSources();
-        if (isset($optionsSources[$code])) {
-            return $optionsSources[$code];
-        }
-        return false;
+        return $optionsSources[$code] ?? false;
     }
 
     /**
      * @param $sourceModel
-     * @return bool
+     * @return string | false
      */
     public function getCodeBySourceModel($sourceModel)
     {
         $this->getOptionSources();
-        if (isset($this->codesBySourceModel[$sourceModel])) {
-            return $this->codesBySourceModel[$sourceModel];
-        }
-        return false;
+        return $this->codesBySourceModel[$sourceModel] ?? false;
     }
 
     /**

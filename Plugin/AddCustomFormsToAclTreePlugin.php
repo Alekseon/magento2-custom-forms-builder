@@ -41,10 +41,10 @@ class AddCustomFormsToAclTreePlugin
      * @param $tree
      * @return mixed
      * @throws \Magento\Framework\Exception\LocalizedException
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterBuild(TreeBuilder $treeBuilder, $result)
     {
-
         foreach ($result as $key => $resultElement) {
             if ($resultElement['id'] == 'Alekseon_CustomFormsBuilder::custom_forms') {
 

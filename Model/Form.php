@@ -16,6 +16,7 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 /**
  * Class Form
  * @package Alekseon\CustomFormsBuilder\Model
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterface
 {

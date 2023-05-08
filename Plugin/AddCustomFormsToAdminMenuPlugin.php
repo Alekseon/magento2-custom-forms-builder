@@ -41,6 +41,7 @@ class AddCustomFormsToAdminMenuPlugin
      * @param $menu
      * @return mixed
      * @throws \Magento\Framework\Exception\LocalizedException
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterGetResult($builder, $menu)
     {
