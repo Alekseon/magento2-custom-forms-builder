@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 ## [102.3.5] - 2023-05-01
 ### Added
 - github actions
-- intoroduced strict_types
+- introduced strict_types
 ### Fixed
 - display default label instead of store label as fieldset label
 - stay on same scope view after "save and continue" form
