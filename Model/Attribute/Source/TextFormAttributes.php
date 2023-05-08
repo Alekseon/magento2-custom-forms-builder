@@ -16,6 +16,11 @@ use Alekseon\CustomFormsBuilder\Model\Form;
 class TextFormAttributes extends \Alekseon\AlekseonEav\Model\Attribute\Source\AbstractSource
 {
     /**
+     * @var \Magento\Framework\Registry
+     */
+    private $coreRegistry;
+
+    /**
      * TextFormAttributes constructor.
      * @param \Magento\Framework\Registry $coreRegistry
      */

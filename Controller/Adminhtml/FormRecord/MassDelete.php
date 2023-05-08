@@ -18,14 +18,15 @@ use Magento\Framework\Exception\LocalizedException;
 class MassDelete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
 {
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return \Magento\Framework\Controller\ResultInterface | void
      */
     public function execute()
     {
         $form = $this->initForm();
 
         if (!$form->getId()) {
-            return $this->_forward('noroute');
+            $this->_forward('noroute');
+            return;
         }
 
         $recordIds = $this->getRequest()->getParam('records');

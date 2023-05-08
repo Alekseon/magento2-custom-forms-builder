@@ -16,14 +16,16 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 class ExportCsv extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
 {
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return \Magento\Framework\App\ResponseInterface | void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute()
     {
         $form = $this->initForm();
 
         if (!$form->getId()) {
-            return $this->_forward('noroute');
+            $this->_forward('noroute');
+            return;
         }
 
         $fileName = 'export_form_' . $form->getId() . '.csv';

@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
-use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
@@ -17,7 +16,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 class ExportExcel extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
 {
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return \Magento\Framework\App\ResponseInterface | void
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute()
@@ -25,7 +24,8 @@ class ExportExcel extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
         $form = $this->initForm();
 
         if (!$form->getId()) {
-            return $this->_forward('noroute');
+            $this->_forward('noroute');
+            return;
         }
 
         $fileName = 'export_form_' . $form->getId() . '.xml';

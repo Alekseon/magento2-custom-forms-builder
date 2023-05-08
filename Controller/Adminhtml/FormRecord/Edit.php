@@ -14,7 +14,7 @@ namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 class Edit extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
 {
     /**
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return void
      */
     public function execute()
     {

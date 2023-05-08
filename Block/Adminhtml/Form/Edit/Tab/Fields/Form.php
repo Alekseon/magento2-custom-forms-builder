@@ -7,10 +7,7 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields;
 
-use Alekseon\AlekseonEav\Model\Attribute;
-use Alekseon\AlekseonEav\Model\Attribute\InputType\Boolean;
 use Alekseon\AlekseonEav\Model\Attribute\InputTypeRepository;
-use Magento\Framework\Data\Collection\AbstractDb;
 
 /**
  * Class Form

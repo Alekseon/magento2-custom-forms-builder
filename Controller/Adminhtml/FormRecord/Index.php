@@ -33,7 +33,8 @@ class Index extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
         $form = $this->initForm();
 
         if (!$form->getId()) {
-            return $this->_forward('noroute');
+            $this->_forward('noroute');
+            return;
         }
 
         $this->_initAction();
@@ -42,7 +43,6 @@ class Index extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
             $this->getResponse()->setBody(
                 $this->_view->getLayout()->getBlock('grid')->toHtml()
             );
-            return;
         } else {
             $this->_view->getPage()->getConfig()->getTitle()->prepend($form->getTitle());
             $this->_view->renderLayout();
