@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord;
 
-use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
 use Alekseon\AlekseonEav\Block\Adminhtml\Entity\Grid as EavGrid;
 use Alekseon\CustomFormsBuilder\Model\Form;
 
@@ -110,23 +109,24 @@ class Grid extends EavGrid
      */
     protected function _prepareMassaction()
     {
-        $this->setMassactionIdField('entity_id');
-        $this->getMassactionBlock()->setFormFieldName('records');
+        if (!$this->getCurrentForm()->getDeleteRecordDisallowedFlag()) {
+            $this->setMassactionIdField('entity_id');
+            $this->getMassactionBlock()->setFormFieldName('records');
 
-        $this->getMassactionBlock()->addItem(
-            'delete',
-            [
-                'label' => __('Delete'),
-                'url' => $this->getUrl(
-                    '*/*/massDelete',
-                    [
-                        'id' => $this->getCurrentForm()->getId(),
-                    ]
-                ),
-                'confirm' => __('Are you sure?')
-            ]
-        );
-
+            $this->getMassactionBlock()->addItem(
+                'delete',
+                [
+                    'label' => __('Delete'),
+                    'url' => $this->getUrl(
+                        '*/*/massDelete',
+                        [
+                            'id' => $this->getCurrentForm()->getId(),
+                        ]
+                    ),
+                    'confirm' => __('Are you sure?')
+                ]
+            );
+        }
     }
 
     /**

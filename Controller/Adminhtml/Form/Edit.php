@@ -7,11 +7,13 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form;
 
+use Magento\Framework\App\Action\HttpGetActionInterface;
+
 /**
  * Class Edit
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
  */
-class Edit extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
+class Edit extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implements HttpGetActionInterface
 {
     /**
      * @return void

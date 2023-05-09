@@ -7,14 +7,16 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
+use Magento\Framework\App\Action\HttpPostActionInterface;
+
 /**
  * Class Delete
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
  */
-class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
+class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord implements HttpPostActionInterface
 {
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|mixed
+     * @return \Magento\Framework\App\ResponseInterface
      */
     public function execute()
     {
@@ -23,15 +25,13 @@ class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecor
             $record = $this->initRecord();
             if ($record->getId()) {
                 $record->delete();
-                $this->messageManager->addSuccess(__('You deleted the record.'));
+                $this->messageManager->addSuccessMessage(__('You deleted the record.'));
             }
             return $this->returnResult('*/*', ['id' => $form->getId()]);
         } catch (\Exception $e) {
-            $this->messageManager->addError($e->getMessage());
+            $this->messageManager->addErrorMessage($e->getMessage());
             return $this->returnResult('*/*', ['id' => $form->getId()]);
         }
-        $this->messageManager->addError(__('We can\'t find an record to delete.'));
-        return $this->returnResult('*/*', ['id' => $form->getId()]);
     }
 
     /**

@@ -7,11 +7,13 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormField;
 
+use Magento\Framework\App\Action\HttpPostActionInterface;
+
 /**
  * Class Save
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormField
  */
-class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormField
+class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormField implements HttpPostActionInterface
 {
     /**
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|mixed
@@ -25,9 +27,9 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormField
             $attribute->addData($data);
             try {
                 $this->attributeRepository->save($attribute);
-                $this->messageManager->addSuccess(__('You saved the form field.'));
+                $this->messageManager->addSuccessMessage(__('You saved the form field.'));
             } catch (\Exception $e) {
-                $this->messageManager->addError($e->getMessage());
+                $this->messageManager->addErrorMessage($e->getMessage());
             }
             return $this->returnResult('*/form/edit', ['entity_id' => $attribute->getFormId()]);
         }

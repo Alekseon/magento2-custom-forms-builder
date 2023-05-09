@@ -6,6 +6,12 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.7] - 2023-05-09
+### Changed
+- code quality improvements
+### Fixed
+- hide delete massaction if no permisstion set
+
 ## [102.3.6] - 2023-05-08
 ### Changed
 - code quality improvements
@@ -13,7 +19,7 @@ All notable changes to this project will be documented in this file.
 ## [102.3.5] - 2023-05-01
 ### Added
 - github actions
-- intoroduced strict_types
+- introduced strict_types
 ### Fixed
 - display default label instead of store label as fieldset label
 - stay on same scope view after "save and continue" form

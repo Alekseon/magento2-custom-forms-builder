@@ -7,14 +7,16 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form;
 
+use Magento\Framework\App\Action\HttpPostActionInterface;
+
 /**
  * Class Delete
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
  */
-class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
+class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implements HttpPostActionInterface
 {
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|mixed
+     * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
@@ -22,14 +24,14 @@ class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
         if ($form->getId()) {
             try {
                 $form->delete();
-                $this->messageManager->addSuccess(__('You deleted the form.'));
+                $this->messageManager->addSuccessMessage(__('You deleted the form.'));
                 return $this->returnResult('*/*/', []);
             } catch (\Exception $e) {
-                $this->messageManager->addError($e->getMessage());
+                $this->messageManager->addErrorMessage($e->getMessage());
                 return $this->returnResult('*/*/', []);
             }
         }
-        $this->messageManager->addError(__('We can\'t find an form to delete.'));
-        return $this->returnResult('*/*/', []);
+        $this->messageManager->addErrorMessage(__('We can\'t find an form to delete.'));
+        return $this->returnResult('*/*/');
     }
 }

@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml;
 
+use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 
@@ -32,6 +33,10 @@ abstract class FormRecord extends \Magento\Backend\App\Action
      * @var \Magento\Framework\App\Response\Http\FileFactory
      */
     protected $fileFactory;
+    /**
+     * @var DataPersistorInterface
+     */
+    protected $dataPersistor;
 
     /**
      * FormRecord constructor.
@@ -39,18 +44,21 @@ abstract class FormRecord extends \Magento\Backend\App\Action
      * @param \Magento\Framework\Registry $coreRegistry
      * @param \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository
      * @param \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory
+     * @param DataPersistorInterface $dataPersistor
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Registry $coreRegistry,
         \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository,
         \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory,
-        \Magento\Framework\App\Response\Http\FileFactory $fileFactory
+        \Magento\Framework\App\Response\Http\FileFactory $fileFactory,
+        DataPersistorInterface $dataPersistor
     ) {
         $this->coreRegistry = $coreRegistry;
         $this->formRepository = $formRepository;
         $this->formRecordFactory = $formRecordFactory;
         $this->fileFactory = $fileFactory;
+        $this->dataPersistor = $dataPersistor;
         parent::__construct($context);
     }
 
@@ -95,6 +103,14 @@ abstract class FormRecord extends \Magento\Backend\App\Action
             $fromId = $this->getRequest()->getParam($requestParam, false);
             $storeId = $this->getRequest()->getParam('store', null);
             $form = $this->formRepository->getById($fromId, $storeId, true);
+
+            if (!$this->isSaveRecordAllowed($form)) {
+                $form->setSaveRecordDisallowedFlag(true);
+            }
+            if (!$this->isDeleteRecordAllowed($form)) {
+                $form->setDeleteRecordDisallowedFlag(true);
+            }
+
             $this->coreRegistry->register('current_form', $form);
         }
         return $form;
@@ -106,7 +122,7 @@ abstract class FormRecord extends \Magento\Backend\App\Action
      * @return \Alekseon\CustomFormsBuilder\Model\FormRecord
      * @throws LocalizedException
      */
-    protected function initRecord($requestParam = 'id', $formRequestParam = 'form_id')
+    protected function initRecord(string $requestParam = 'id', string $formRequestParam = 'form_id')
     {
         $record = $this->coreRegistry->registry('current_record');
         $form = $this->initForm($formRequestParam);
@@ -116,6 +132,13 @@ abstract class FormRecord extends \Magento\Backend\App\Action
             if (!$record->getId()) {
                 $record->setFormId($form->getId());
             }
+
+            $data = $this->dataPersistor->get('custom_form_record');
+            if (!empty($data)) {
+                $record->addData($data);
+                $this->dataPersistor->clear('custom_form_record');
+            }
+
             $this->coreRegistry->register('current_record', $record);
         }
 
@@ -146,5 +169,27 @@ abstract class FormRecord extends \Magento\Backend\App\Action
     protected function returnResult($path = '', array $params = [])
     {
         return $this->resultFactory->create(ResultFactory::TYPE_REDIRECT)->setPath($path, $params);
+    }
+
+    /**
+     *
+     */
+    private function isSaveRecordAllowed(\Alekseon\CustomFormsBuilder\Model\Form $form)
+    {
+        $manageResource = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+        if ($this->_authorization->isAllowed($manageResource)) {
+            return true;
+        }
+
+        $resource = 'Alekseon_CustomFormsBuilder::custom_form_' . $form->getId() . '_save';
+        return $this->_authorization->isAllowed($resource);
+    }
+
+    /**
+     *
+     */
+    private function isDeleteRecordAllowed(\Alekseon\CustomFormsBuilder\Model\Form $form)
+    {
+        return $this->isSaveRecordAllowed($form);
     }
 }

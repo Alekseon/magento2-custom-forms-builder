@@ -7,11 +7,13 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
+use Magento\Framework\App\Action\HttpPostActionInterface;
+
 /**
  * Class Save
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
  */
-class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
+class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord implements HttpPostActionInterface
 {
     /**
      * @return mixed
@@ -33,9 +35,11 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
                 $record->addData($data);
                 $record->setFormId($form->getId());
                 $record->getResource()->save($record);
-                $this->messageManager->addSuccess(__('You saved the record.'));
+                $this->dataPersistor->clear('custom_form_record');
+                $this->messageManager->addSuccessMessage(__('You saved the record.'));
             } catch (\Exception $e) {
-                $this->messageManager->addError($e->getMessage());
+                $this->dataPersistor->set('custom_form_record', $data);
+                $this->messageManager->addErrorMessage($e->getMessage());
                 $returnToEdit = true;
             }
         }

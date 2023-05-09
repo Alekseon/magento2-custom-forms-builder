@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
 use Alekseon\CustomFormsBuilder\Model\Form;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 
@@ -15,7 +16,7 @@ use Magento\Framework\Exception\LocalizedException;
  * Class MassDelete
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
  */
-class MassDelete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
+class MassDelete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord implements HttpPostActionInterface
 {
     /**
      * @return \Magento\Framework\Controller\ResultInterface | void
@@ -70,5 +71,14 @@ class MassDelete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormR
         );
 
         return $collection;
+    }
+
+    /**
+     * @param $form
+     * @return string
+     */
+    protected function getIsAllowedResource($form)
+    {
+        return 'Alekseon_CustomFormsBuilder::custom_form_' . $form->getId() . '_save';
     }
 }

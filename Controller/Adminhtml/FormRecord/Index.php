@@ -8,11 +8,15 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+
 /**
  * Class Index
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
  */
 class Index extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
+    implements HttpPostActionInterface, HttpGetActionInterface
 {
     /**
      * @param string $formRequestParam

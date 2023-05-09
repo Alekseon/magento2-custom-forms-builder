@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
@@ -14,6 +16,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
  */
 class ExportCsv extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
+    implements HttpPostActionInterface, HttpGetActionInterface
 {
     /**
      * @return \Magento\Framework\App\ResponseInterface | void
@@ -29,6 +32,7 @@ class ExportCsv extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRe
         }
 
         $fileName = 'export_form_' . $form->getId() . '.csv';
+        /** @var \Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Grid $grid */
         $grid = $this->_view->getLayout()->createBlock(\Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Grid::class);
         return $this->fileFactory->create($fileName, $grid->getCsvFile($fileName), DirectoryList::VAR_DIR);
     }
