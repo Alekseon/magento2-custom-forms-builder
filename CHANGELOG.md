@@ -6,6 +6,12 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.7] - 2023-05-09
+### Changed
+- code quality improvements
+### Fixed
+- hide delete massaction if no permisstion set
+
 ## [102.3.6] - 2023-05-08
 ### Changed
 - code quality improvements
