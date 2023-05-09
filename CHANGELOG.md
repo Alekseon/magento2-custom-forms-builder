@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ## [102.3.7] - 2023-05-09
 ### Changed
 - code quality improvements
+- replaced install and upgrade scripts by patches
 ### Fixed
 - hide delete massaction if no permisstion set
 
