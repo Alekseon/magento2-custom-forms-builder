@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
@@ -14,6 +16,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
  */
 class ExportExcel extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
+    implements HttpPostActionInterface, HttpGetActionInterface
 {
     /**
      * @return \Magento\Framework\App\ResponseInterface | void

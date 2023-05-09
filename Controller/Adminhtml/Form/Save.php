@@ -9,12 +9,13 @@ namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form;
 
 use Alekseon\CustomFormsBuilder\Model\Form;
 use Alekseon\CustomFormsBuilder\Model\FormTab;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 
 /**
  * Class Save
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
  */
-class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
+class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implements HttpPostActionInterface
 {
     /**
      * @return mixed
@@ -36,9 +37,9 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
 
             try {
                 $form->getResource()->save($form);
-                $this->messageManager->addSuccess(__('You saved the form.'));
+                $this->messageManager->addSuccessMessage(__('You saved the form.'));
             } catch (\Exception $e) {
-                $this->messageManager->addError($e->getMessage());
+                $this->messageManager->addErrorMessage($e->getMessage());
                 $returnToEdit = true;
             }
         }

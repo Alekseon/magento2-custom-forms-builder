@@ -7,11 +7,13 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord;
 
+use Magento\Framework\App\Action\HttpGetActionInterface;
+
 /**
  * Class Edit
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
  */
-class Edit extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
+class Edit extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord implements HttpGetActionInterface
 {
     /**
      * @return void
@@ -23,7 +25,7 @@ class Edit extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord
         try {
             $record = $this->initRecord();
         } catch (\Exception $e) {
-            $this->messageManager->addError($e->getMessage());
+            $this->messageManager->addErrorMessage($e->getMessage());
             return $this->returnResult('*/*', ['id' => $form->getId()]);
         }
 

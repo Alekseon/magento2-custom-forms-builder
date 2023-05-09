@@ -65,12 +65,12 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             ]
         );
 
-        if (!$this->isSaveRecordAllowed()) {
+        if ($this->getCurrentForm()->getSaveRecordDisallowedFlag()) {
             $this->removeButton('save');
             $this->removeButton('save_and_continue');
         }
 
-        if (!$this->isDeleteRecordAllowed()) {
+        if ($this->getCurrentForm()->getDeleteRecordDisallowedFlag()) {
             $this->removeButton('delete');
         }
     }
@@ -123,27 +123,5 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     public function getCurrentRecord()
     {
         return $this->coreRegistry->registry('current_record');
-    }
-
-    /**
-     *
-     */
-    protected function isSaveRecordAllowed()
-    {
-        $manageResource = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
-        if ($this->_authorization->isAllowed($manageResource)) {
-            return true;
-        }
-
-        $resource = 'Alekseon_CustomFormsBuilder::custom_form_' . $this->getCurrentForm()->getId() . '_save';
-        return $this->_authorization->isAllowed($resource);
-    }
-
-    /**
-     *
-     */
-    protected function isDeleteRecordAllowed()
-    {
-        return $this->isSaveRecordAllowed();
     }
 }

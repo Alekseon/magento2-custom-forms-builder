@@ -8,11 +8,15 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form;
 
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+
 /**
  * Class Index
  * @package Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
  */
 class Index extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form
+    implements HttpPostActionInterface, HttpGetActionInterface
 {
     /**
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
