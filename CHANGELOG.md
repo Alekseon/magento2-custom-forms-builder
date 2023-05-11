@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [Unreleased] - 2023-05-11
+### Added
+- manage form button on records view + acl permission 
+
 ## [102.3.7] - 2023-05-09
 ### Changed
 - code quality improvements

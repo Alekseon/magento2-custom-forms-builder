@@ -43,13 +43,16 @@ class FormInfo extends \Magento\Backend\Block\Template
      */
     public function getCreatedFrom()
     {
-        if ($this->getCurrentRecord()->getCreatedFromStoreId()) {
+        $storeId = $this->getCurrentRecord()->getCreatedFromStoreId();
+        if ($storeId) {
             try {
                 $store = $this->_storeManager->getStore($this->getCurrentRecord()->getCreatedFromStoreId());
                 return $store->getName();
             } catch (\Exception $e) {
                 // do nothing
             }
+        } elseif ($storeId === '0') {
+            return __('All Store Views');
         }
     }
 }

@@ -44,6 +44,16 @@ class FormRecord extends \Magento\Backend\Block\Widget\Grid\Container
         $this->_addButtonLabel = __('Add New Record');
         parent::_construct();
 
+        if (!$this->getCurrentForm()->getManageFormAllowedDisallowedFlag()) {
+            $this->addButton(
+                'manage_form',
+                [
+                    'label' => __('Manage Form'),
+                    'onclick' => 'setLocation(\'' . $this->getManageFormUrl() . '\')',
+                ]
+            );
+        }
+
         if (!$this->isAddNewRecordAllowed()) {
             $this->removeButton('add');
         }
@@ -55,6 +65,17 @@ class FormRecord extends \Magento\Backend\Block\Widget\Grid\Container
     public function getCreateUrl()
     {
         return $this->getUrl('*/*/new', ['form_id' => $this->getCurrentForm()->getId()]);
+    }
+
+    /**
+     * @return string
+     */
+    private function getManageFormUrl()
+    {
+        return $this->getUrl('*/form/edit', [
+            'entity_id' => $this->getCurrentForm()->getId(),
+            'back_to_records' => true,
+        ]);
     }
 
     /**

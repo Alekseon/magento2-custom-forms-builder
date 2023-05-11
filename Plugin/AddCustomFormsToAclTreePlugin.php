@@ -55,7 +55,7 @@ class AddCustomFormsToAclTreePlugin
                 foreach ($formCollection as $form) {
                     $defaultTitle = __('Form #%1', $form->getId());
 
-                    $title = $form->getTitle();
+                    $title = (string) $form->getTitle();
                     if (strlen($title) < 3) {
                         $title = $defaultTitle;
                     }
@@ -72,6 +72,12 @@ class AddCustomFormsToAclTreePlugin
                                 'id' => 'Alekseon_CustomFormsBuilder::custom_form_' . $form->getId() . '_save',
                                 'title' => __('Save'),
                                 'sortOrder' => 1,
+                                'children' => [],
+                            ],
+                            [
+                                'id' => 'Alekseon_CustomFormsBuilder::custom_form_' . $form->getId() . '_manage_form',
+                                'title' => __('Manage Form'),
+                                'sortOrder' => 2,
                                 'children' => [],
                             ]
                         ],

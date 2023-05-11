@@ -85,6 +85,7 @@ class Grid extends EavGrid
                 'header' => __('Created From'),
                 'index' => 'created_from_store_id',
                 'type' => 'store',
+                'renderer' => \Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Grid\Renderer\CreatedFrom::class
             ]
         );
 

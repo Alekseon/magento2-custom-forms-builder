@@ -110,6 +110,9 @@ abstract class FormRecord extends \Magento\Backend\App\Action
             if (!$this->isDeleteRecordAllowed($form)) {
                 $form->setDeleteRecordDisallowedFlag(true);
             }
+            if (!$this->isManageFormAllowed($form)) {
+                $form->setManageFormAllowedDisallowedFlag(true);
+            }
 
             $this->coreRegistry->register('current_form', $form);
         }
@@ -172,7 +175,8 @@ abstract class FormRecord extends \Magento\Backend\App\Action
     }
 
     /**
-     *
+     * @param \Alekseon\CustomFormsBuilder\Model\Form $form
+     * @return bool
      */
     private function isSaveRecordAllowed(\Alekseon\CustomFormsBuilder\Model\Form $form)
     {
@@ -186,7 +190,23 @@ abstract class FormRecord extends \Magento\Backend\App\Action
     }
 
     /**
-     *
+     * @param \Alekseon\CustomFormsBuilder\Model\Form $form
+     * @return bool
+     */
+    private function isManageFormAllowed(\Alekseon\CustomFormsBuilder\Model\Form $form)
+    {
+        $manageResource = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+        if ($this->_authorization->isAllowed($manageResource)) {
+            return true;
+        }
+
+        $resource = 'Alekseon_CustomFormsBuilder::custom_form_' . $form->getId() . '_manage_form';
+        return $this->_authorization->isAllowed($resource);
+    }
+
+    /**
+     * @param \Alekseon\CustomFormsBuilder\Model\Form $form
+     * @return bool
      */
     private function isDeleteRecordAllowed(\Alekseon\CustomFormsBuilder\Model\Form $form)
     {
