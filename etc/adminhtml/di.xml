@@ -7,10 +7,10 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Backend\Model\Menu\Builder">
-        <plugin name="Alekseon_CustomFormsBuilder::AddCustomFormsToAdminMenuPlugin" type="Alekseon\CustomFormsBuilder\Plugin\AddCustomFormsToAdminMenuPlugin"/>
+        <plugin name="Alekseon_CustomFormsBuilder::AddCustomFormsToAdminMenuPlugin" type="Alekseon\CustomFormsBuilder\Plugin\AddCustomFormsToAdminMenuPlugin" sortOrder="100" />
     </type>
     <type name="Magento\Framework\Acl\AclResource\TreeBuilder">
-        <plugin name="Alekseon_CustomFormsBuilder::AddCustomFormsToAclTreePlugin" type="Alekseon\CustomFormsBuilder\Plugin\AddCustomFormsToAclTreePlugin"/>
+        <plugin name="Alekseon_CustomFormsBuilder::AddCustomFormsToAclTreePlugin" type="Alekseon\CustomFormsBuilder\Plugin\AddCustomFormsToAclTreePlugin" sortOrder="100" />
     </type>
     <type name="Alekseon\CustomFormsBuilder\Model\FieldOptionSources">
         <arguments>
