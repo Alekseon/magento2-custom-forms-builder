@@ -25,6 +25,11 @@
                     <item name="source_model" xsi:type="string">Alekseon\AlekseonEav\Model\Attribute\Source\WebsiteAllowCountry</item>
                     <item name="backend_type" xsi:type="string">varchar</item>
                 </item>
+                <item name="yes_no" xsi:type="array">
+                    <item name="label" xsi:type="string">Yes/No</item>
+                    <item name="source_model" xsi:type="string">Alekseon\AlekseonEav\Model\Attribute\Source\YesNo</item>
+                    <item name="backend_type" xsi:type="string">int</item>
+                </item>
             </argument>
         </arguments>
     </type>

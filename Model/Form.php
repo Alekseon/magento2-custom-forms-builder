@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Model;
 
+use Alekseon\CustomFormsBuilder\Model\FormRecord\Attribute;
 use Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\Collection;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\DataObject\IdentityInterface;
@@ -106,6 +107,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
                 $attribute->setVisibleInGrid(true);
                 $attribute->setAttributeCode('field_' . $formId . '_' . time() . '_' . $id);
                 $attribute->setFormId($formId);
+                $this->updateFieldGroupCode($attribute);
                 $this->recordAttributeRepository->save($attribute);
             }
         }
@@ -173,6 +175,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
             $attribute = $this->recordAttributeRepository->getById($attributeId);
             unset($fieldData['frontend_input']);
             $attribute->addData($fieldData);
+            $this->updateFieldGroupCode($attribute);
             $this->recordAttributeRepository->save($attribute);
         }
     }
@@ -258,5 +261,29 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     public function getCacheTags()
     {
         return $this->getIdentities();
+    }
+
+    /**
+     * @param Attribute $recordAttribute
+     * @return void
+     */
+    private function updateFieldGroupCode(Attribute $recordAttribute)
+    {
+        if ($this->getTabIdsMap() === null) {
+            $tabIdsMap = [];
+            $formTabs = $this->getFormTabs();
+            foreach ($formTabs as $tab) {
+                if ($tab->getTmpTabId()) {
+                    $tabIdsMap[$tab->getTmpTabId()] = $tab->getId();
+                };
+            }
+            $this->setTabIdsMap($tabIdsMap);
+        }
+
+        $tabIdsMap = $this->getTabIdsMap();
+        if (isset($tabIdsMap[$recordAttribute->getGroupCode()])) {
+            $newGroupId = $tabIdsMap[$recordAttribute->getGroupCode()];
+            $recordAttribute->setGroupCode($newGroupId);
+        }
     }
 }
