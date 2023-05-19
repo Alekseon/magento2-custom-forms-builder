@@ -64,9 +64,12 @@ class FieldOptionSources
             $this->optionSourcesByCodes = [];
             foreach ($this->optionSources as $code => $data) {
                 $optionSource = new \Magento\Framework\DataObject($data);
-                $optionSource->setCode($code);
-                $this->optionSourcesByCodes[$code] = $optionSource;
-                $this->codesBySourceModel[$optionSource->getSourceModel()] = $code;
+                $sourceModel = $optionSource->getSourceModel();
+                if (class_exists($sourceModel)) {
+                    $optionSource->setCode($code);
+                    $this->optionSourcesByCodes[$code] = $optionSource;
+                    $this->codesBySourceModel[$sourceModel] = $code;
+                }
             }
         }
         return $this->optionSourcesByCodes;

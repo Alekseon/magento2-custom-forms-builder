@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - manage form button on records view + acl permission
 - Yes/No option source
+- check if source model class exists 
 ### Fixed 
 - fix for saving fields in tabs for new forms
 
