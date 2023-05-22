@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.8] - 2023-05-22
+### Added
+- manage form button on records view + acl permission
+- Yes/No option source
+- check if source model class exists 
+### Fixed 
+- fix for saving fields in tabs for new forms
+
 ## [102.3.7] - 2023-05-09
 ### Changed
 - code quality improvements

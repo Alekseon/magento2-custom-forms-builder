@@ -30,6 +30,10 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 
         parent::_construct();
 
+        if (!$this->_authorization->isAllowed('Alekseon_CustomFormsBuilder::manage_custom_forms')) {
+            $this->removeButton('delete');
+        }
+
         $this->addButton(
             'save_and_continue',
             [
@@ -55,5 +59,17 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             '*/*/save',
             ['_current' => true]
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBackUrl()
+    {
+        if ($this->getRequest()->getParam('back_to_records')) {
+            return $this->getUrl('*/formRecord/index', ['id' => $this->getRequest()->getParam('entity_id')]);
+        } else {
+            return parent::getBackUrl();
+        }
     }
 }

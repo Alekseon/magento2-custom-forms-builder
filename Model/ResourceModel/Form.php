@@ -54,6 +54,7 @@ class Form extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
     protected function _afterSave(\Magento\Framework\Model\AbstractModel $object) // @codingStandardsIgnoreLine
     {
         $formTabs = $object->getFormTabs();
+
         if ($formTabs !== null) {
             foreach ($formTabs as $tab) {
                 if ($tab->getDeleted()) {

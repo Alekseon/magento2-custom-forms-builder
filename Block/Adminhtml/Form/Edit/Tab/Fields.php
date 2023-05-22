@@ -123,7 +123,7 @@ class Fields extends \Magento\Backend\Block\Template implements
     }
 
     /**
-     * @return void
+     * @return int | null
      */
     public function getLastTabId()
     {

@@ -47,7 +47,11 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implem
         if ($returnToEdit && $form) {
             return $this->returnResult('*/*/edit', ['_current' => true, 'entity_id' => $form->getId()]);
         } else {
-            return $this->returnResult('*/*/');
+            if ($this->getRequest()->getParam('back_to_records')) {
+                return $this->returnResult('*/formRecord/index', ['id' => $form->getId()]);
+            } else {
+                return $this->returnResult('*/*/');
+            }
         }
     }
 
@@ -72,6 +76,7 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implem
                 if ($tab) {
                     $tab->addData($tabData);
                 } else {
+                    $tabData['tmp_tab_id'] = $tabId;
                     $form->addFormTab($tabData);
                 }
             }
