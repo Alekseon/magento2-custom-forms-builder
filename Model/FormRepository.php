@@ -64,16 +64,17 @@ class FormRepository
     }
 
     /**
-     * @param $identifier
-     * @param null $storeId
+     * @param string $identifier
+     * @param int|null $storeId
      * @param bool $graceful
      * @return Form
      * @throws NoSuchEntityException
      */
-    public function getByIdentifier($identifier, $storeId = null, $graceful = true)
+    public function getByIdentifier(string $identifier, int $storeId = null, bool $graceful = true)
     {
         $storeKey = $storeId ?? 'null';
         if (!isset($this->loadedFormsByIdentifiers[$identifier])) {
+            /** @var Form $form */
             $form = $this->formFactory->create();
             $form->setStoreId($storeId);
             $form->getResource()->load($form, $identifier, 'identifier');

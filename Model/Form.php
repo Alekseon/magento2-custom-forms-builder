@@ -12,12 +12,17 @@ use Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\Collection;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
  * Class Form
  * @package Alekseon\CustomFormsBuilder\Model
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ *
+ * @method bool getCanUseForWidget()
+ * @method string|null  getTitle()
+ * @method string|null getFrontendFormDescription()
+ * @method string|null getIdentifier()
+ * @method bool getEnableMultipleSteps()
  */
 class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterface
 {
@@ -181,27 +186,31 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     }
 
     /**
-     * @return \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
+     * @param bool $withDisabled
+     * @return ResourceModel\FormRecord\Attribute\Collection
      */
-    public function getFieldsCollection($withDisabled = false)
+    public function getFieldsCollection(bool $withDisabled = false): ResourceModel\FormRecord\Attribute\Collection
     {
         $attributeObject = $this->recordAttributeRepository->getAttributeFactory()->create();
+        /** @var ResourceModel\FormRecord\Attribute\Collection $recordAttributeCollection */
         $recordAttributeCollection = $attributeObject->getCollection();
         $recordAttributeCollection->addFieldToFilter('form_id', $this->getId());
         if (!$withDisabled) {
             $recordAttributeCollection->addFieldToFilter('is_enabled', 1);
         }
-        $recordAttributeCollection->setOrder('sort_order', AbstractDb::SORT_ORDER_ASC);
+        $recordAttributeCollection->setOrder('sort_order', \Magento\Framework\Data\Collection::SORT_ORDER_ASC);
         return $recordAttributeCollection;
     }
 
     /**
      * @return array
      */
-    public function getFormTabs()
+    public function getFormTabs(): array
     {
         if ($this->formTabs === null) {
-            $formTabsCollection = $this->formTabFactory->create()->getCollection()->addFormFilter($this);
+            /** @var ResourceModel\FormTab\Collection $formTabsCollection */
+            $formTabsCollection = $this->formTabFactory->create()->getCollection();
+            $formTabsCollection->addFormFilter($this);
             $this->formTabs = [];
             $lastTab = false;
             foreach ($formTabsCollection as $tab) {
@@ -248,7 +257,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     /**
      * @return string[]
      */
-    public function getIdentities()
+    public function getIdentities(): array
     {
         return [
             self::CACHE_TAG . '_' . $this->getId(),
