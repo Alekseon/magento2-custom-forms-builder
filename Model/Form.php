@@ -9,7 +9,6 @@ namespace Alekseon\CustomFormsBuilder\Model;
 
 use Alekseon\CustomFormsBuilder\Model\FormRecord\Attribute;
 use Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\Collection;
-use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 
