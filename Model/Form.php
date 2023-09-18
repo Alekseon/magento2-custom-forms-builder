@@ -235,7 +235,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
      * @param array $tabData
      * @return FormTab
      */
-    public function addFormTab(array $tabData)
+    public function addFormTab(array $tabData = [])
     {
         $this->getFormTabs();
         $tab = $this->formTabFactory->create();

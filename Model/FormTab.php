@@ -14,6 +14,8 @@ use Magento\Framework\View\Element\AbstractBlock;
  * @method bool getIsFirstTab()
  * @method FormTab setIsLastTab(bool $isFirstTab)
  * @method bool getIsLastTab()
+ * @method FormTab setTabSequenceNumber(int $sequenceNumber)
+ * @method int getTabSequenceNumber()
  */
 class FormTab extends \Magento\Framework\Model\AbstractModel
 {
