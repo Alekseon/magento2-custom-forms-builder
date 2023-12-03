@@ -237,7 +237,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             $fieldset->addField('form_field_' . $formFieldId . '_input_params_' . $paramCode, 'text',
                 [
                     'label' => __($paramConfig['label']),
-                    'name' => 'form_fields[' . $formFieldId . '][input_params][' . $paramCode . ']'
+                    'name' => 'form_fields[' . $formFieldId . '][input_params][' . $paramCode . ']',
+                    'note' => isset($paramConfig['note']) ? __($paramConfig['note']) : '',
                 ]
             );
         }

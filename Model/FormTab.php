@@ -7,8 +7,15 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Model;
 
+use Magento\Framework\View\Element\AbstractBlock;
+
 /**
- *
+ * @method FormTab setIsFirstTab(bool $isLastTab))
+ * @method bool getIsFirstTab()
+ * @method FormTab setIsLastTab(bool $isFirstTab)
+ * @method bool getIsLastTab()
+ * @method FormTab setTabSequenceNumber(int $sequenceNumber)
+ * @method int getTabSequenceNumber()
  */
 class FormTab extends \Magento\Framework\Model\AbstractModel
 {

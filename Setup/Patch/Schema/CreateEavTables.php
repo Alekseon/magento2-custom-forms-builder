@@ -52,16 +52,14 @@ class CreateEavTables implements SchemaPatchInterface
             'alekseon_custom_form_attribute',
             'alekseon_custom_form_entity',
             null,
-            'alekseon_custom_form',
-            'entity_id'
+            'alekseon_custom_form'
         );
 
         $eavSetup->createFullEavStructure(
             'alekseon_custom_form_record_attribute',
             'alekseon_custom_form_record_entity',
             null,
-            'alekseon_custom_form_record',
-            'entity_id'
+            'alekseon_custom_form_record'
         );
 
         // fix for old module version

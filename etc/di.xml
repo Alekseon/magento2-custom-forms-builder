@@ -22,6 +22,19 @@
                         </item>
                     </item>
                 </item>
+                <item name="maxFileSizeInMb" xsi:type="array">
+                    <item name="label" xsi:type="string">Max File Size In MB</item>
+                    <item name="factory" xsi:type="object">Alekseon\AlekseonEav\Model\Attribute\InputValidator\MaxFileSizeFactory</item>
+                    <item name="applicable_frontend_inputs" xsi:type="array">
+                        <item name="text" xsi:type="string">image</item>
+                    </item>
+                    <item name="input_params" xsi:type="array">
+                        <item name="maxFileSizeInMb" xsi:type="array">
+                            <item name="label" xsi:type="string">Max Size</item>
+                            <item name="note" xsi:type="string">In Mb</item>
+                        </item>
+                    </item>
+                </item>
             </argument>
         </arguments>
     </type>
