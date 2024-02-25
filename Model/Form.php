@@ -47,6 +47,10 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
      * @var FormRecordFactory
      */
     protected $formRecordFactory;
+    /**
+     * @var ResourceModel\FormRecord\Attribute\Collection
+     */
+    private $fieldsCollection;
 
     /**
      * Form constructor.
@@ -190,15 +194,33 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
      */
     public function getFieldsCollection(bool $withDisabled = false): ResourceModel\FormRecord\Attribute\Collection
     {
-        $attributeObject = $this->recordAttributeRepository->getAttributeFactory()->create();
-        /** @var ResourceModel\FormRecord\Attribute\Collection $recordAttributeCollection */
-        $recordAttributeCollection = $attributeObject->getCollection();
-        $recordAttributeCollection->addFieldToFilter('form_id', $this->getId());
-        if (!$withDisabled) {
-            $recordAttributeCollection->addFieldToFilter('is_enabled', 1);
+        if ($this->fieldsCollection === null) {
+            $isAdmin = $this->_appState->getAreaCode() == \Magento\Framework\App\Area::AREA_ADMINHTML;
+            $attributeObject = $this->recordAttributeRepository->getAttributeFactory()->create();
+            $this->fieldsCollection = $attributeObject->getCollection();
+
+            if (!$withDisabled) {
+                if ($isAdmin) {
+                    $this->fieldsCollection->addFieldToFilter(
+                        'input_visibility',
+                        ['nin' => Attribute::INPUT_VISIBILITY_NONE]
+                    );
+                } else {
+                    $this->fieldsCollection->addFieldToFilter(
+                        'input_visibility',
+                        Attribute::INPUT_VISIBILITY_VISIBILE
+                    );
+                }
+            }
+
+            $this->fieldsCollection->addFieldToFilter('form_id', $this->getId());
+            $this->fieldsCollection->setOrder(
+                'sort_order',
+                \Magento\Framework\Data\Collection::SORT_ORDER_ASC
+            );
+
         }
-        $recordAttributeCollection->setOrder('sort_order', \Magento\Framework\Data\Collection::SORT_ORDER_ASC);
-        return $recordAttributeCollection;
+        return $this->fieldsCollection;
     }
 
     /**
