@@ -123,14 +123,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         );
 
-        $warningsHtml = $this->getFieldWarningsHtml($settings);
-        if ($warningsHtml) {
-            $fieldset->addField('form_field_' . $formFieldId . '_warning', 'note',
-                [
-                    'text' => $warningsHtml
-                ]
-            );
-        }
+        $this->addWarnings($fieldset, $formFieldId, $settings);
 
         $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
             [
@@ -292,19 +285,28 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     }
 
     /**
-     * @param $settings
-     * @return string
+     * @param Fieldset $fieldset
+     * @param string $formFieldId
+     * @param array $settings
+     * @return void
      */
-    protected function getFieldWarningsHtml($settings)
+    private function addWarnings(Fieldset $fieldset, string $formFieldId, array $settings)
     {
-        $html = '';
+        $warningsHtml = '';
         if (isset($settings['warnings']) && is_array($settings['warnings'])) {
             $warnings = $settings['warnings'];
             foreach ($warnings as $warning) {
-                $html .= '<div class="message">' . $warning . '</div>';
+                $warningsHtml .= '<div class="message">' . $warning . '</div>';
             }
         }
-        return $html;
+
+        if ($warningsHtml) {
+            $fieldset->addField('form_field_' . $formFieldId . '_warning', 'note',
+                [
+                    'text' => $warningsHtml
+                ]
+            );
+        }
     }
 
     /**
