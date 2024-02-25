@@ -14,7 +14,7 @@ use Alekseon\AlekseonEav\Setup\EavSchemaSetupFactory;
 /**
  *
  */
-class CreateEavTables implements SchemaPatchInterface
+class CreateEavTablesV2 implements SchemaPatchInterface
 {
     /**
      * @var SchemaSetupInterface
@@ -68,7 +68,7 @@ class CreateEavTables implements SchemaPatchInterface
 
         $this->addFormIdColumn($setup);
         $this->addIdentifierColumn($setup);
-        $this->addIsEnabledColumn($setup);
+        $this->addInputVisibilityColumn($setup);
 
         $this->schemaSetup->endSetup();
     }
@@ -126,18 +126,35 @@ class CreateEavTables implements SchemaPatchInterface
      * @param SchemaSetupInterface $setup
      * @return void
      */
-    private function addIsEnabledColumn(SchemaSetupInterface $setup)
+    private function addInputVisibilityColumn(SchemaSetupInterface $setup)
     {
-        $setup->getConnection()->addColumn(
-            $setup->getTable('alekseon_custom_form_record_attribute'),
-            'is_enabled',
-            [
-                'type' => Table::TYPE_SMALLINT,
-                'comment' => 'Is Enabled',
-                'nullable' => false,
-                'default' => 1,
-            ]
-        );
+        $recordAttributeTable = $setup->getTable('alekseon_custom_form_record_attribute');
+
+        $columnDefinition = [
+            'type' => Table::TYPE_SMALLINT,
+            'comment' => 'Input Visibility',
+            'nullable' => false,
+            'default' => 1,
+        ];
+
+        /**
+         * rename in_enabled column to input_visibility for previous module versions
+         * or add new column for new installations
+         */
+        if ($setup->getConnection()->tableColumnExists($recordAttributeTable, 'is_enabled')) {
+            $setup->getConnection()->changeColumn(
+                $recordAttributeTable,
+                'is_enabled',
+                'input_visibility',
+                $columnDefinition
+            );
+        } else {
+            $setup->getConnection()->addColumn(
+                $recordAttributeTable,
+                'input_visibility',
+                $columnDefinition
+            );
+        }
     }
 
     /**

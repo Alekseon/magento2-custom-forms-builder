@@ -17,6 +17,10 @@ use Alekseon\CustomFormsBuilder\Model\FormRepository;
  */
 class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
 {
+    const INPUT_VISIBILITY_NONE = 0;
+    const INPUT_VISIBILITY_VISIBILE = 1;
+    const INPUT_VISIBILITY_ADMIN_ONLY = 2;
+
     /**
      * @var
      */
@@ -119,5 +123,30 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
         }
 
         return $this->form;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInputVisibility()
+    {
+        $options = $this->getInputVisibilityOptions();
+        $inputVisibility = $this->getData('input_visibility');
+        if (!isset($options[$inputVisibility])) {
+            $inputVisibility = self::INPUT_VISIBILITY_VISIBILE;
+        }
+        return $inputVisibility;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInputVisibilityOptions()
+    {
+        return [
+            self::INPUT_VISIBILITY_VISIBILE => __('Visible'),
+            self::INPUT_VISIBILITY_NONE => __('Not Visible'),
+            self::INPUT_VISIBILITY_ADMIN_ONLY => __('Only for Admin'),
+        ];
     }
 }

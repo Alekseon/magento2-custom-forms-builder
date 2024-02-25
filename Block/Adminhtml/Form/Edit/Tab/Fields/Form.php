@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields;
 
 use Alekseon\AlekseonEav\Model\Attribute\InputTypeRepository;
+use Alekseon\CustomFormsBuilder\Model\FormRecord\Attribute;
 use Magento\Framework\Data\Form\Element\Fieldset;
 
 /**
@@ -67,7 +68,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     }
 
     /**
-     * @return mixed
+     * @return \Alekseon\CustomFormsBuilder\Model\Form
      */
     public function getDataObject()
     {
@@ -144,12 +145,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "group_code");
 
-        $fieldset->addField('form_field_' . $formFieldId . '_is_enabled', 'hidden',
-            [
-                'name' => 'form_fields[' . $formFieldId . '][is_enabled]'
-            ]
-        );
-
         $fieldset->addField('form_field_' . $formFieldId . '_frontend_label', 'text',
             [
                 'label' => __('Field Label'),
@@ -167,6 +162,15 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 ]
             )->addCustomAttribute("data-fieldcode", "frontend_input");
         }
+
+        $fieldset->addField('form_field_' . $formFieldId . '_input_visibility', 'select',
+            [
+                'label' => __('Input Visibility'),
+                'name' => 'form_fields[' . $formFieldId . '][input_visibility]',
+                'values' => $this->getDataObject()->getFieldsCollection()->getFirstItem()->getInputVisibilityOptions(),
+                'value' => $isNewField ? Attribute::INPUT_VISIBILITY_VISIBILE : $attribute->getInputVisibility(),
+            ]
+        )->addCustomAttribute("data-fieldcode", "input_visibility");
 
         $fieldset->addField('form_field_' . $formFieldId . '_is_required', 'select',
             [
@@ -253,8 +257,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     private function addActionLinks(Fieldset $fieldset, string $formFieldId, array $settings)
     {
         $isNewField = (bool) ($settings['is_new_field'] ?? false);
-        $attribute = $settings['attribute'] ?? false;
-
         $actionLinks = [];
         if (!$isNewField) {
             $actionLinks[] = '<a href="'
@@ -262,18 +264,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 . '" target="_blank" class="edit-field-button">'
                 . __('Advanced Settings')
                 . '</a>';
-
-            if ($attribute->getIsEnabled()) {
-                $actionLinks[] = '<span class="enable-disable-field-buttons">'
-                    . '<a href="#" class="disable-button" >' . __('Disable') . '</a>'
-                    . '<a href="#" class="enable-button" style="display: none">' . __('Enable') . '</a>'
-                    . '</span>';
-            } else {
-                $actionLinks[] = '<span class="enable-disable-field-buttons">'
-                    . '<a href="#" class="disable-button" style="display: none">' . __('Disable') . '</a>'
-                    . '<a href="#" class="enable-button">' . __('Enable') . '</a>'
-                    . '</span>';
-            }
         }
 
         $actionLinks[] = '<a class="form-field-change-tab-button" href="">' . __('Change tab')
