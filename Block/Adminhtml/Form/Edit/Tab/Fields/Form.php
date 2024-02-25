@@ -2,6 +2,8 @@
 /**
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 declare(strict_types=1);
 
