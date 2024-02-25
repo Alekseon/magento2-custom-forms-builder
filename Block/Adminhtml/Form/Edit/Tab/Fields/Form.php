@@ -2,8 +2,6 @@
 /**
  * Copyright © Alekseon sp. z o.o.
  * http://www.alekseon.com/
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 declare(strict_types=1);
 
@@ -16,6 +14,8 @@ use Magento\Framework\Data\Form\Element\Fieldset;
 /**
  * Class Form
  * @package Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
 {
