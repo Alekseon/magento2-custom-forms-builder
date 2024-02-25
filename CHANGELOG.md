@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.10] - 2024-02-25
+### Changed
+- Raplaced "Is Enabled" by "Input Visibility", it allows to set input visibility to: visible, only for admin or none
+
 ## [102.3.9] - 2023-12-03
 ### Added
 - Max Size param (for file input validator) 

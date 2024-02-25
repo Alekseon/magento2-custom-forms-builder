@@ -8,7 +8,7 @@
         "alekseon/widget-forms-statistics": "*"
     },
     "type": "magento2-module",
-    "version": "102.3.9",
+    "version": "102.3.10",
     "license": [
         "OSL-3.0",
         "AFL-3.0"
