@@ -115,7 +115,7 @@ class General extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form imp
                 'name' => 'admin_note',
                 'label' => __('Admin Note'),
                 'title' => __('Admin Note'),
-                'note' => __('Note is not visible on forntend.'),
+                'note' => __('Note is not visible on frontend.'),
             ]
         );
 
