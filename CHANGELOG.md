@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.11] - 2024-05-09
+### Fixed
+- make "Admin Note" translatable
+
 ## [102.3.10] - 2024-02-25
 ### Changed
 - Raplaced "Is Enabled" by "Input Visibility", it allows to set input visibility to: visible, only for admin or none
