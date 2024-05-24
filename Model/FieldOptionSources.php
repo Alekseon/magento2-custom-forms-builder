@@ -89,7 +89,7 @@ class FieldOptionSources
         foreach ($options as $code => $option) {
             $result[] = [
                 'value' => $code,
-                'label' => $option->getLabel(),
+                'label' => __($option->getLabel()),
             ];
         }
         return $result;

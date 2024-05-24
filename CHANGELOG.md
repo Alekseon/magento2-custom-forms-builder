@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.12] - 2024-05-24
+### Fixed
+- Translate labels (https://github.com/Alekseon/AlekseonEav/issues/45)
+
 ## [102.3.11] - 2024-05-09
 ### Fixed
 - make "Admin Note" translatable
