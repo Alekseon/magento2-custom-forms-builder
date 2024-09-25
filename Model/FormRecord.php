@@ -84,12 +84,11 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
         if (in_array($attributeCode, $notMappedKeys)) {
            return $attributeCode;
         }
+        if (!$this->getFormId()) {
+            return $attributeCode;
+        }
         if ($this->fieldIdentifierMap === null) {
-            if ($this->getFormId()) {
-                $this->setFieldIdentifierMap($this->getForm());
-            } else {
-                $this->fieldIdentifierMap = [];
-            }
+            $this->setFieldIdentifierMap($this->getForm());
         }
         if (isset($this->fieldIdentifierMap[$attributeCode])) {
             $attributeCode = $this->fieldIdentifierMap[$attributeCode];

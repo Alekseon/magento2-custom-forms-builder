@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.13] - 2024-09-25
+### Fixed
+- fix getMappedAttributeCode method
+
 ## [102.3.12] - 2024-05-24
 ### Fixed
 - Translate labels (https://github.com/Alekseon/AlekseonEav/issues/45)
