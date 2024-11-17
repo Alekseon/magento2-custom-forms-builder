@@ -35,6 +35,13 @@
                         </item>
                     </item>
                 </item>
+                <item name="postalCode" xsi:type="array">
+                    <item name="label" xsi:type="string">Postal Code</item>
+                    <item name="factory" xsi:type="object">Alekseon\CustomFormsBuilder\Model\Attribute\InputValidator\PostalCodeFactory</item>
+                    <item name="applicable_frontend_inputs" xsi:type="array">
+                        <item name="text" xsi:type="string">text</item>
+                    </item>
+                </item>
             </argument>
         </arguments>
     </type>

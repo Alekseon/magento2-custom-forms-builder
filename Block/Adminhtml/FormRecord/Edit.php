@@ -73,6 +73,9 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         if ($this->getCurrentForm()->getDeleteRecordDisallowedFlag()) {
             $this->removeButton('delete');
         }
+
+        $this->_formInitScripts[] = 'window.alekseonCustomFormsPostalCodes = '
+            . $this->getPostCodeConfig()->getSerializedPostCodes() . ';';
     }
 
     /**
