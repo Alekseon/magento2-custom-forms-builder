@@ -114,6 +114,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     protected function addFieldFieldset(\Magento\Framework\Data\Form $form, string $formFieldId, array $settings = [])
     {
         $isNewField = (bool) ($settings['is_new_field'] ?? false);
+        /** @var \Alekseon\AlekseonEav\Model\Attribute $attribute */
         $attribute = $settings['attribute'] ?? false;
 
         $fieldset = $form->addFieldset('form_field_' . $formFieldId,
@@ -233,12 +234,14 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     {
         $inputParams = $this->getInputParams($settings);
         foreach ($inputParams as $paramCode => $paramConfig) {
-            $fieldset->addField('form_field_' . $formFieldId . '_input_params_' . $paramCode, 'text',
-                [
-                    'label' => __($paramConfig['label']),
-                    'name' => 'form_fields[' . $formFieldId . '][input_params][' . $paramCode . ']',
-                    'note' => isset($paramConfig['note']) ? __($paramConfig['note']) : '',
-                ]
+            $type = $paramConfig['type'] ?? 'text';
+            $config = $paramConfig;
+            $config['label'] = __($config['label'] ?? '');
+            $config['note'] = __($config['note'] ?? '');
+            $config['name'] = 'form_fields[' . $formFieldId . '][input_params][' . $paramCode . ']';
+            $fieldset->addField('form_field_' . $formFieldId . '_input_params_' . $paramCode,
+                $type,
+                $config
             );
         }
     }
@@ -279,6 +282,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     protected function getInputParams($settings)
     {
         if (isset($settings['attribute'])) {
+            /** @var \Alekseon\AlekseonEav\Model\Attribute $attribute */
             $attribute = $settings['attribute'];
             return $attribute->getInputParamsConfig();
         }

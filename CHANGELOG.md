@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.14] - 2024-11-17
+### Added
+- postal code validator
+
 ## [102.3.13] - 2024-09-25
 ### Fixed
 - fix getMappedAttributeCode method
