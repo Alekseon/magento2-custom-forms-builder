@@ -7,19 +7,57 @@ define(['jquery'], function($) {
 
     return function(target) {
         $.validator.addMethod(
-            'alekseon-validate-postal-code',
-            function(postCode, element) {
-                window.alekseonValidatedPostCodeExample = [];
-                var countryFieldIdRegexp, postalCodes, countryFieldId, countryId, patterns, pattern, regex;
-                countryFieldIdRegexp = new RegExp(/^alekseon-validate-postal-code-country-field-(.*)$/);
-                postalCodes = window.alekseonCustomFormsPostalCodes;
+            'alekseon-validate-form-filesize',
+            function(v, element, params) {
+                const maxSize = params * 1024;
+                const file = element.files[0];
 
-                $.each(element.className.split(' '), function (index, name) {
-                    if (name.match(countryFieldIdRegexp)) {
-                        countryFieldId = name.split('-').pop();
-                        countryId = $('#' + countryFieldId).val();
-                    }
-                });
+                if(!file) {
+                    return true
+                }
+
+                const fsize = Math.round((file.size / 1024));
+                if(fsize > maxSize) {
+                    return false;
+                }
+                return true;
+            },
+            $.mage.__('File size too large.')
+        );
+
+        $.validator.addMethod(
+            'alekseon-validate-form-filetype',
+            function(v, element, params = 'image') {
+                const file = element.files[0];
+
+                if(!file) {
+                    return true;
+                }
+
+                const pattern = new RegExp(`^${params}\/.+`);
+
+                if(!pattern.test(file.type)) {
+                    return false;
+                }
+                return true;
+            },
+            $.mage.__('File is not an image.')
+        );
+        $.validator.addMethod(
+            'alekseon-validate-postal-code',
+            function(postCode, element, params) {
+                var dataValidate, postalCodes, countryFieldId, countryId, patterns, pattern, regex;
+                // for admin
+                countryFieldId = $(element).attr('data-validation-params');
+                if (countryFieldId === undefined) {
+                    // for frontend
+                    dataValidate = JSON.parse($(element).attr('data-validate'));
+                    countryFieldId = dataValidate['alekseon-validate-postal-code'];
+                }
+
+                window.alekseonValidatedPostCodeExample = [];
+                postalCodes = window.alekseonCustomFormsPostalCodes;
+                countryId = $('#' + countryFieldId).val();
 
                 if (postCode && countryId && postalCodes.hasOwnProperty(countryId)) {
                     patterns = postalCodes[countryId];

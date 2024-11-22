@@ -7,12 +7,8 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Model\Attribute\InputValidator;
 
-use Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form;
 use Alekseon\AlekseonEav\Model\Attribute\InputValidator\AbstractValidator;
 use Alekseon\CustomFormsBuilder\Model\Attribute\Source\SelectFormAttributes;
-use Alekseon\CustomFormsBuilder\Model\FormRecord\Attribute;
-use Magento\Backend\Block\Template;
-use Magento\Framework\Data\Form\Element\AbstractElement;
 
 /**
  * Class MaxLength
@@ -54,9 +50,31 @@ class PostalCode extends AbstractValidator
     {
         $countryFieldId = $this->attribute->getInputParam('post_code_country_field_id');
         if ($countryFieldId) {
-            return 'alekseon-validate-postal-code alekseon-validate-postal-code-country-field-' . $countryFieldId;
+            return 'alekseon-validate-postal-code';
         }
-        return '';
+        return parent::getValidationFieldClass();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDataValidateParams()
+    {
+        $countryFieldId = $this->attribute->getInputParam('post_code_country_field_id');
+        if ($countryFieldId) {
+            return [
+                'alekseon-validate-postal-code' => $countryFieldId,
+            ];
+        }
+        return parent::getDataValidateParams();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAdminDataValidateParams()
+    {
+        return $this->attribute->getInputParam('post_code_country_field_id');
     }
 
     /**

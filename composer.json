@@ -2,7 +2,7 @@
     "name": "alekseon/custom-forms-builder",
     "description": "N/A",
     "require": {
-        "alekseon/alekseon-eav": "^101.2.8",
+        "alekseon/alekseon-eav": "^101.2.15",
         "alekseon/custom-forms-frontend": "*",
         "alekseon/custom-forms-email-notification": "*",
         "alekseon/widget-forms-statistics": "*"
