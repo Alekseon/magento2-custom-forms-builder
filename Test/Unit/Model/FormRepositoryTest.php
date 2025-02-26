@@ -57,11 +57,10 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     *
-     * @expectedException \Magento\Framework\Exception\NoSuchEntityException
      */
     public function testGetByIdException()
     {
+        $this->expectException('Magento\Framework\Exception\NoSuchEntityException');
         $formId = '123';
 
         $this->form->expects($this->once())
