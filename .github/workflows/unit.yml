@@ -4,13 +4,14 @@ jobs:
   unit-tests:
     name: Magento 2 Unit Tests
     runs-on: ubuntu-latest
+    env:
+      MODULE_NAME: Alekseon_CustomFormsBuilder
+      COMPOSER_NAME: alekseon/custom-forms-builder
+      REPOSITORY_URL: https://repo.magento.com/
+      MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
+      MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
-      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
+      - uses: extdn/github-actions-m2/magento-unit-tests/8.1@master
         env:
           MAGENTO_VERSION: '2.4.7'
-          MODULE_NAME: Alekseon_CustomFormsBuilder
-          COMPOSER_NAME: alekseon/custom-forms-builder
-          REPOSITORY_URL: https://repo.magento.com/
-          MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
-          MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
