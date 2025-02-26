@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: docker://yireo/github-actions-magento-unit-tests:8.3
+      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
         env:
           MAGENTO_VERSION: '2.4.7'
           MODULE_NAME: Alekseon_CustomFormsBuilder
