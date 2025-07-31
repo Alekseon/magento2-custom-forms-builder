@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [103.3.15] - 2025-07-30
+### Added
+- Messages Field type (for now used by Alekseon_CustomFormsEmailNotification)
+
 ## [102.3.14] - 2024-11-17
 ### Added
 - postal code validator

@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ *
+ * @var $block \Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Field\Messages
+ * @var $escaper \Magento\Framework\Escaper
+ */
+?>
+<div class="messages">
+    <?php foreach ($block->getMessages() as $message): ?>
+        <div class="message <?= $message['class'] ?>">
+            <span>
+                <?= $escaper->escapeHtml(__($message['text']), ['a']) ?>
+            </span>
+        </div>
+    <?php endforeach; ?>
+</div>
+
