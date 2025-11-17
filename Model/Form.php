@@ -156,7 +156,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
      */
     private function updateFields()
     {
-        $removedFields = explode(',', $this->getFormRemovedFields());
+        $removedFields = explode(',', (string) $this->getFormRemovedFields());
         $formFields = $this->getFormFields();
 
         foreach ($removedFields as $attributeId) {
