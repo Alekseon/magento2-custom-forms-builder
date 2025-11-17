@@ -36,7 +36,6 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
      */
     protected function setUp(): void
     {
-
         $formFactory = $this->getMockBuilder(\Alekseon\CustomFormsBuilder\Model\FormFactory::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['create'])
