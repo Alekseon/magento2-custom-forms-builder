@@ -39,7 +39,7 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
 
         $formFactory = $this->getMockBuilder(\Alekseon\CustomFormsBuilder\Model\FormFactory::class)
             ->disableOriginalConstructor()
-            ->setMethods(['create'])
+            ->onlyMethods(['create'])
             ->getMock();
         $this->formResource = $this->getMockBuilder(\Alekseon\CustomFormsBuilder\Model\ResourceModel\Form::class)
             ->disableOriginalConstructor()
