@@ -46,7 +46,7 @@ abstract class Form extends \Magento\Backend\App\Action
      * @param int | null $storeId
      * @return \Alekseon\CustomFormsBuilder\Model\Form
      */
-    protected function initForm(string $requestParam = 'entity_id', int $storeId = null)
+    protected function initForm(string $requestParam = 'entity_id', ?int $storeId = null)
     {
         $form = $this->coreRegistry->registry('current_form');
         if (!$form) {
