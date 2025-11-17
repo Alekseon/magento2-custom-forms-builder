@@ -28,17 +28,12 @@ jobs:
         options: --health-cmd="curl localhost:9200/_cluster/health?wait_for_status=yellow&timeout=60s" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v4
-      - name: Fix Git safe directory
-        run: |
-          git config --global --add safe.directory /github/workspace
-      - name: Configure Magento repo auth
-        run: |
-          composer config --global http-basic.repo.magento.com \
-            "${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}" \
-            "${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}"
       - name: M2 Integration Tests with Magento 2 (Php 8.4)
         uses: extdn/github-actions-m2/magento-integration-tests/8.4@master
         with:
           module_name: Alekseon_CustomFormsBuilder
           composer_name: alekseon/custom-forms-builder
           ce_version: '2.4.8-p3'
+        env:
+            MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
+            MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
