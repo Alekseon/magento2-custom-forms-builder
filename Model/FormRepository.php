@@ -70,7 +70,7 @@ class FormRepository
      * @return Form
      * @throws NoSuchEntityException
      */
-    public function getByIdentifier(string $identifier, int $storeId = null, bool $graceful = true)
+    public function getByIdentifier(string $identifier, ?int $storeId = null, ?bool $graceful = true)
     {
         $storeKey = $storeId ?? 'null';
         if (!isset($this->loadedFormsByIdentifiers[$identifier])) {
