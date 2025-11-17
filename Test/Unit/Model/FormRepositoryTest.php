@@ -7,8 +7,8 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Test\Unit\Model;
 
-use Alekseon\CustomFormsBuilder\Model\Form;
 use Alekseon\CustomFormsBuilder\Model\FormRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Class FormRepositoryTest
@@ -17,17 +17,17 @@ use Alekseon\CustomFormsBuilder\Model\FormRepository;
 class FormRepositoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\Alekseon\CustomFormBuilder\Model\Form
+     * @var MockObject|\Alekseon\CustomFormsBuilder\Model\Form
      */
     protected $form;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\Alekseon\CustomFormBuilder\Model\ResourceModel\Form
+     * @var MockObject|\Alekseon\CustomFormsBuilder\Model\ResourceModel\Form
      */
     protected $formResource;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\Alekseon\CustomFormBuilder\Model\FormRepository
+     * @var MockObject|\Alekseon\CustomFormsBuilder\Model\FormRepository
      */
     protected $formRepository;
 
@@ -57,11 +57,10 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     *
-     * @expectedException \Magento\Framework\Exception\NoSuchEntityException
      */
     public function testGetByIdException()
     {
+        $this->expectException('Magento\Framework\Exception\NoSuchEntityException');
         $formId = '123';
 
         $this->form->expects($this->once())
