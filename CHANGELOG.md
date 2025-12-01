@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [103.3.17] - 2025-12-01
+### Added
+- add attribute code map to getData() 
+
 ## [103.3.16] - 2025-11-17
 ### Fixed
 - Php 8.4 compatibility (https://github.com/Alekseon/magento2-widget-forms/issues/29)
