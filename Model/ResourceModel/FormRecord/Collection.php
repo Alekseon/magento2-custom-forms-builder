@@ -38,18 +38,7 @@ class Collection extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity\Collec
     public function addFormFilter(Form $form)
     {
         $this->addFieldToFilter('form_id', $form->getId());
-        $this->setFieldIdentifierMap($form);
-        return $this;
-    }
-
-    public function setFieldIdentifierMap(Form $form)
-    {
-        $fields = $form->getFieldsCollection();
-        foreach ($fields as $field) {
-            if ($field->getIdentifier()) {
-                $this->fieldIdentifierMap[$field->getIdentifier()] = $field->getAttributeCode();
-            }
-        }
+        $this->fieldIdentifierMap = $form->getFieldsIdentifierMap();
         return $this;
     }
 

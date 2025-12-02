@@ -51,6 +51,10 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
      * @var ResourceModel\FormRecord\Attribute\Collection
      */
     private $fieldsCollection;
+    /**
+     * @var array|null
+     */
+    private $fieldsIdentifierMap;
 
     /**
      * Form constructor.
@@ -189,30 +193,13 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     }
 
     /**
-     * @param bool $withDisabled
      * @return ResourceModel\FormRecord\Attribute\Collection
      */
-    public function getFieldsCollection(bool $withDisabled = false): ResourceModel\FormRecord\Attribute\Collection
+    public function getFieldsCollection(): ResourceModel\FormRecord\Attribute\Collection
     {
         if ($this->fieldsCollection === null) {
-            $isAdmin = $this->_appState->getAreaCode() == \Magento\Framework\App\Area::AREA_ADMINHTML;
             $attributeObject = $this->recordAttributeRepository->getAttributeFactory()->create();
             $this->fieldsCollection = $attributeObject->getCollection();
-
-            if (!$withDisabled) {
-                if ($isAdmin) {
-                    $this->fieldsCollection->addFieldToFilter(
-                        'input_visibility',
-                        ['nin' => Attribute::INPUT_VISIBILITY_NONE]
-                    );
-                } else {
-                    $this->fieldsCollection->addFieldToFilter(
-                        'input_visibility',
-                        Attribute::INPUT_VISIBILITY_VISIBILE
-                    );
-                }
-            }
-
             $this->fieldsCollection->addFieldToFilter('form_id', $this->getId());
             $this->fieldsCollection->setOrder(
                 'sort_order',
@@ -315,5 +302,43 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
             $newGroupId = $tabIdsMap[$recordAttribute->getGroupCode()];
             $recordAttribute->setGroupCode($newGroupId);
         }
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getFieldsIdentifierMap()
+    {
+        if ($this->fieldsIdentifierMap === null) {
+            $this->fieldsIdentifierMap = [];
+            $fields = $this->getFieldsCollection();
+            foreach ($fields as $field) {
+                if ($field->getIdentifier()) {
+                    $this->fieldsIdentifierMap[$field->getIdentifier()] = $field->getAttributeCode();
+                }
+            }
+        }
+        return $this->fieldsIdentifierMap;
+    }
+
+    /**
+     * @param string $attributeCode
+     * @return string
+     */
+    public function getMappedFieldCode(string $attributeCode)
+    {
+        $fieldsIdentifierMap = $this->getFieldsIdentifierMap();
+        return $this->fieldsIdentifierMap[$attributeCode] ?? $attributeCode;
+    }
+
+    /**
+     * @param string $code
+     * @return \Magento\Framework\DataObject|null
+     */
+    public function getFieldByIdentifier($code)
+    {
+        $code = $this->getMappedFieldCode($code);
+        $fields = $this->getFieldsCollection();
+        return $fields->getItemByColumnValue('attribute_code', $code);
     }
 }

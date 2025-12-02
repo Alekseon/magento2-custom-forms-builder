@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.18] - 2025-12-02
+### Added
+- check field visibility to display on grid or form
+- setData and unset Data can use identifier on form record object
+### Changed
+- moved fieldsIdentifierMap to from object
+- removed visibility filter on fields collection (now its check during rendering field)
+
 ## [102.3.17] - 2025-12-01
 ### Added
 - add attribute code map to getData() 

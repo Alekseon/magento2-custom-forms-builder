@@ -7,8 +7,11 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit\Tab;
 
+use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
 use Alekseon\CustomFormsBuilder\Model\Form;
+use Alekseon\CustomFormsBuilder\Model\FormRecord\Attribute;
 use Magento\Backend\Block\Widget\Form\Generic;
+use Magento\Framework\Data\Form\Element\Fieldset;
 
 /**
  *
@@ -65,6 +68,17 @@ class Fields extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         } else {
             $this->addAllAttributeFields($fieldset, $dataObject, ['included' => [$tabCode]]);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addAttributeField(Fieldset $formFieldset, AttributeInterface $attribute)
+    {
+        if ($attribute->getInputVisibility() == Attribute::INPUT_VISIBILITY_NONE) {
+            return;
+        }
+        return parent::addAttributeField($formFieldset, $attribute);
     }
 
     /**

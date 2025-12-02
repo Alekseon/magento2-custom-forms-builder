@@ -382,7 +382,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected function addCurrentFormFields($form)
     {
-        $recordAttributeCollection = $this->getDataObject()->getFieldsCollection(true);
+        $recordAttributeCollection = $this->getDataObject()->getFieldsCollection();
         foreach ($recordAttributeCollection as $attribute) {
             $formFieldSettings = $this->getFieldSettings($attribute);
             $this->addFieldFieldset($form,  $attribute->getId(), $formFieldSettings);
