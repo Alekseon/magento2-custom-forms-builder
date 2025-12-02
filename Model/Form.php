@@ -328,7 +328,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     public function getMappedFieldCode(string $attributeCode)
     {
         $fieldsIdentifierMap = $this->getFieldsIdentifierMap();
-        return $this->fieldsIdentifierMap[$attributeCode] ?? $attributeCode;
+        return $fieldsIdentifierMap[$attributeCode] ?? $attributeCode;
     }
 
     /**

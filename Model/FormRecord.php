@@ -56,21 +56,6 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
     }
 
     /**
-     * @param Form $form
-     * @return $this
-     */
-    public function setFieldIdentifierMap(Form $form)
-    {
-        $fields = $form->getFieldsCollection();
-        foreach ($fields as $field) {
-            if ($field->getIdentifier()) {
-                $this->fieldIdentifierMap[$field->getIdentifier()] = $field->getAttributeCode();
-            }
-        }
-        return $this;
-    }
-
-    /**
      * @param string $attributeCode
      * @return string
      */
