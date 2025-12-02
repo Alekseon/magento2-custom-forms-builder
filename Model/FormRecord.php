@@ -110,7 +110,6 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
         if (is_string($key)) {
             $key = $this->getMappedAttributeCode($key);
         }
-        $key = $this->getMappedAttributeCode($key);
         return parent::setData($key, $value);
     }
 
