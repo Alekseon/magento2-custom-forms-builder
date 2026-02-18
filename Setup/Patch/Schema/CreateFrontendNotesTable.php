@@ -89,6 +89,7 @@ class CreateFrontendNotesTable implements SchemaPatchInterface
         $this->schemaSetup->getConnection()->createTable($attributeFrontendNotesTable);
 
         $this->schemaSetup->endSetup();
+        return $this;
     }
 
     /**
