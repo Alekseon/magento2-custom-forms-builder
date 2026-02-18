@@ -11,7 +11,7 @@ jobs:
       MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
       MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: extdn/github-actions-m2/magento-unit-tests/8.4@master
         env:
           MAGENTO_VERSION: '2.4.8-p3'
