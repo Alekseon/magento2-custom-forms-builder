@@ -17,6 +17,9 @@
                 <container label="Frontend Labels" name="frontend_labels">
                     <block class="Alekseon\AlekseonEav\Block\Adminhtml\Attribute\Edit\Tab\FrontendLabels" name="attribute_frontend_labels_form"/>
                 </container>
+                <container label="Frontend Notes" name="frontend_notes">
+                    <block class="Alekseon\CustomFormsBuilder\Block\Adminhtml\FormField\Edit\Tab\FrontendNotes" name="attribute_frontend_notes_form"/>
+                </container>
             </block>
         </referenceContainer>
         <referenceContainer name="content">

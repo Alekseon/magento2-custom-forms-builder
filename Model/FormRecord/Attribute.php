@@ -149,4 +149,35 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
             self::INPUT_VISIBILITY_ADMIN_ONLY => __('Only for Admin'),
         ];
     }
+
+    /**
+     * @return array|mixed|null
+     */
+    public function getFrontendNotes()
+    {
+        if ($this->getData('frontend_notes') === null) {
+            $this->setFrontendNotes($this->getResource()->getFrontendNotes($this, false));
+        }
+        return $this->getData('frontend_notes');
+    }
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getFrontendNote($storeId = null)
+    {
+        if ($storeId === null) {
+            $storeId = $this->getResource()->getCurrentStore()->getId();
+        }
+
+        if ($frontendNotes = $this->getFrontendNotes()) {
+            if (isset($frontendNotes[$storeId])) {
+                return $frontendNotes[$storeId];
+            }
+        }
+
+        return $this->getNote();
+    }
 }
