@@ -6,15 +6,23 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
-## [103.3.17] - 2025-12-01
+## [102.3.18] - 2025-12-02
+### Added
+- check field visibility to display on grid or form
+- setData and unset Data can use identifier on form record object
+### Changed
+- moved fieldsIdentifierMap to from object
+- removed visibility filter on fields collection (now its check during rendering field)
+
+## [102.3.17] - 2025-12-01
 ### Added
 - add attribute code map to getData() 
 
-## [103.3.16] - 2025-11-17
+## [102.3.16] - 2025-11-17
 ### Fixed
 - Php 8.4 compatibility (https://github.com/Alekseon/magento2-widget-forms/issues/29)
 
-## [103.3.15] - 2025-07-30
+## [102.3.15] - 2025-07-30
 ### Added
 - Messages Field type (for now used by Alekseon_CustomFormsEmailNotification)
 

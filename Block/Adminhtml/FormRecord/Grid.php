@@ -7,8 +7,10 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord;
 
+use Alekseon\AlekseonEav\Api\Data\AttributeInterface;
 use Alekseon\AlekseonEav\Block\Adminhtml\Entity\Grid as EavGrid;
 use Alekseon\CustomFormsBuilder\Model\Form;
+use Alekseon\CustomFormsBuilder\Model\FormRecord\Attribute;
 
 /**
  * Class Grid
@@ -95,6 +97,17 @@ class Grid extends EavGrid
         $this->addExportType('*/*/exportExcel', __('Excel XML'));
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function addAttributeColumn(AttributeInterface $attribute)
+    {
+        if ($attribute->getInputVisibility() == Attribute::INPUT_VISIBILITY_NONE) {
+            return;
+        }
+        return parent::addAttributeColumn($attribute);
     }
 
     /**

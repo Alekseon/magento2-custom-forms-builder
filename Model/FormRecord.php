@@ -23,10 +23,6 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
      * @var FormRepository
      */
     protected $formRepository;
-    /**
-     * @var
-     */
-    protected $fieldIdentifierMap;
 
     /**
      * FormRecord constructor.
@@ -60,21 +56,6 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
     }
 
     /**
-     * @param Form $form
-     * @return $this
-     */
-    public function setFieldIdentifierMap(Form $form)
-    {
-        $fields = $form->getFieldsCollection();
-        foreach ($fields as $field) {
-            if ($field->getIdentifier()) {
-                $this->fieldIdentifierMap[$field->getIdentifier()] = $field->getAttributeCode();
-            }
-        }
-        return $this;
-    }
-
-    /**
      * @param string $attributeCode
      * @return string
      */
@@ -82,20 +63,18 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
     {
         $notMappedKeys = ['form_id'];
         if (in_array($attributeCode, $notMappedKeys)) {
-           return $attributeCode;
+            return $attributeCode;
         }
         if (!$this->getFormId()) {
             return $attributeCode;
         }
-        if ($this->fieldIdentifierMap === null) {
-            $this->setFieldIdentifierMap($this->getForm());
-        }
-        if (isset($this->fieldIdentifierMap[$attributeCode])) {
-            $attributeCode = $this->fieldIdentifierMap[$attributeCode];
-        }
-        return $attributeCode;
+        return $this->getForm()->getMappedFieldCode($attributeCode);
     }
 
+    /**
+     * @param string $attributeCode
+     * @return \Alekseon\AlekseonEav\Model\Attribute
+     */
     public function getAttribute($attributeCode)
     {
         $attributeCode = $this->getMappedAttributeCode($attributeCode);
@@ -121,6 +100,29 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
             $key = $this->getMappedAttributeCode($key);
         }
         return parent::getData($key);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setData($key, $value = null)
+    {
+        if (is_string($key)) {
+            $key = $this->getMappedAttributeCode($key);
+        }
+        return parent::setData($key, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function unsetData($key = null)
+    {
+        if (is_string($key)) {
+            $key = $this->getMappedAttributeCode($key);
+        }
+        $key = $this->getMappedAttributeCode($key);
+        return parent::unsetData($key);
     }
 
     /**
