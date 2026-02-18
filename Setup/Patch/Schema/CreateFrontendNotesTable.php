@@ -105,6 +105,8 @@ class CreateFrontendNotesTable implements SchemaPatchInterface
      */
     public static function getDependencies()
     {
-        return [];
+        return [
+            \Alekseon\CustomFormsBuilder\Setup\Patch\Schema\CreateEavTablesV2::class
+        ];
     }
 }
