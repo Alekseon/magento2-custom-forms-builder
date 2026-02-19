@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [Unreleased]
+- frontend notes for form fields
+
 ## [102.3.18] - 2025-12-02
 ### Added
 - check field visibility to display on grid or form

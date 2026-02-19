@@ -49,6 +49,15 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
             ]
         );
 
+        $this->addTab(
+            'frontend_notes',
+            [
+                'label' => __('Frontend Notes'),
+                'title' => __('Frontend Notes'),
+                'content' => $this->getChildHtml('frontend_notes'),
+            ]
+        );
+
         return parent::_beforeToHtml();
     }
 }
