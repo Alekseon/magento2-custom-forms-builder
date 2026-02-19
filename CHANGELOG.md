@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
-## [Unreleased]
+## [102.3.19] - 2026-02-19
 - frontend notes for form fields
 
 ## [102.3.18] - 2025-12-02
