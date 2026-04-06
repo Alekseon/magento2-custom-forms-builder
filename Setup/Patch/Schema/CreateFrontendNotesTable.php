@@ -20,7 +20,7 @@ class CreateFrontendNotesTable implements SchemaPatchInterface
      * @param SchemaSetupInterface $schemaSetup
      */
     public function __construct(
-        SchemaSetupInterface $schemaSetup,
+        SchemaSetupInterface $schemaSetup
     ) {
         $this->schemaSetup = $schemaSetup;
     }
