@@ -52,7 +52,7 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
      */
     public function getForm()
     {
-        return $this->formRepository->getById($this->getFormId());
+        return $this->formRepository->getById($this->getFormId(), $this->getCreatedFromStoreId());
     }
 
     /**
@@ -61,7 +61,7 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\Entity
      */
     protected function getMappedAttributeCode($attributeCode)
     {
-        $notMappedKeys = ['form_id'];
+        $notMappedKeys = ['form_id', 'store_id', 'created_from_store_id'];
         if (in_array($attributeCode, $notMappedKeys)) {
             return $attributeCode;
         }
