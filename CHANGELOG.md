@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.3.20] - 2026-04-16
+- use created_from_store_id to get form from record (used for correct form data in emails notifications)
+
 ## [102.3.19] - 2026-02-19
 - frontend notes for form fields
 
