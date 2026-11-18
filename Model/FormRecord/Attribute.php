@@ -44,6 +44,11 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
     private $formRepository;
 
     /**
+     * @var \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord\Attribute
+     */
+    private $attributeResource;
+
+    /**
      * Attribute constructor.
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
@@ -65,6 +70,7 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
     ) {
         $this->fieldOptionSources = $fieldOptionSources;
         $this->formRepository = $formRepository;
+        $this->attributeResource = $resource;
         parent::__construct(
             $context, $registry, $inputTypeRepository, $inputValidatorRepository, $resource, $resourceCollection
         );
@@ -156,7 +162,7 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
     public function getFrontendNotes()
     {
         if ($this->getData('frontend_notes') === null) {
-            $this->setFrontendNotes($this->getResource()->getFrontendNotes($this, false));
+            $this->setFrontendNotes($this->attributeResource->getFrontendNotes($this, false));
         }
         return $this->getData('frontend_notes');
     }
@@ -169,7 +175,7 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
     public function getFrontendNote($storeId = null)
     {
         if ($storeId === null) {
-            $storeId = $this->getResource()->getCurrentStore()->getId();
+            $storeId = $this->attributeResource->getCurrentStore()->getId();
         }
 
         if ($frontendNotes = $this->getFrontendNotes()) {

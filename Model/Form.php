@@ -57,12 +57,38 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     private $fieldsIdentifierMap;
 
     /**
+     * @var ResourceModel\FormRecord\CollectionFactory
+     */
+    private $recordCollectionFactory;
+
+    /**
+     * @var ResourceModel\FormRecord
+     */
+    private $recordResource;
+
+    /**
+     * @var ResourceModel\FormRecord\Attribute\CollectionFactory
+     */
+    private $attributeCollectionFactory;
+
+    /**
+     * @var ResourceModel\FormTab\CollectionFactory
+     */
+    private $tabCollectionFactory;
+
+    /**
      * Form constructor.
      * @param \Alekseon\AlekseonEav\Model\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param ResourceModel\Form $resource
      * @param ResourceModel\Form\Collection $resourceCollection
      * @param FormRecord\AttributeRepository $recordAttributeRepository
+     * @param FormTabFactory $formTabFactory
+     * @param FormRecordFactory $formRecordFactory
+     * @param ResourceModel\FormRecord\CollectionFactory $recordCollectionFactory
+     * @param ResourceModel\FormRecord $recordResource
+     * @param ResourceModel\FormRecord\Attribute\CollectionFactory $attributeCollectionFactory
+     * @param ResourceModel\FormTab\CollectionFactory $tabCollectionFactory
      */
     public function __construct(
         \Alekseon\AlekseonEav\Model\Context $context,
@@ -71,11 +97,19 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
         \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form\Collection $resourceCollection,
         \Alekseon\CustomFormsBuilder\Model\FormRecord\AttributeRepository $recordAttributeRepository,
         \Alekseon\CustomFormsBuilder\Model\FormTabFactory $formTabFactory,
-        \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory
+        \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory,
+        ResourceModel\FormRecord\CollectionFactory $recordCollectionFactory,
+        ResourceModel\FormRecord $recordResource,
+        ResourceModel\FormRecord\Attribute\CollectionFactory $attributeCollectionFactory,
+        ResourceModel\FormTab\CollectionFactory $tabCollectionFactory
     ) {
         $this->recordAttributeRepository = $recordAttributeRepository;
         $this->formTabFactory = $formTabFactory;
         $this->formRecordFactory = $formRecordFactory;
+        $this->recordCollectionFactory = $recordCollectionFactory;
+        $this->recordResource = $recordResource;
+        $this->attributeCollectionFactory = $attributeCollectionFactory;
+        $this->tabCollectionFactory = $tabCollectionFactory;
         parent::__construct(
             $context,
             $registry,
@@ -131,7 +165,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     public function getRecordCollection()
     {
         /** @var Collection $collection */
-        $collection = $this->formRecordFactory->create()->getCollection();
+        $collection = $this->recordCollectionFactory->create();
         $collection->setStoreId($this->getStoreId());
         $collection->addFormFilter($this);
         $collection->getResource()->setCurrentForm($this);
@@ -146,8 +180,8 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     {
         $record = $this->formRecordFactory->create();
         $record->setStoreId($this->getStoreId());
-        $record->getResource()->setCurrentForm($this);
-        $record->getResource()->load($record, $id);
+        $this->recordResource->setCurrentForm($this);
+        $this->recordResource->load($record, $id);
         if (!$graceful && (!$record->getId() || $record->getFormId() != $this->getId())) {
             throw new NoSuchEntityException(__('Form record not found.'));
         }
@@ -198,8 +232,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     public function getFieldsCollection(): ResourceModel\FormRecord\Attribute\Collection
     {
         if ($this->fieldsCollection === null) {
-            $attributeObject = $this->recordAttributeRepository->getAttributeFactory()->create();
-            $this->fieldsCollection = $attributeObject->getCollection();
+            $this->fieldsCollection = $this->attributeCollectionFactory->create();
             $this->fieldsCollection->addFieldToFilter('form_id', $this->getId());
             $this->fieldsCollection->setOrder(
                 'sort_order',
@@ -217,7 +250,7 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
     {
         if ($this->formTabs === null) {
             /** @var ResourceModel\FormTab\Collection $formTabsCollection */
-            $formTabsCollection = $this->formTabFactory->create()->getCollection();
+            $formTabsCollection = $this->tabCollectionFactory->create();
             $formTabsCollection->addFormFilter($this);
             $this->formTabs = [];
             $lastTab = false;

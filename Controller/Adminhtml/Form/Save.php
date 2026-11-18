@@ -18,6 +18,28 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implements HttpPostActionInterface
 {
     /**
+     * @var \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form
+     */
+    private $formResource;
+
+    /**
+     * Initialize dependencies.
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository
+     * @param \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form $formResource
+     */
+    public function __construct(
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\Registry $coreRegistry,
+        \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository,
+        \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form $formResource
+    ) {
+        $this->formResource = $formResource;
+        parent::__construct($context, $coreRegistry, $formRepository);
+    }
+
+    /**
      * @return mixed
      */
     public function execute()
@@ -36,7 +58,7 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implem
             $this->processTabs($form, $data);
 
             try {
-                $form->getResource()->save($form);
+                $this->formResource->save($form);
                 $this->messageManager->addSuccessMessage(__('You saved the form.'));
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());

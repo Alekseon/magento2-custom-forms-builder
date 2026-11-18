@@ -16,6 +16,34 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord implements HttpPostActionInterface
 {
     /**
+     * @var \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord
+     */
+    private $recordResource;
+
+    /**
+     * Initialize dependencies.
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository
+     * @param \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory
+     * @param \Magento\Framework\App\Response\Http\FileFactory $fileFactory
+     * @param \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor
+     * @param \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord $recordResource
+     */
+    public function __construct(
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\Registry $coreRegistry,
+        \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository,
+        \Alekseon\CustomFormsBuilder\Model\FormRecordFactory $formRecordFactory,
+        \Magento\Framework\App\Response\Http\FileFactory $fileFactory,
+        \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
+        \Alekseon\CustomFormsBuilder\Model\ResourceModel\FormRecord $recordResource
+    ) {
+        $this->recordResource = $recordResource;
+        parent::__construct($context, $coreRegistry, $formRepository, $formRecordFactory, $fileFactory, $dataPersistor);
+    }
+
+    /**
      * @return mixed
      */
     public function execute()
@@ -34,7 +62,7 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\FormRecord 
             try {
                 $record->addData($data);
                 $record->setFormId($form->getId());
-                $record->getResource()->save($record);
+                $this->recordResource->save($record);
                 $this->dataPersistor->clear('custom_form_record');
                 $this->messageManager->addSuccessMessage(__('You saved the record.'));
             } catch (\Exception $e) {
