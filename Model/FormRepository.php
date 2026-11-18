@@ -16,7 +16,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class FormRepository
 {
     /**
-     * @var \Alekseon\CustomFormBuilder\Model\FormFactory
+     * @var \Alekseon\CustomFormsBuilder\Model\FormFactory
      */
     protected $formFactory;
     /**
@@ -29,13 +29,21 @@ class FormRepository
     protected $loadedFormsByIdentifiers = [];
 
     /**
+     * @var ResourceModel\Form
+     */
+    private $formResource;
+
+    /**
      * FormRepository constructor.
      * @param FormFactory $formFactory
+     * @param ResourceModel\Form $formResource
      */
     public function __construct(
-        \Alekseon\CustomFormsBuilder\Model\FormFactory $formFactory
+        \Alekseon\CustomFormsBuilder\Model\FormFactory $formFactory,
+        ResourceModel\Form $formResource
     ) {
         $this->formFactory = $formFactory;
+        $this->formResource = $formResource;
     }
 
     /**
@@ -49,7 +57,7 @@ class FormRepository
         if (!isset($this->loadedFormsByIds[$formId][$storeKey])) {
             $form = $this->formFactory->create();
             $form->setStoreId($storeId);
-            $form->getResource()->load($form, $formId);
+            $this->formResource->load($form, $formId);
             if (!$form->getId()) {
                 if ($graceful) {
                     return $form;
@@ -77,7 +85,7 @@ class FormRepository
             /** @var Form $form */
             $form = $this->formFactory->create();
             $form->setStoreId($storeId);
-            $form->getResource()->load($form, $identifier, 'identifier');
+            $this->formResource->load($form, $identifier, 'identifier');
             if (!$form->getId()) {
                 if ($graceful) {
                     return $form;

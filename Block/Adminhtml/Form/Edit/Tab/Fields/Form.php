@@ -216,10 +216,13 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     private function getIdentifierBlockHtml(string $formFieldId, array $settings)
     {
         /** @var \Magento\Backend\Block\Template $identifierBlock */
-        $identifierBlock = $this->_layout->createBlock(\Magento\Backend\Block\Template::class)
+        $identifierBlock = $this->_layout->createBlock(
+            \Magento\Backend\Block\Template::class,
+            '',
+            ['data' => ['template' => 'Alekseon_CustomFormsBuilder::form/edit/field/identifier.phtml']]
+        )
             ->setSettings($settings)
-            ->setFormFieldId($formFieldId)
-            ->setTemplate('Alekseon_CustomFormsBuilder::form/edit/field/identifier.phtml');
+            ->setFormFieldId($formFieldId);
 
         return $identifierBlock->toHtml();
     }

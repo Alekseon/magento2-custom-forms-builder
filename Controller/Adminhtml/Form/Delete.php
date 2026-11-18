@@ -16,6 +16,28 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implements HttpPostActionInterface
 {
     /**
+     * @var \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form
+     */
+    private $formResource;
+
+    /**
+     * Initialize dependencies.
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository
+     * @param \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form $formResource
+     */
+    public function __construct(
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\Registry $coreRegistry,
+        \Alekseon\CustomFormsBuilder\Model\FormRepository $formRepository,
+        \Alekseon\CustomFormsBuilder\Model\ResourceModel\Form $formResource
+    ) {
+        $this->formResource = $formResource;
+        parent::__construct($context, $coreRegistry, $formRepository);
+    }
+
+    /**
      * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
@@ -23,7 +45,7 @@ class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form impl
         $form = $this->initForm();
         if ($form->getId()) {
             try {
-                $form->delete();
+                $this->formResource->delete($form);
                 $this->messageManager->addSuccessMessage(__('You deleted the form.'));
                 return $this->returnResult('*/*/', []);
             } catch (\Exception $e) {

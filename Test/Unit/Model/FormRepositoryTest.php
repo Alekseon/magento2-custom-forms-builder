@@ -45,17 +45,18 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
             ->getMock();
         $this->form = $this->getMockBuilder(\Alekseon\CustomFormsBuilder\Model\Form::class)->disableOriginalConstructor()->getMock();
 
-        $formFactory->expects($this->any())
+        $formFactory->expects($this->once())
             ->method('create')
             ->willReturn($this->form);
 
         $this->formRepository = new FormRepository(
-            $formFactory
+            $formFactory,
+            $this->formResource
         );
     }
 
     /**
-     * @test
+     * Missing forms raise an exception.
      */
     public function testGetByIdException()
     {
@@ -69,9 +70,6 @@ class FormRepositoryTest extends \PHPUnit\Framework\TestCase
             ->method('load')
             ->with($this->form, $formId)
             ->willReturn($this->form);
-        $this->form->expects($this->once())
-            ->method('getResource')
-            ->willReturn($this->formResource);
         $this->formRepository->getById($formId);
     }
 
