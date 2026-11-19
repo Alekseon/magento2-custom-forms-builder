@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [102.4.0] - 2026-11-19
+### Changed
+- "Add Field" button replaced by "Add Element" split button with list of element types (frontend inputs), "Frontend Input" select removed from new field
+- inputs marked as "(input)" in "Add Element" list and listed before other elements (input type config flag `is_input`)
+### Added
+- select options for input params can be provided by source model (`source_model` in input params config)
+
 ## [102.3.21] - 2026-09-09
 ### Fixed
 - Load form all attributes by form, it fixes issue with loading more forms in same execution (for example in cron job)

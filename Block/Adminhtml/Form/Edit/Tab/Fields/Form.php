@@ -43,6 +43,10 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      * @var array
      */
     protected $formValues = [];
+    /**
+     * @var InputTypeRepository
+     */
+    protected $inputTypeRepository;
 
     /**
      * Form constructor.
@@ -60,8 +64,11 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         \Magento\Config\Model\Config\Source\Yesno $yesNoSource,
         \Alekseon\CustomFormsBuilder\Model\FieldOptionSources $fieldOptionSources,
         \Magento\Framework\EntityManager\EventManager $eventManager,
-        array $data = []
+        array $data = [],
+        ?InputTypeRepository $inputTypeRepository = null
     ) {
+        $this->inputTypeRepository = $inputTypeRepository
+            ?? \Magento\Framework\App\ObjectManager::getInstance()->get(InputTypeRepository::class);
         $this->inputTypeSource = $inputTypeSource;
         $this->yesNoSource = $yesNoSource;
         $this->fieldOptionSources = $fieldOptionSources;
@@ -90,10 +97,14 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         $form = $this->_formFactory->create();
 
         $this->addCurrentFormFields($form);
-        $this->addFieldFieldset($form, 'new_field', [
-            'title' => __('New Field'),
-            'is_new_field' => true,
-        ]);
+        // new field template for each element type (frontend input), see "Add Element" button
+        foreach ($this->inputTypeSource->getOptionArray() as $code => $label) {
+            $this->addFieldFieldset($form, 'new_' . $code, [
+                'title' => '[' . $label . '] ' . __('New Field'),
+                'is_new_field' => true,
+                'frontend_input' => $code,
+            ]);
+        }
 
         $form->addField('form_removed_fields', 'hidden',
             [
@@ -148,7 +159,14 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "frontend_label");
 
-        if ($isNewField) {
+        if ($isNewField && !empty($settings['frontend_input'])) {
+            $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'hidden',
+                [
+                    'name' => 'form_fields[' . $formFieldId . '][frontend_input]',
+                    'value' => $settings['frontend_input'],
+                ]
+            )->addCustomAttribute("data-fieldcode", "frontend_input");
+        } elseif ($isNewField) {
             $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'select',
                 [
                     'label' => __('Frontend Input'),
@@ -239,6 +257,11 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             $config['label'] = __($config['label'] ?? '');
             $config['note'] = __($config['note'] ?? '');
             $config['name'] = 'form_fields[' . $formFieldId . '][input_params][' . $paramCode . ']';
+            // select options can't be listed in di.xml, they can be provided by source model object
+            if (isset($config['source_model']) && is_object($config['source_model'])) {
+                $config['values'] = $config['source_model']->toOptionArray();
+                unset($config['source_model']);
+            }
             $fieldset->addField('form_field_' . $formFieldId . '_input_params_' . $paramCode,
                 $type,
                 $config
@@ -285,6 +308,12 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             /** @var \Alekseon\AlekseonEav\Model\Attribute $attribute */
             $attribute = $settings['attribute'];
             return $attribute->getInputParamsConfig();
+        }
+
+        if (!empty($settings['frontend_input'])) {
+            $inputTypes = $this->inputTypeRepository->getFrontendInputTypes();
+            $inputType = $inputTypes[$settings['frontend_input']] ?? null;
+            return $inputType ? ($inputType->getInputParams() ?? []) : [];
         }
 
         return [];

@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab;
 
+use Alekseon\AlekseonEav\Model\Attribute\InputTypeRepository;
+
 /**
  * Class Fields
  * @package Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab
@@ -23,16 +25,24 @@ class Fields extends \Magento\Backend\Block\Template implements
      * @var
      */
     protected $lastTab;
+    /**
+     * @var InputTypeRepository
+     */
+    protected $inputTypeRepository;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Registry $registry
+     * @param InputTypeRepository|null $inputTypeRepository
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Registry $registry
+        \Magento\Framework\Registry $registry,
+        ?InputTypeRepository $inputTypeRepository = null
     ) {
         $this->registry = $registry;
+        $this->inputTypeRepository = $inputTypeRepository
+            ?? \Magento\Framework\App\ObjectManager::getInstance()->get(InputTypeRepository::class);
         parent::__construct($context);
     }
 
@@ -74,18 +84,49 @@ class Fields extends \Magento\Backend\Block\Template implements
      */
     protected function _prepareLayout()
     {
+        // inputs (fields with value) first, then elements without input (e.g. heading, text)
+        $inputs = [];
+        $noInputs = [];
+        foreach ($this->inputTypeRepository->getFrontendInputTypes() as $code => $inputType) {
+            if ($inputType->getData('is_input') === false) {
+                $noInputs[] = ['id' => $code, 'label' => __($inputType->getLabel())];
+            } else {
+                $inputs[] = ['id' => $code, 'label' => __('%1 (input)', __($inputType->getLabel()))];
+            }
+        }
+        $options = array_merge($inputs, $noInputs);
+
+        // main button only opens dropdown, new field is added by choosing element type
         $this->addChild(
             'add_new_field_button',
-            \Magento\Backend\Block\Widget\Button::class,
+            \Magento\Backend\Block\Widget\Button\SplitButton::class,
             [
-                'label' => __('Add Field'),
-                'data_attribute' => ['action' => 'add-form-field'],
+                'label' => __('Add Element'),
+                'data_attribute' => ['mage-init' => '{"dropdown": {}}', 'toggle' => 'dropdown'],
                 'class' => 'add',
                 'id' => 'add_field_button',
+                'options' => $options,
             ]
         );
 
         return parent::_prepareLayout();
+    }
+
+    /**
+     * Each element type (frontend input) has own new field template
+     *
+     * @return array
+     */
+    public function getNewFieldTemplatesJsConfig(): array
+    {
+        $config = [];
+        foreach (array_keys($this->inputTypeRepository->getFrontendInputTypes()) as $code) {
+            $config[] = [
+                'buttonId' => 'add_field_button-' . $code,
+                'templateId' => 'form_field_new_' . $code . '-wrapper',
+            ];
+        }
+        return $config;
     }
 
     /**
