@@ -159,22 +159,8 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "frontend_label");
 
-        if ($isNewField && !empty($settings['frontend_input'])) {
-            $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'hidden',
-                [
-                    'name' => 'form_fields[' . $formFieldId . '][frontend_input]',
-                    'value' => $settings['frontend_input'],
-                ]
-            )->addCustomAttribute("data-fieldcode", "frontend_input");
-        } elseif ($isNewField) {
-            $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'select',
-                [
-                    'label' => __('Frontend Input'),
-                    'name' => 'form_fields[' . $formFieldId . '][frontend_input]',
-                    'value' => InputTypeRepository::DEFAULT_INPUT_TYPE_CODE,
-                    'values' => $this->inputTypeSource->toOptionArray()
-                ]
-            )->addCustomAttribute("data-fieldcode", "frontend_input");
+        if ($isNewField) {
+            $this->addFrontendInputField($fieldset, $formFieldId, $settings);
         }
 
         $fieldset->addField('form_field_' . $formFieldId . '_input_visibility', 'select',
@@ -224,6 +210,36 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
 
         $this->addInputParamsField($fieldset, $formFieldId, $settings);
         $this->addActionLinks($fieldset, $formFieldId, $settings);
+    }
+
+    /**
+     * Frontend input of new field: preselected (hidden) or select for template without element type
+     *
+     * @param Fieldset $fieldset
+     * @param string $formFieldId
+     * @param array $settings
+     * @return void
+     */
+    private function addFrontendInputField(Fieldset $fieldset, string $formFieldId, array $settings)
+    {
+        if (!empty($settings['frontend_input'])) {
+            $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'hidden',
+                [
+                    'name' => 'form_fields[' . $formFieldId . '][frontend_input]',
+                    'value' => $settings['frontend_input'],
+                ]
+            )->addCustomAttribute("data-fieldcode", "frontend_input");
+            return;
+        }
+
+        $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'select',
+            [
+                'label' => __('Frontend Input'),
+                'name' => 'form_fields[' . $formFieldId . '][frontend_input]',
+                'value' => InputTypeRepository::DEFAULT_INPUT_TYPE_CODE,
+                'values' => $this->inputTypeSource->toOptionArray()
+            ]
+        )->addCustomAttribute("data-fieldcode", "frontend_input");
     }
 
     /**
