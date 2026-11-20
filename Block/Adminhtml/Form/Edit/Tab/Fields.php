@@ -111,9 +111,13 @@ class Fields extends \Magento\Backend\Block\Template implements
     {
         $config = [];
         foreach ($this->inputTypeRepository->getFrontendInputTypes() as $inputType) {
+            $fieldsetType = (string) $inputType->getFieldsetType();
+            if (!$fieldsetType) {
+                $fieldsetType = 'default';
+            }
             $config[] = [
                 'buttonId' => 'add_field_button-' . $inputType->getCode(),
-                'templateId' => 'form_field_new_field-wrapper',
+                'templateId' => 'form_field_new_field_' . $fieldsetType .  '-wrapper',
                 'type' => $inputType->getCode(),
                 'label' => (string) __($inputType->getLabel()),
             ];

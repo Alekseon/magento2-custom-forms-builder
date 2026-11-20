@@ -6,6 +6,15 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
+## [Unreleased] - 2026-11-20
+Changes required for static fields.
+### Changed
+- new field fieldsets per input type fieldset type
+- field fieldset event: added `field_setting_object` and `fieldset_type` (`field_settings` deprecated)
+### Added
+- form identities include input type identities
+- skip frontend-only fields in admin record edit
+
 ## [102.3.21] - 2026-09-09
 ### Fixed
 - Load form all attributes by form, it fixes issue with loading more forms in same execution (for example in cron job)
