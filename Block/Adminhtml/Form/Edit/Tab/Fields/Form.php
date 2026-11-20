@@ -57,7 +57,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      * @param \Alekseon\AlekseonEav\Model\Adminhtml\System\Config\Source\InputType $inputTypeSource
      * @param array $data
      * @param InputTypeRepository|null $inputTypeRepository
-     * @param array $attributeFieldsets
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -88,14 +87,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             return $this->_coreRegistry->registry('current_form');
         }
         return $this->dataObject;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAttributeFieldsets(): array
-    {
-        return $this->attributeFieldsets;
     }
 
     /**
@@ -160,6 +151,40 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
 
         $this->addWarnings($fieldset, $formFieldId, $settings);
 
+        $this->addBaseFields($fieldset, $formFieldId, $isNewField, $attribute);
+
+        $config = $attribute ? $attribute->getFrontendInputTypeConfig() : null;
+        $fieldsetType = $settings['fieldset_type'] ?? ($config ? $config->getFieldsetType() : null);
+
+        $settingsObject = new DataObject(['settings' => $settings]);
+
+        $this->eventManager->dispatch(
+            'alekseon_custom_form_after_add_field_fieldset',
+            [
+                'form_field_id' => $formFieldId,
+                'form' => $form,
+                'fieldset' => $fieldset,
+                'field_settings' => $settings, // deprecated, use 'field_setting_object' instead
+                'field_setting_object' => $settingsObject,
+                'fieldset_type' => $fieldsetType,
+            ]
+        );
+
+        $settings = $settingsObject->getSettings();
+
+        $this->addInputParamsField($fieldset, $formFieldId, $settings);
+        $this->addActionLinks($fieldset, $formFieldId, $settings);
+    }
+
+    /**
+     * @param Fieldset $fieldset
+     * @param string $formFieldId
+     * @param bool $isNewField
+     * @param \Alekseon\AlekseonEav\Model\Attribute|false $attribute
+     * @return void
+     */
+    private function addBaseFields(Fieldset $fieldset, string $formFieldId, bool $isNewField, $attribute)
+    {
         $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
             [
                 'name' => 'form_fields[' . $formFieldId . '][id]'
@@ -225,28 +250,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 'name' => 'form_fields[' . $formFieldId . '][sort_order]'
             ]
         )->addCustomAttribute("data-fieldcode", "sort_order");
-
-        $config = $attribute ? $attribute->getFrontendInputTypeConfig() : null;
-        $fieldsetType = $settings['fieldset_type'] ?? ($config ? $config->getFieldsetType() : null);
-
-        $settingsObject = new DataObject(['settings' => $settings]);
-
-        $this->eventManager->dispatch(
-            'alekseon_custom_form_after_add_field_fieldset',
-            [
-                'form_field_id' => $formFieldId,
-                'form' => $form,
-                'fieldset' => $fieldset,
-                'field_settings' => $settings, // deprecated, use 'field_setting_object' instead
-                'field_setting_object' => $settingsObject,
-                'fieldset_type' => $fieldsetType,
-            ]
-        );
-
-        $settings = $settingsObject->getSettings();
-
-        $this->addInputParamsField($fieldset, $formFieldId, $settings);
-        $this->addActionLinks($fieldset, $formFieldId, $settings);
     }
 
     /**
