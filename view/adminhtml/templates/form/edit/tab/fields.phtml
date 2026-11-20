@@ -27,14 +27,18 @@
         </div>
     </div>
     <?= /* @noEscape */ $block->getChildHtml('form_fields_tab_form') ?>
-    <?= /* @noEscape */ $block->getChildHtml('add_new_field_button') ?>
+    <div class="add-element-button-wrapper" style="display: inline-block;">
+        <?= /* @noEscape */ $block->getChildHtml('add_new_field_button') ?>
+    </div>
 </div>
 <script type="text/x-magento-init">
 {
     "*": {
         "Alekseon_CustomFormsBuilder/js/form/edit/formFields": {
-            "newFieldButtonId": "add_field_button",
-            "newFieldTemplateId": "form_field_new_field-wrapper",
+            "newFieldTemplates": <?= /* @noEscape */ json_encode(
+                $block->getNewFieldTemplatesJsConfig(),
+                JSON_HEX_TAG | JSON_HEX_AMP)
+            ?>,
             "formContainerId": "form_tabs_fields_tab_content",
             "formRemovedFieldsInputId": "form_removed_fields"
         }

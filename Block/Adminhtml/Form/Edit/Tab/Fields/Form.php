@@ -149,12 +149,12 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         )->addCustomAttribute("data-fieldcode", "frontend_label");
 
         if ($isNewField) {
-            $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'select',
+            $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'hidden',
                 [
-                    'label' => __('Frontend Input'),
+                    //'label' => __('Frontend Input'),
                     'name' => 'form_fields[' . $formFieldId . '][frontend_input]',
                     'value' => InputTypeRepository::DEFAULT_INPUT_TYPE_CODE,
-                    'values' => $this->inputTypeSource->toOptionArray()
+                    //'values' => $this->inputTypeSource->toOptionArray()
                 ]
             )->addCustomAttribute("data-fieldcode", "frontend_input");
         }
