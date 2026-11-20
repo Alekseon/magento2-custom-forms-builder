@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 ### Added
 
-## [Unreleased] - 2026-11-20
+## [102.4.0] - 2026-11-20
 Changes required for static fields.
 ### Changed
 - new field fieldsets per input type fieldset type
