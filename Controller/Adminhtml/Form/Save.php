@@ -71,6 +71,11 @@ class Save extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implem
                 }
             }
             foreach ($data['form_tabs'] as $tabId => $tabData) {
+                if (!is_array($tabData)) {
+                    continue;
+                }
+                // tab identity and owner can not be changed from request
+                unset($tabData['entity_id'], $tabData['form_id']);
                 /** @var FormTab $tab */
                 $tab = $fomTabs[$tabId] ?? false;
                 if ($tab) {
