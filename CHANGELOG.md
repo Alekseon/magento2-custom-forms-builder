@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - new field without label is not saved, unless input type has no frontend label
 - new field templates inputs are disabled, so they are not posted
+- ACL for form and form field admin controllers: `Alekseon_CustomFormsBuilder::manage_custom_forms` required (form list, new form, delete form); edit/save of existing form and its fields also allowed with per-form `custom_form_<id>_manage_form` resource
 ### Added
 
 ## [102.4.0] - 2026-11-20

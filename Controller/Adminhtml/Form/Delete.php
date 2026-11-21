@@ -16,6 +16,16 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 class Delete extends \Alekseon\CustomFormsBuilder\Controller\Adminhtml\Form implements HttpPostActionInterface
 {
     /**
+     * Deleting a form (with all its records) requires full access
+     *
+     * @return bool
+     */
+    protected function isPerFormAccessAllowed()
+    {
+        return false;
+    }
+
+    /**
      * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
