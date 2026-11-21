@@ -17,6 +17,11 @@ use Magento\Framework\Controller\ResultFactory;
 abstract class Form extends \Magento\Backend\App\Action
 {
     /**
+     * Authorization level of a basic admin session
+     */
+    const ADMIN_RESOURCE = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+
+    /**
      * @var \Magento\Framework\Registry
      */
     protected $coreRegistry;
@@ -39,6 +44,42 @@ abstract class Form extends \Magento\Backend\App\Action
         $this->coreRegistry = $coreRegistry;
         $this->formRepository = $formRepository;
         parent::__construct($context);
+    }
+
+    /**
+     * Full access requires ADMIN_RESOURCE. Without it, an existing form can be managed
+     * only with the per-form "custom_form_<id>_manage_form" resource.
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        if ($this->_authorization->isAllowed(static::ADMIN_RESOURCE)) {
+            return true;
+        }
+
+        if (!$this->isPerFormAccessAllowed()) {
+            return false;
+        }
+
+        $formId = (int) $this->getRequest()->getParam('entity_id');
+        if ($formId <= 0) {
+            return false;
+        }
+
+        return $this->_authorization->isAllowed(
+            'Alekseon_CustomFormsBuilder::custom_form_' . $formId . '_manage_form'
+        );
+    }
+
+    /**
+     * Whether this action may be accessed with the per-form manage resource
+     *
+     * @return bool
+     */
+    protected function isPerFormAccessAllowed()
+    {
+        return true;
     }
 
     /**

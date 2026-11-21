@@ -16,6 +16,11 @@ use Magento\Framework\App\Action\HttpGetActionInterface;
 class NewAction extends \Magento\Backend\App\Action implements HttpGetActionInterface
 {
     /**
+     * Full access, otherwise per-form save resource is checked in _isAllowed()
+     */
+    const ADMIN_RESOURCE = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+
+    /**
      * @var \Magento\Backend\Model\View\Result\ForwardFactory
      */
     protected $resultForwardFactory;
@@ -31,6 +36,27 @@ class NewAction extends \Magento\Backend\App\Action implements HttpGetActionInte
     ) {
         parent::__construct($context);
         $this->resultForwardFactory = $resultForwardFactory;
+    }
+
+    /**
+     * Adding record requires full access or "custom_form_<id>_save" resource of the form
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        if ($this->_authorization->isAllowed(static::ADMIN_RESOURCE)) {
+            return true;
+        }
+
+        $formId = (int) $this->getRequest()->getParam('form_id');
+        if ($formId <= 0) {
+            return false;
+        }
+
+        return $this->_authorization->isAllowed(
+            'Alekseon_CustomFormsBuilder::custom_form_' . $formId . '_save'
+        );
     }
 
     /**

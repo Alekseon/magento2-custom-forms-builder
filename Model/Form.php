@@ -115,6 +115,11 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
             unset($newFieldData['id']);
             $attribute = $attributeFactory->create();
             $attribute->setData($newFieldData);
+            if (empty($newFieldData['frontend_label'])
+                && $attribute->getInputTypeModel()->hasFrontendLabel()
+            ) {
+                continue;
+            }
             $attribute->setVisibleInGrid(true);
             $attribute->setAttributeCode('field_' . $formId . '_' . time() . '_' . $id);
             $attribute->setFormId($formId);
@@ -162,8 +167,8 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
         $formFields = $this->getFormFields();
 
         foreach ($removedFields as $attributeId) {
-            if ($attributeId) {
-                $attribute = $this->recordAttributeRepository->getById($attributeId);
+            if ((int) $attributeId) {
+                $attribute = $this->recordAttributeRepository->getByIdForForm((int) $attributeId, (int) $this->getId());
                 $attribute->delete();
             }
         }
@@ -182,8 +187,13 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
                 continue;
             }
 
-            $attribute = $this->recordAttributeRepository->getById($attributeId);
-            unset($fieldData['frontend_input']);
+            $attribute = $this->recordAttributeRepository->getByIdForForm($attributeId, (int) $this->getId());
+            unset(
+                $fieldData['id'],
+                $fieldData['form_id'],
+                $fieldData['attribute_code'],
+                $fieldData['frontend_input']
+            );
             $attribute->addData($fieldData);
             $this->updateFieldGroupCode($attribute);
             $this->recordAttributeRepository->save($attribute);

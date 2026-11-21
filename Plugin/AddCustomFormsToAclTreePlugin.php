@@ -53,7 +53,7 @@ class AddCustomFormsToAclTreePlugin
                 $formCollection->addAttributeToFilter('show_in_menu', true);
 
                 foreach ($formCollection as $form) {
-                    $defaultTitle = __('Form #%1', $form->getId());
+                    $defaultTitle = (string) __('Form #%1', $form->getId());
 
                     $title = (string) $form->getTitle();
                     if (strlen($title) < 3) {
