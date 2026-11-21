@@ -1,10 +1,20 @@
+<?php
+/**
+ * Copyright © Alekseon sp. z o.o.
+ * http://www.alekseon.com/
+ */
+
+/** @var \Alekseon\CustomFormsBuilder\Block\Adminhtml\FormRecord\Edit\FormInfo $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<?php $createdFrom = $block->getCreatedFrom() ?>
 <div class="admin__page-nav">
     <div class="admin__page-nav-link">
-        <h3><?= $block->getTitle() ?></h3>
-        <span><?= __('Created at') ?>: <strong><?= $block->formatDate($block->getCurrentRecord()->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?></strong></span>
-        <?php if ($block->getCreatedFrom()): ?>
+        <h3><?= $escaper->escapeHtml($block->getTitle()) ?></h3>
+        <span><?= $escaper->escapeHtml(__('Created at')) ?>: <strong><?= $escaper->escapeHtml($block->formatDate($block->getCurrentRecord()->getCreatedAt(), \IntlDateFormatter::MEDIUM)) ?></strong></span>
+        <?php if ($createdFrom): ?>
             <br>
-            <span><?= __('Created from') ?>: <strong><?= $block->getCreatedFrom() ?></strong></span>
+            <span><?= $escaper->escapeHtml(__('Created from')) ?>: <strong><?= $escaper->escapeHtml($createdFrom) ?></strong></span>
         <?php endif ?>
     </div>
 </div>
