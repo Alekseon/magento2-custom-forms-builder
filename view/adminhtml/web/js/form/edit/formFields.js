@@ -26,6 +26,7 @@ define([
                 var template = $('#' + this.templateId)[0];
                 if (template) {
                     $(template).hide();
+                    $(template).find('input, select, textarea').prop('disabled', true);
                     self.addNewFieldButtonEvent($('#' + this.buttonId), template, this);
                 }
             });
@@ -39,13 +40,10 @@ define([
             var newField = newFieldTemplate.clone(true);
 
             $(newField).find("input, select, textarea").each(function() {
+                $(this).prop('disabled', false);
                 var fieldCode = $(this).data('fieldcode');
                 $(this).attr("name", "new_fields[" + self.newFieldsCounter + "][" + fieldCode + "]");
             });
-
-            if (templateConfig && templateConfig.type) {
-                $(newField).find('[data-fieldcode="frontend_input"]').val(templateConfig.type).trigger('change');
-            }
 
             if (templateConfig && templateConfig.label) {
                 $(newField).find('.fieldset-wrapper-title .admin__collapsible-title > span').first().text('[' + templateConfig.label + ']');

@@ -3,7 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Changed
+- new field template per input type (removed `fieldset_type`)
+- new field templates get unsaved attribute object (`settings['attribute']`), so they are rendered same as saved fields (input params, observers)
+- field fieldset event: removed `fieldset_type`, use `settings['attribute']` from `field_setting_object`
+- label and is required fields depend on input type `hasFrontendLabel()` and `canBeRequired()`
 ### Fixed
+- new field without label is not saved, unless input type has no frontend label
+- new field templates inputs are disabled, so they are not posted
 ### Added
 
 ## [102.4.0] - 2026-11-20

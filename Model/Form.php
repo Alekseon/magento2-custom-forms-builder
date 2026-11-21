@@ -115,6 +115,11 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
             unset($newFieldData['id']);
             $attribute = $attributeFactory->create();
             $attribute->setData($newFieldData);
+            if (empty($newFieldData['frontend_label'])
+                && $attribute->getInputTypeModel()->hasFrontendLabel()
+            ) {
+                continue;
+            }
             $attribute->setVisibleInGrid(true);
             $attribute->setAttributeCode('field_' . $formId . '_' . time() . '_' . $id);
             $attribute->setFormId($formId);

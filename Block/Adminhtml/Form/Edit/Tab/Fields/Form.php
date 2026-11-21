@@ -100,22 +100,14 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
 
         $this->addCurrentFormFields($form);
 
-        $addedFieldsetTypes = [];
-        foreach ($this->inputTypeRepository->getFrontendInputTypes() as $inputType) {
-            $fieldsetType = (string) $inputType->getFieldsetType();
-            if (!$fieldsetType) {
-                $fieldsetType = 'default';
-            }
-            if (in_array($fieldsetType, $addedFieldsetTypes)) {
-                continue;
-            }
-            $this->addFieldFieldset($form, 'new_field_' . $fieldsetType, [
+        foreach (array_keys($this->inputTypeRepository->getFrontendInputTypes()) as $code) {
+            $newAttribute = $this->getDataObject()->getFieldsCollection()->getNewEmptyItem();
+            $newAttribute->setFrontendInput($code);
+            $this->addFieldFieldset($form, 'new_field_' . $code, [
                 'title' => __('New Field'),
                 'is_new_field' => true,
-                'fieldset_type' => $fieldsetType,
-                'frontend_input_type' => $inputType,
+                'attribute' => $newAttribute,
             ]);
-            $addedFieldsetTypes[] = $fieldsetType;
         }
 
         $form->addField('form_removed_fields', 'hidden',
@@ -138,7 +130,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     {
         $isNewField = (bool) ($settings['is_new_field'] ?? false);
         /** @var \Alekseon\AlekseonEav\Model\Attribute $attribute */
-        $attribute = $settings['attribute'] ?? false;
+        $attribute = $settings['attribute'];
 
         $fieldset = $form->addFieldset('form_field_' . $formFieldId,
             [
@@ -153,9 +145,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
 
         $this->addBaseFields($fieldset, $formFieldId, $isNewField, $attribute);
 
-        $config = $attribute ? $attribute->getFrontendInputTypeConfig() : null;
-        $fieldsetType = $settings['fieldset_type'] ?? ($config ? $config->getFieldsetType() : null);
-
         $settingsObject = new DataObject(['settings' => $settings]);
 
         $this->eventManager->dispatch(
@@ -166,7 +155,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 'fieldset' => $fieldset,
                 'field_settings' => $settings, // deprecated, use 'field_setting_object' instead
                 'field_setting_object' => $settingsObject,
-                'fieldset_type' => $fieldsetType,
             ]
         );
 
@@ -180,11 +168,13 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      * @param Fieldset $fieldset
      * @param string $formFieldId
      * @param bool $isNewField
-     * @param \Alekseon\AlekseonEav\Model\Attribute|false $attribute
+     * @param \Alekseon\AlekseonEav\Model\Attribute $attribute
      * @return void
      */
     private function addBaseFields(Fieldset $fieldset, string $formFieldId, bool $isNewField, $attribute)
     {
+        $inputTypeModel = $attribute->getInputTypeModel();
+
         $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
             [
                 'name' => 'form_fields[' . $formFieldId . '][id]'
@@ -198,20 +188,20 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "group_code");
 
-        $fieldset->addField('form_field_' . $formFieldId . '_frontend_label', 'text',
-            [
-                'label' => __('Field Label'),
-                'name' => 'form_fields[' . $formFieldId . '][frontend_label]'
-            ]
-        )->addCustomAttribute("data-fieldcode", "frontend_label");
+        if ($inputTypeModel->hasFrontendLabel()) {
+            $fieldset->addField('form_field_' . $formFieldId . '_frontend_label', 'text',
+                [
+                    'label' => __('Field Label'),
+                    'name' => 'form_fields[' . $formFieldId . '][frontend_label]'
+                ]
+            )->addCustomAttribute("data-fieldcode", "frontend_label");
+        }
 
         if ($isNewField) {
             $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'hidden',
                 [
-                    //'label' => __('Frontend Input'),
                     'name' => 'form_fields[' . $formFieldId . '][frontend_input]',
-                    'value' => InputTypeRepository::DEFAULT_INPUT_TYPE_CODE,
-                    //'values' => $this->inputTypeSource->toOptionArray()
+                    'value' => $attribute->getFrontendInput(),
                 ]
             )->addCustomAttribute("data-fieldcode", "frontend_input");
         }
@@ -225,13 +215,15 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "input_visibility");
 
-        $fieldset->addField('form_field_' . $formFieldId . '_is_required', 'select',
-            [
-                'label' => __('Is Required'),
-                'name' => 'form_fields[' . $formFieldId . '][is_required]',
-                'values' => $this->yesNoSource->toOptionArray()
-            ]
-        )->addCustomAttribute("data-fieldcode", "is_required");
+        if ($inputTypeModel->canBeRequired()) {
+            $fieldset->addField('form_field_' . $formFieldId . '_is_required', 'select',
+                [
+                    'label' => __('Is Required'),
+                    'name' => 'form_fields[' . $formFieldId . '][is_required]',
+                    'values' => $this->yesNoSource->toOptionArray()
+                ]
+            )->addCustomAttribute("data-fieldcode", "is_required");
+        }
 
         if ($this->canSelectOptionSource($attribute)) {
             $fieldset->addField('form_field_' . $formFieldId . '_option_source_code', 'select',
@@ -335,7 +327,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             return $attribute->getInputParamsConfig();
         }
 
-        return $settings['input_params'] ?? [];
+        return [];
     }
 
     /**
