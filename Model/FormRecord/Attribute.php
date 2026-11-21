@@ -118,8 +118,8 @@ class Attribute extends \Alekseon\AlekseonEav\Model\Attribute
      */
     public function getForm(): Form
     {
-        if ($this->form === null) {
-            $this->form = $this->formRepository->getById($this->getFormId());
+        if ($this->form === null ) {
+            $this->form = $this->formRepository->getById($this->getFormId(), null, true);
         }
 
         return $this->form;

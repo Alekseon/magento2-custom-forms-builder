@@ -112,16 +112,19 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
 
         $attributeFactory = $this->recordAttributeRepository->getAttributeFactory();
         foreach ($newFieldsData as $id => $newFieldData) {
-            if (isset($newFieldData['frontend_label']) && $newFieldData['frontend_label']) {
-                unset($newFieldData['id']);
-                $attribute = $attributeFactory->create();
-                $attribute->setData($newFieldData);
-                $attribute->setVisibleInGrid(true);
-                $attribute->setAttributeCode('field_' . $formId . '_' . time() . '_' . $id);
-                $attribute->setFormId($formId);
-                $this->updateFieldGroupCode($attribute);
-                $this->recordAttributeRepository->save($attribute);
+            unset($newFieldData['id']);
+            $attribute = $attributeFactory->create();
+            $attribute->setData($newFieldData);
+            if (empty($newFieldData['frontend_label'])
+                && $attribute->getInputTypeModel()->hasFrontendLabel()
+            ) {
+                continue;
             }
+            $attribute->setVisibleInGrid(true);
+            $attribute->setAttributeCode('field_' . $formId . '_' . time() . '_' . $id);
+            $attribute->setFormId($formId);
+            $this->updateFieldGroupCode($attribute);
+            $this->recordAttributeRepository->save($attribute);
         }
     }
 
@@ -267,9 +270,18 @@ class Form extends \Alekseon\AlekseonEav\Model\Entity implements IdentityInterfa
      */
     public function getIdentities(): array
     {
-        return [
+        $identities = [
             self::CACHE_TAG . '_' . $this->getId(),
         ];
+
+        foreach ($this->getFieldsCollection() as $field) {
+            $inputTypeModel = $field->getInputTypeModel();
+            if ($inputTypeModel instanceof \Magento\Framework\DataObject\IdentityInterface) {
+                $identities = array_merge($identities, $inputTypeModel->getIdentities());
+            }
+        }
+
+        return $identities;
     }
 
     /**

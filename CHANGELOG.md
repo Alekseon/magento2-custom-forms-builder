@@ -3,8 +3,30 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Changed
+- new field template per input type (removed `fieldset_type`)
+- new field templates get unsaved attribute object (`settings['attribute']`), so they are rendered same as saved fields (input params, observers)
+- field fieldset event: removed `fieldset_type`, use `settings['attribute']` from `field_setting_object`
+- label and is required fields depend on input type `hasFrontendLabel()` and `canBeRequired()`
 ### Fixed
+- new field without label is not saved, unless input type has no frontend label
+- new field templates inputs are disabled, so they are not posted
 ### Added
+
+## [102.4.0] - 2026-11-20
+Changes required for static fields.
+### Changed
+- new field fieldsets per input type fieldset type
+- field fieldset event: added `field_setting_object` and `fieldset_type` (`field_settings` deprecated)
+### Added
+- form identities include input type identities
+- skip frontend-only fields in admin record edit
+
+## [102.3.21] - 2026-09-09
+### Fixed
+- Load form all attributes by form, it fixes issue with loading more forms in same execution (for example in cron job)
+
+## [102.3.20] - 2026-04-16
+- use created_from_store_id to get form from record (used for correct form data in emails notifications)
 
 ## [102.3.19] - 2026-02-19
 - frontend notes for form fields

@@ -12,26 +12,42 @@ define([
     var formFields = {
 
         init: function (config) {
+            var self = this;
             this.newFieldsCounter = 0;
-            this.newFieldTemplate = $('#' + config.newFieldTemplateId)[0];
 
             this.formContainer = $('#' + config.formContainerId + ' .form-inline')[0];
-            this.newFieldButton = $('#' + config.newFieldButtonId);
             this.formRemovedFieldsInputId = $('#' + config.formRemovedFieldsInputId);
-            this.hideNewFieldTemplate();
-            this.addNewFieldButtonEvent();
+
+            var templates = config.newFieldTemplates || [{
+                buttonId: config.newFieldButtonId,
+                templateId: config.newFieldTemplateId
+            }];
+            $.each(templates, function () {
+                var template = $('#' + this.templateId)[0];
+                if (template) {
+                    $(template).hide();
+                    $(template).find('input, select, textarea').prop('disabled', true);
+                    self.addNewFieldButtonEvent($('#' + this.buttonId), template, this);
+                }
+            });
+
             this.addFieldsEvents();
         },
 
-        addNewField: function () {
+        addNewField: function (newFieldTemplate, templateConfig) {
             this.newFieldsCounter ++;
             var self = this;
-            var newField = this.newFieldTemplate.clone(true);
+            var newField = newFieldTemplate.clone(true);
 
             $(newField).find("input, select, textarea").each(function() {
+                $(this).prop('disabled', false);
                 var fieldCode = $(this).data('fieldcode');
                 $(this).attr("name", "new_fields[" + self.newFieldsCounter + "][" + fieldCode + "]");
             });
+
+            if (templateConfig && templateConfig.label) {
+                $(newField).find('.fieldset-wrapper-title .admin__collapsible-title > span').first().text('[' + templateConfig.label + ']');
+            }
 
             var removeButton = $(newField).find('.delete-field-button')[0];
             this.addRemoveFieldEvent(removeButton);
@@ -45,15 +61,12 @@ define([
             $(newField).slideDown();
         },
 
-        addNewFieldButtonEvent: function () {
-            this.newFieldButton.click(function () {
-                formFields.addNewField();
+        addNewFieldButtonEvent: function (button, newFieldTemplate, templateConfig) {
+            button.click(function () {
+                formFields.addNewField(newFieldTemplate, templateConfig);
+                button.closest('.actions-split').find('[data-toggle=dropdown].active').trigger('close.dropdown');
                 return false;
             });
-        },
-
-        hideNewFieldTemplate: function () {
-            this.newFieldTemplate.hide();
         },
 
         addFieldsEvents: function () {
@@ -82,7 +95,8 @@ define([
                         confirm: function () {
                             var fieldsetWrapper = $(removeButton).closest('.fieldset-wrapper');
                             var fieldsetId = self.getFieldsetId($(removeButton));
-                            if (fieldsetId !== 'new_field') {
+                            var isSavedField = !!fieldsetWrapper.find('[data-fieldcode="id"]').val();
+                            if (isSavedField) {
                                 var removedIds = [];
                                 var removedIdsVal = $(self.formRemovedFieldsInputId).val();
                                 if (removedIdsVal) {

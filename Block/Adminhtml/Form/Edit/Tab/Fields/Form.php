@@ -10,6 +10,7 @@ namespace Alekseon\CustomFormsBuilder\Block\Adminhtml\Form\Edit\Tab\Fields;
 use Alekseon\AlekseonEav\Model\Attribute\InputTypeRepository;
 use Alekseon\CustomFormsBuilder\Model\FormRecord\Attribute;
 use Magento\Framework\Data\Form\Element\Fieldset;
+use Magento\Framework\DataObject;
 
 /**
  * Class Form
@@ -40,6 +41,10 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     protected $eventManager;
     /**
+     * @var InputTypeRepository
+     */
+    protected $inputTypeRepository;
+    /**
      * @var array
      */
     protected $formValues = [];
@@ -51,6 +56,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      * @param \Magento\Framework\Data\FormFactory $formFactory
      * @param \Alekseon\AlekseonEav\Model\Adminhtml\System\Config\Source\InputType $inputTypeSource
      * @param array $data
+     * @param InputTypeRepository|null $inputTypeRepository
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -60,12 +66,15 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         \Magento\Config\Model\Config\Source\Yesno $yesNoSource,
         \Alekseon\CustomFormsBuilder\Model\FieldOptionSources $fieldOptionSources,
         \Magento\Framework\EntityManager\EventManager $eventManager,
-        array $data = []
+        array $data = [],
+        ?InputTypeRepository $inputTypeRepository = null
     ) {
         $this->inputTypeSource = $inputTypeSource;
         $this->yesNoSource = $yesNoSource;
         $this->fieldOptionSources = $fieldOptionSources;
         $this->eventManager = $eventManager;
+        $this->inputTypeRepository = $inputTypeRepository
+            ?? \Magento\Framework\App\ObjectManager::getInstance()->get(InputTypeRepository::class);
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -90,10 +99,16 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         $form = $this->_formFactory->create();
 
         $this->addCurrentFormFields($form);
-        $this->addFieldFieldset($form, 'new_field', [
-            'title' => __('New Field'),
-            'is_new_field' => true,
-        ]);
+
+        foreach (array_keys($this->inputTypeRepository->getFrontendInputTypes()) as $code) {
+            $newAttribute = $this->getDataObject()->getFieldsCollection()->getNewEmptyItem();
+            $newAttribute->setFrontendInput($code);
+            $this->addFieldFieldset($form, 'new_field_' . $code, [
+                'title' => __('New Field'),
+                'is_new_field' => true,
+                'attribute' => $newAttribute,
+            ]);
+        }
 
         $form->addField('form_removed_fields', 'hidden',
             [
@@ -115,7 +130,7 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
     {
         $isNewField = (bool) ($settings['is_new_field'] ?? false);
         /** @var \Alekseon\AlekseonEav\Model\Attribute $attribute */
-        $attribute = $settings['attribute'] ?? false;
+        $attribute = $settings['attribute'];
 
         $fieldset = $form->addFieldset('form_field_' . $formFieldId,
             [
@@ -127,6 +142,38 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
         );
 
         $this->addWarnings($fieldset, $formFieldId, $settings);
+
+        $this->addBaseFields($fieldset, $formFieldId, $isNewField, $attribute);
+
+        $settingsObject = new DataObject(['settings' => $settings]);
+
+        $this->eventManager->dispatch(
+            'alekseon_custom_form_after_add_field_fieldset',
+            [
+                'form_field_id' => $formFieldId,
+                'form' => $form,
+                'fieldset' => $fieldset,
+                'field_settings' => $settings, // deprecated, use 'field_setting_object' instead
+                'field_setting_object' => $settingsObject,
+            ]
+        );
+
+        $settings = $settingsObject->getSettings();
+
+        $this->addInputParamsField($fieldset, $formFieldId, $settings);
+        $this->addActionLinks($fieldset, $formFieldId, $settings);
+    }
+
+    /**
+     * @param Fieldset $fieldset
+     * @param string $formFieldId
+     * @param bool $isNewField
+     * @param \Alekseon\AlekseonEav\Model\Attribute $attribute
+     * @return void
+     */
+    private function addBaseFields(Fieldset $fieldset, string $formFieldId, bool $isNewField, $attribute)
+    {
+        $inputTypeModel = $attribute->getInputTypeModel();
 
         $fieldset->addField('form_field_' . $formFieldId . '_id', 'hidden',
             [
@@ -141,20 +188,20 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "group_code");
 
-        $fieldset->addField('form_field_' . $formFieldId . '_frontend_label', 'text',
-            [
-                'label' => __('Field Label'),
-                'name' => 'form_fields[' . $formFieldId . '][frontend_label]'
-            ]
-        )->addCustomAttribute("data-fieldcode", "frontend_label");
+        if ($inputTypeModel->hasFrontendLabel()) {
+            $fieldset->addField('form_field_' . $formFieldId . '_frontend_label', 'text',
+                [
+                    'label' => __('Field Label'),
+                    'name' => 'form_fields[' . $formFieldId . '][frontend_label]'
+                ]
+            )->addCustomAttribute("data-fieldcode", "frontend_label");
+        }
 
         if ($isNewField) {
-            $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'select',
+            $fieldset->addField('form_field_' . $formFieldId . '_frontend_input', 'hidden',
                 [
-                    'label' => __('Frontend Input'),
                     'name' => 'form_fields[' . $formFieldId . '][frontend_input]',
-                    'value' => InputTypeRepository::DEFAULT_INPUT_TYPE_CODE,
-                    'values' => $this->inputTypeSource->toOptionArray()
+                    'value' => $attribute->getFrontendInput(),
                 ]
             )->addCustomAttribute("data-fieldcode", "frontend_input");
         }
@@ -168,13 +215,15 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             ]
         )->addCustomAttribute("data-fieldcode", "input_visibility");
 
-        $fieldset->addField('form_field_' . $formFieldId . '_is_required', 'select',
-            [
-                'label' => __('Is Required'),
-                'name' => 'form_fields[' . $formFieldId . '][is_required]',
-                'values' => $this->yesNoSource->toOptionArray()
-            ]
-        )->addCustomAttribute("data-fieldcode", "is_required");
+        if ($inputTypeModel->canBeRequired()) {
+            $fieldset->addField('form_field_' . $formFieldId . '_is_required', 'select',
+                [
+                    'label' => __('Is Required'),
+                    'name' => 'form_fields[' . $formFieldId . '][is_required]',
+                    'values' => $this->yesNoSource->toOptionArray()
+                ]
+            )->addCustomAttribute("data-fieldcode", "is_required");
+        }
 
         if ($this->canSelectOptionSource($attribute)) {
             $fieldset->addField('form_field_' . $formFieldId . '_option_source_code', 'select',
@@ -193,19 +242,6 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
                 'name' => 'form_fields[' . $formFieldId . '][sort_order]'
             ]
         )->addCustomAttribute("data-fieldcode", "sort_order");
-
-        $this->eventManager->dispatch(
-            'alekseon_custom_form_after_add_field_fieldset',
-            [
-                'form_field_id' => $formFieldId,
-                'form' => $form,
-                'fieldset' => $fieldset,
-                'field_settings' => $settings,
-            ]
-        );
-
-        $this->addInputParamsField($fieldset, $formFieldId, $settings);
-        $this->addActionLinks($fieldset, $formFieldId, $settings);
     }
 
     /**
@@ -239,10 +275,14 @@ class Form extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
             $config['label'] = __($config['label'] ?? '');
             $config['note'] = __($config['note'] ?? '');
             $config['name'] = 'form_fields[' . $formFieldId . '][input_params][' . $paramCode . ']';
+            if (isset($config['source_model']) && empty($config['values'])) {
+                $config['values'] = $config['source_model']->toOptionArray();
+                unset($config['source_model']);
+            }
             $fieldset->addField('form_field_' . $formFieldId . '_input_params_' . $paramCode,
                 $type,
                 $config
-            );
+            )->addCustomAttribute('data-fieldcode', 'input_params][' . $paramCode);
         }
     }
 

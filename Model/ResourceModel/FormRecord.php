@@ -36,6 +36,10 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
      * @var
      */
     protected $currentForm;
+    /**
+     * @var array
+     */
+    protected $allAttributesLoadedFormsIds = [];
 
     /**
      * FormRecord constructor.
@@ -61,24 +65,37 @@ class FormRecord extends \Alekseon\AlekseonEav\Model\ResourceModel\Entity
     }
 
     /**
+     * @inheritDoc
+     */
+    protected function hasAllAttributeLoaded() {
+        $currentForm = $this->getCurrentForm();
+        if ($currentForm) {
+            return isset($this->allAttributesLoadedFormsIds[$currentForm->getId()]);
+        }
+        return false;
+    }
+
+    /**
      * @return $this
      */
     public function loadAllAttributes()
     {
-        if ($this->allAttributesLoaded) {
+        $currentForm = $this->getCurrentForm();
+
+        if (!$currentForm) {
             return $this;
         }
 
-        if (!$this->getCurrentForm()) {
+        if ($this->hasAllAttributeLoaded()) {
             return $this;
         }
 
-        $attributeCollection = $this->getCurrentForm()->getFieldsCollection();
+        $attributeCollection = $currentForm->getFieldsCollection();
 
         foreach ($attributeCollection as $attribute) {
             $this->attributes[$attribute->getAttributeCode()] = $attribute;
         }
-        $this->allAttributesLoaded = true;
+        $this->allAttributesLoadedFormsIds[$currentForm->getId()] = true;
         return $this;
     }
 

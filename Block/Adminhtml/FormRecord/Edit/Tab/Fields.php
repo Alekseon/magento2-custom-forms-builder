@@ -75,6 +75,10 @@ class Fields extends \Alekseon\AlekseonEav\Block\Adminhtml\Entity\Edit\Form
      */
     public function addAttributeField(Fieldset $formFieldset, AttributeInterface $attribute)
     {
+        if ($attribute->getInputTypeModel()->getIsOnlyFrontendField()) {
+            return;
+        }
+
         if ($attribute->getInputVisibility() == Attribute::INPUT_VISIBILITY_NONE) {
             return;
         }
