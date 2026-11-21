@@ -32,6 +32,7 @@ define([
             });
 
             this.addFieldsEvents();
+            this.addIdentifierEvents();
         },
 
         addNewField: function (newFieldTemplate, templateConfig) {
@@ -77,6 +78,22 @@ define([
             $(this.formContainer).find('.form-field-change-tab-button').each(function() {
                 self.addChangeTabButtonEvent(this);
             });
+        },
+
+        addIdentifierEvents: function () {
+            $(document)
+                .off('.identifierField')
+                .on('mouseenter.identifierField', '.identifier-wrapper', function () {
+                    $(this).find('.identifier').hide();
+                    $(this).find('.identifier-input').show();
+                })
+                .on('mouseleave.identifierField', '.identifier-wrapper', function () {
+                    $(this).find('.identifier').show();
+                    $(this).find('.identifier-input').hide();
+                })
+                .on('change.identifierField', '.identifier-wrapper .identifier-input', function () {
+                    $(this).closest('.identifier-wrapper').find('.identifier').text($(this).val());
+                });
         },
 
         addChangeTabButtonEvent: function (changeTabButton) {

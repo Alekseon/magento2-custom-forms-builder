@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - new field templates inputs are disabled, so they are not posted
 - ACL for form and form field admin controllers: `Alekseon_CustomFormsBuilder::manage_custom_forms` required (form list, new form, delete form); edit/save of existing form and its fields also allowed with per-form `custom_form_<id>_manage_form` resource
 - form save can not modify or delete fields and tabs of other forms (field ids from request are checked against saved form, `form_id`/`attribute_code`/`entity_id` are not taken from request)
+- XSS in form field identifier (admin form edit): identifier and field id are escaped, inline event handlers moved to `formFields.js` (CSP compatible)
 ### Added
 - `FormRecord\AttributeRepository::getByIdForForm()`
 
