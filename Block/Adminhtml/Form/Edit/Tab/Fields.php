@@ -110,15 +110,10 @@ class Fields extends \Magento\Backend\Block\Template implements
     public function getNewFieldTemplatesJsConfig(): array
     {
         $config = [];
-        foreach ($this->inputTypeRepository->getFrontendInputTypes() as $inputType) {
-            $fieldsetType = (string) $inputType->getFieldsetType();
-            if (!$fieldsetType) {
-                $fieldsetType = 'default';
-            }
+        foreach ($this->inputTypeRepository->getFrontendInputTypes() as $code => $inputType) {
             $config[] = [
-                'buttonId' => 'add_field_button-' . $inputType->getCode(),
-                'templateId' => 'form_field_new_field_' . $fieldsetType .  '-wrapper',
-                'type' => $inputType->getCode(),
+                'buttonId' => 'add_field_button-' . $code,
+                'templateId' => 'form_field_new_field_' . $code . '-wrapper',
                 'label' => (string) __($inputType->getLabel()),
             ];
         }

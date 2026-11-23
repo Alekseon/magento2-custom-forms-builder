@@ -16,6 +16,11 @@ use Magento\Framework\Controller\ResultFactory;
 abstract class FormField extends \Magento\Backend\App\Action
 {
     /**
+     * Authorization level of a basic admin session
+     */
+    const ADMIN_RESOURCE = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+
+    /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
     protected $resultPageFactory;
@@ -45,6 +50,34 @@ abstract class FormField extends \Magento\Backend\App\Action
         $this->coreRegistry = $coreRegistry;
         $this->attributeRepository = $attributeRepository;
         parent::__construct($context);
+    }
+
+    /**
+     * Full access requires ADMIN_RESOURCE. Without it, a field can be managed
+     * only with the "custom_form_<id>_manage_form" resource of the form it belongs to.
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        if ($this->_authorization->isAllowed(static::ADMIN_RESOURCE)) {
+            return true;
+        }
+
+        try {
+            $attribute = $this->initAttribute();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        $formId = $attribute ? (int) $attribute->getFormId() : 0;
+        if ($formId <= 0) {
+            return false;
+        }
+
+        return $this->_authorization->isAllowed(
+            'Alekseon_CustomFormsBuilder::custom_form_' . $formId . '_manage_form'
+        );
     }
 
     /**

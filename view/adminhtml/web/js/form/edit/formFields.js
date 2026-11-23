@@ -26,11 +26,13 @@ define([
                 var template = $('#' + this.templateId)[0];
                 if (template) {
                     $(template).hide();
+                    $(template).find('input, select, textarea').prop('disabled', true);
                     self.addNewFieldButtonEvent($('#' + this.buttonId), template, this);
                 }
             });
 
             this.addFieldsEvents();
+            this.addIdentifierEvents();
         },
 
         addNewField: function (newFieldTemplate, templateConfig) {
@@ -39,13 +41,10 @@ define([
             var newField = newFieldTemplate.clone(true);
 
             $(newField).find("input, select, textarea").each(function() {
+                $(this).prop('disabled', false);
                 var fieldCode = $(this).data('fieldcode');
                 $(this).attr("name", "new_fields[" + self.newFieldsCounter + "][" + fieldCode + "]");
             });
-
-            if (templateConfig && templateConfig.type) {
-                $(newField).find('[data-fieldcode="frontend_input"]').val(templateConfig.type).trigger('change');
-            }
 
             if (templateConfig && templateConfig.label) {
                 $(newField).find('.fieldset-wrapper-title .admin__collapsible-title > span').first().text('[' + templateConfig.label + ']');
@@ -79,6 +78,22 @@ define([
             $(this.formContainer).find('.form-field-change-tab-button').each(function() {
                 self.addChangeTabButtonEvent(this);
             });
+        },
+
+        addIdentifierEvents: function () {
+            $(document)
+                .off('.identifierField')
+                .on('mouseenter.identifierField', '.identifier-wrapper', function () {
+                    $(this).find('.identifier').hide();
+                    $(this).find('.identifier-input').show();
+                })
+                .on('mouseleave.identifierField', '.identifier-wrapper', function () {
+                    $(this).find('.identifier').show();
+                    $(this).find('.identifier-input').hide();
+                })
+                .on('change.identifierField', '.identifier-wrapper .identifier-input', function () {
+                    $(this).closest('.identifier-wrapper').find('.identifier').text($(this).val());
+                });
         },
 
         addChangeTabButtonEvent: function (changeTabButton) {

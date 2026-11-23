@@ -3,8 +3,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Changed
+- new field template per input type (removed `fieldset_type`)
+- new field templates get unsaved attribute object (`settings['attribute']`), so they are rendered same as saved fields (input params, observers)
+- field fieldset event: removed `fieldset_type`, use `settings['attribute']` from `field_setting_object`
+- label and is required fields depend on input type `hasFrontendLabel()` and `canBeRequired()`
 ### Fixed
+- new field without label is not saved, unless input type has no frontend label
+- new field templates inputs are disabled, so they are not posted
+- ACL for form and form field admin controllers: `Alekseon_CustomFormsBuilder::manage_custom_forms` required (form list, new form, delete form); edit/save of existing form and its fields also allowed with per-form `custom_form_<id>_manage_form` resource
+- ACL for new form / new record actions (`Form/NewAction`, `FormRecord/NewAction`), previously checked only after forward to edit action
+- form save can not modify or delete fields and tabs of other forms (field ids from request are checked against saved form, `form_id`/`attribute_code`/`entity_id` are not taken from request)
+- XSS in form field identifier (admin form edit): identifier and field id are escaped, inline event handlers moved to `formFields.js` (CSP compatible)
+- XSS in form record edit info (record title, created from store name): output is escaped
+- admin menu / ACL tree: `TypeError` for form with title shorter than 3 chars (default title was `Phrase` passed to `strlen` with strict types), `strlen(null)` deprecation for form without title
 ### Added
+- `FormRecord\AttributeRepository::getByIdForForm()`
 
 ## [102.4.0] - 2026-11-20
 Changes required for static fields.

@@ -16,6 +16,11 @@ use Magento\Framework\App\Action\HttpGetActionInterface;
 class NewAction extends \Magento\Backend\App\Action implements HttpGetActionInterface
 {
     /**
+     * Creating new form requires full access
+     */
+    const ADMIN_RESOURCE = 'Alekseon_CustomFormsBuilder::manage_custom_forms';
+
+    /**
      * @var \Magento\Backend\Model\View\Result\ForwardFactory
      */
     protected $resultForwardFactory;
